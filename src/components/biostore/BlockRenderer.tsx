@@ -5,16 +5,18 @@ import React from "react";
 interface BlockProps {
   block: any;
   username: string;
+  theme?: string;
 }
 
-export function BlockRenderer({ block, username }: BlockProps) {
+export function BlockRenderer({ block, username, theme = 'classic' }: BlockProps) {
   const handleBlockClick = async () => {
     // Only track clicks for interactive blocks like link or youtube
     if (!['link', 'social', 'youtube', 'product', 'contact'].includes(block.type)) return;
 
     try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://creatoros-backend-rb5b.onrender.com/api';
       // Send click analytics
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api'}/biostore/${username}/click`, {
+      await fetch(`${apiUrl}/biostore/${username}/click`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -31,16 +33,23 @@ export function BlockRenderer({ block, username }: BlockProps) {
     }
   };
 
+  const isDarkTheme = theme === 'dark' || theme === 'minimal';
+  const blockClass = `w-full p-4 rounded-xl border transition-all flex items-center justify-center font-medium shadow-sm hover:scale-[1.02] ${
+    isDarkTheme 
+      ? 'bg-white/10 border-white/20 hover:bg-white/20 text-white' 
+      : 'bg-black/5 border-black/10 hover:bg-black/10 text-black'
+  }`;
+
   if (block.type === 'link') {
     return (
       <a 
-        href={block.content.url} 
+        href={block.content.url || '#'} 
         target="_blank" 
         rel="noopener noreferrer"
         onClick={handleBlockClick}
-        className="w-full p-4 rounded-xl border bg-card hover:bg-accent hover:text-accent-foreground transition-all flex items-center justify-center font-medium shadow-sm"
+        className={blockClass}
       >
-        {block.content.title}
+        {block.content.title || 'Link'}
       </a>
     );
   }
@@ -48,15 +57,21 @@ export function BlockRenderer({ block, username }: BlockProps) {
   if (block.type === 'text') {
     return (
       <div className="w-full py-4 text-center">
-        <p>{block.content.text}</p>
+        <p>{block.content.title || block.content.text}</p>
       </div>
     );
   }
 
   // Add more block renderers here
   return (
-    <div className="w-full p-4 rounded-xl border bg-card flex flex-col items-center justify-center text-muted-foreground shadow-sm">
-      {block.type.toUpperCase()} Block Placeholder
-    </div>
+    <a 
+      href={block.content.url || '#'} 
+      target="_blank" 
+      rel="noopener noreferrer"
+      onClick={handleBlockClick}
+      className={blockClass}
+    >
+      {block.content.title || `${block.type.toUpperCase()} Block Placeholder`}
+    </a>
   );
 }
