@@ -1,6 +1,5 @@
 import React from 'react';
 import { ExternalLink, Download, Play } from 'lucide-react';
-import { LinkBlock } from './LinkBlock';
 import { TextBlock } from './TextBlock';
 
 // ── Divider ───────────────────────────────────────────────────────────────────
@@ -120,75 +119,26 @@ export const VideoBlock = ({ block, themeData, onClick }: any) => {
   );
 };
 
-// ── YouTube Block ─────────────────────────────────────────────────────────────
-export const YouTubeBlock = ({ block, themeData, onClick }: any) => {
+// ── Unified Button Component (Linktree Style) ───────────────────────────────────
+const UnifiedButton = ({ url, title, subtitle, icon, imageUrl, themeData, onClick }: any) => {
   const styles = themeData.styles || {};
   const colors = themeData.colors || {};
-  const url = block.content?.url || '';
 
-  const getYouTubeId = (url: string) => {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-    return match && match[2].length === 11 ? match[2] : null;
+  const buttonStyle = styles.buttonStyle || 'filled';
+  let dynamicStyle: any = {
+    borderRadius: styles.buttonRadius || 32,
+    boxShadow: styles.shadowStyle === 'sm' ? '0 1px 2px 0 rgba(0, 0, 0, 0.05)' : (styles.shadowStyle === 'md' ? '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' : undefined),
+    color: colors.buttonTextColor || '#fff',
+    border: 'none',
   };
 
-  const videoId = getYouTubeId(url);
-
-  if (!videoId) {
-    return (
-      <a
-        href={url || '#'}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={onClick}
-        className="flex items-center gap-3 w-full p-4 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
-        style={{
-          backgroundColor: colors.cardColor || 'rgba(255,255,255,0.05)',
-          borderRadius: styles.cardRadius || 16,
-          color: colors.textColor || '#fff'
-        }}
-      >
-        <div className="w-10 h-10 flex items-center justify-center rounded-full bg-red-600">
-          <Play className="w-5 h-5 text-white fill-white" />
-        </div>
-        <div>
-          <p className="font-semibold">{block.content?.title || 'YouTube Video'}</p>
-          <p className="text-xs opacity-60">{url || 'No URL set'}</p>
-        </div>
-        <ExternalLink className="w-4 h-4 ml-auto opacity-60" />
-      </a>
-    );
+  if (buttonStyle === 'filled') {
+    dynamicStyle.backgroundColor = colors.buttonColor || colors.cardColor || '#000';
+  } else if (buttonStyle === 'outline') {
+    dynamicStyle.backgroundColor = 'transparent';
+    dynamicStyle.border = `2px solid ${colors.buttonColor || colors.cardColor || '#000'}`;
+    dynamicStyle.color = colors.buttonColor || colors.textColor || '#000';
   }
-
-  return (
-    <div className="w-full overflow-hidden" style={{ borderRadius: styles.cardRadius || 16 }}>
-      {block.content?.title && (
-        <div className="flex items-center gap-2 px-3 py-2"
-          style={{ color: colors.textColor, backgroundColor: colors.cardColor || 'rgba(255,255,255,0.05)' }}>
-          <div className="w-4 h-4 bg-red-600 rounded-sm flex items-center justify-center">
-            <Play className="w-2.5 h-2.5 text-white fill-white" />
-          </div>
-          <span className="text-sm font-medium">{block.content.title}</span>
-        </div>
-      )}
-      <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-        <iframe
-          className="absolute inset-0 w-full h-full"
-          src={`https://www.youtube.com/embed/${videoId}`}
-          title={block.content?.title || 'YouTube Video'}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
-      </div>
-    </div>
-  );
-};
-
-// ── Product Block ─────────────────────────────────────────────────────────────
-export const ProductBlock = ({ block, themeData, onClick }: any) => {
-  const styles = themeData.styles || {};
-  const colors = themeData.colors || {};
-  const { title, url, price, imageUrl } = block.content || {};
 
   return (
     <a
@@ -196,28 +146,61 @@ export const ProductBlock = ({ block, themeData, onClick }: any) => {
       target="_blank"
       rel="noopener noreferrer"
       onClick={onClick}
-      className="flex items-center gap-4 w-full p-4 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
-      style={{
-        backgroundColor: colors.cardColor || 'rgba(255,255,255,0.05)',
-        borderRadius: styles.cardRadius || 16,
-        color: colors.textColor || '#fff'
-      }}
+      className="flex items-center w-full p-2 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] min-h-[64px]"
+      style={dynamicStyle}
     >
-      {imageUrl ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={imageUrl} alt={title} className="w-14 h-14 rounded-xl object-cover flex-shrink-0" />
-      ) : (
-        <div className="w-14 h-14 rounded-xl flex-shrink-0 flex items-center justify-center"
-          style={{ backgroundColor: colors.buttonColor || '#6366f1' }}>
-          <span className="text-2xl">🛍️</span>
-        </div>
-      )}
-      <div className="flex-1 min-w-0">
-        <p className="font-semibold truncate">{title || 'Product'}</p>
-        {price && <p className="text-sm opacity-80 mt-0.5">{price}</p>}
+      {/* Leading Icon/Image */}
+      <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center overflow-hidden rounded-full"
+        style={{ backgroundColor: 'rgba(0,0,0,0.05)' }}>
+        {imageUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
+        ) : (
+          <span className="text-2xl flex items-center justify-center">{icon}</span>
+        )}
       </div>
-      <ExternalLink className="w-4 h-4 opacity-60 flex-shrink-0" />
+
+      {/* Center Content */}
+      <div className="flex-1 min-w-0 px-3 text-center flex flex-col justify-center">
+        <p className="font-semibold truncate text-[15px]">{title || 'Link'}</p>
+        {subtitle && <p className="text-xs opacity-70 mt-0.5 truncate">{subtitle}</p>}
+      </div>
+
+      {/* Trailing */}
+      <div className="w-12 flex-shrink-0 flex items-center justify-center opacity-60">
+        <ExternalLink className="w-4 h-4" />
+      </div>
     </a>
+  );
+};
+
+// ── YouTube Block ─────────────────────────────────────────────────────────────
+export const YouTubeBlock = ({ block, themeData, onClick }: any) => {
+  return (
+    <UnifiedButton
+      url={block.content?.url}
+      title={block.content?.title || 'YouTube Video'}
+      subtitle="Watch on YouTube"
+      icon={<Play className="w-6 h-6 text-red-500 fill-red-500" />}
+      themeData={themeData}
+      onClick={onClick}
+    />
+  );
+};
+
+// ── Product Block ─────────────────────────────────────────────────────────────
+export const ProductBlock = ({ block, themeData, onClick }: any) => {
+  const { title, url, price, imageUrl } = block.content || {};
+  return (
+    <UnifiedButton
+      url={url}
+      title={title || 'Product'}
+      subtitle={price}
+      icon="🛍️"
+      imageUrl={imageUrl}
+      themeData={themeData}
+      onClick={onClick}
+    />
   );
 };
 
@@ -237,55 +220,45 @@ const SOCIAL_ICONS: Record<string, { emoji: string; label: string }> = {
 };
 
 export const SocialBlock = ({ block, themeData, onClick }: any) => {
-  const styles = themeData.styles || {};
-  const colors = themeData.colors || {};
   const platform = block.content?.platform?.toLowerCase() || 'default';
   const icon = SOCIAL_ICONS[platform] || SOCIAL_ICONS.default;
-  const url = block.content?.url || '#';
-
   return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
+    <UnifiedButton
+      url={block.content?.url}
+      title={block.content?.title || icon.label}
+      subtitle={block.content?.url?.replace('https://', '')?.replace('www.', '')}
+      icon={icon.emoji}
+      themeData={themeData}
       onClick={onClick}
-      className="flex items-center gap-3 w-full p-4 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
-      style={{
-        backgroundColor: colors.cardColor || 'rgba(255,255,255,0.05)',
-        borderRadius: styles.cardRadius || 16,
-        color: colors.textColor || '#fff'
-      }}
-    >
-      <span className="text-2xl">{icon.emoji}</span>
-      <span className="font-semibold">{block.content?.title || icon.label}</span>
-      <ExternalLink className="w-4 h-4 ml-auto opacity-60" />
-    </a>
+    />
   );
 };
 
 // ── Button Block ──────────────────────────────────────────────────────────────
 export const ButtonBlock = ({ block, themeData, onClick }: any) => {
-  const styles = themeData.styles || {};
-  const colors = themeData.colors || {};
-
   return (
-    <a
-      href={block.content?.url || '#'}
-      target="_blank"
-      rel="noopener noreferrer"
+    <UnifiedButton
+      url={block.content?.url}
+      title={block.content?.title || 'Button'}
+      icon="🔗"
+      themeData={themeData}
       onClick={onClick}
-      className="flex items-center justify-center gap-2 w-full p-4 font-semibold transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
-      style={{
-        backgroundColor: colors.buttonColor || '#6366f1',
-        color: colors.buttonTextColor || '#fff',
-        borderRadius: styles.buttonRadius || 32,
-      }}
-    >
-      {block.content?.title || 'Button'}
-      <ExternalLink className="w-4 h-4" />
-    </a>
+    />
+  );
+};
+
+// ── Link Block ────────────────────────────────────────────────────────────────
+export const LinkBlock = ({ block, themeData, onClick }: any) => {
+  return (
+    <UnifiedButton
+      url={block.content?.url}
+      title={block.content?.title || 'Link'}
+      icon="🔗"
+      themeData={themeData}
+      onClick={onClick}
+    />
   );
 };
 
 // ── Re-export existing blocks ─────────────────────────────────────────────────
-export { LinkBlock, TextBlock };
+export { TextBlock };
