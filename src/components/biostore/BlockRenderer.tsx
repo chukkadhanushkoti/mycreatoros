@@ -1,21 +1,21 @@
 "use client";
 
 import React from "react";
+import { getBlockComponent } from "./blocks";
+import { motion } from "framer-motion";
 
 interface BlockProps {
   block: any;
   username: string;
-  theme?: string;
+  themeData: any;
 }
 
-export function BlockRenderer({ block, username, theme = 'classic' }: BlockProps) {
+export function BlockRenderer({ block, username, themeData }: BlockProps) {
   const handleBlockClick = async () => {
-    // Only track clicks for interactive blocks like link or youtube
     if (!['link', 'social', 'youtube', 'product', 'contact'].includes(block.type)) return;
 
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://creatoros-backend-rb5b.onrender.com/api';
-      // Send click analytics
       await fetch(`${apiUrl}/biostore/${username}/click`, {
         method: 'POST',
         headers: {
@@ -33,45 +33,24 @@ export function BlockRenderer({ block, username, theme = 'classic' }: BlockProps
     }
   };
 
-  const isDarkTheme = theme === 'dark' || theme === 'minimal';
-  const blockClass = `w-full p-4 rounded-xl border transition-all flex items-center justify-center font-medium shadow-sm hover:scale-[1.02] ${
-    isDarkTheme 
-      ? 'bg-white/10 border-white/20 hover:bg-white/20 text-white' 
-      : 'bg-black/5 border-black/10 hover:bg-black/10 text-black'
-  }`;
+  const Component = getBlockComponent(block.type);
 
-  if (block.type === 'link') {
+  if (!Component) {
     return (
-      <a 
-        href={block.content.url || '#'} 
-        target="_blank" 
-        rel="noopener noreferrer"
-        onClick={handleBlockClick}
-        className={blockClass}
-      >
-        {block.content.title || 'Link'}
-      </a>
-    );
-  }
-  
-  if (block.type === 'text') {
-    return (
-      <div className="w-full py-4 text-center">
-        <p>{block.content.title || block.content.text}</p>
+      <div className="w-full p-4 border border-dashed border-red-500 text-red-500 rounded-xl text-center">
+        Unsupported Block: {block.type}
       </div>
     );
   }
 
-  // Add more block renderers here
   return (
-    <a 
-      href={block.content.url || '#'} 
-      target="_blank" 
-      rel="noopener noreferrer"
-      onClick={handleBlockClick}
-      className={blockClass}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: block.order * 0.1 }}
+      className="w-full"
     >
-      {block.content.title || `${block.type.toUpperCase()} Block Placeholder`}
-    </a>
+      <Component block={block} themeData={themeData} onClick={handleBlockClick} />
+    </motion.div>
   );
 }
