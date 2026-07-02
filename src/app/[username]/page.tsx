@@ -4,11 +4,15 @@ import { CheckCircle2 } from "lucide-react";
 import { BlockRenderer } from "@/components/biostore/BlockRenderer";
 import { bioStoreThemes } from "@/config/biostore-themes";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+export const fetchCache = 'force-no-store';
+
 // Mock fetching function until the backend is fully connected
 async function getBioStoreData(username: string) {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://creatoros-backend-rb5b.onrender.com/api';
-    const res = await fetch(`${apiUrl}/biostore/${username}`, { next: { revalidate: 10 } });
+    const res = await fetch(`${apiUrl}/biostore/${username}`, { cache: 'no-store' });
     if (!res.ok) {
       if (res.status === 404) return null;
       throw new Error('Failed to fetch data');
@@ -36,7 +40,7 @@ export default async function BioStorePage({ params }: { params: Promise<{ usern
 
   const bioStore = await getBioStoreData(username);
 
-  if (!bioStore || bioStore.published === false) {
+  if (!bioStore || bioStore.status !== 'published') {
     notFound();
   }
 
