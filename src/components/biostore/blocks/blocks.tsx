@@ -1,23 +1,28 @@
+"use client";
+
 import React from 'react';
 import {
   ExternalLink, Download, Play, Link2, Image as ImageIcon,
-  Video, ShoppingBag, Layers, Instagram, Youtube,
-  Twitter, Linkedin, Github, Facebook, Music,
-  AlignJustify, Globe,
+  Video, ShoppingBag, Layers,
+  AlignJustify, Globe, Music
 } from 'lucide-react';
+import {
+  FaInstagram, FaYoutube, FaTwitter, FaLinkedin,
+  FaGithub, FaFacebook, FaSpotify, FaTiktok
+} from 'react-icons/fa';
 import { TextBlock } from './TextBlock';
 
-// ── Platform-specific icon map (SVG via Lucide) ───────────────────────────────
+// ── Platform-specific icon map ───────────────────────────────
 const SOCIAL_CONFIG: Record<string, { icon: React.ReactNode; color: string; label: string }> = {
-  instagram: { icon: <Instagram className="w-5 h-5" />, color: '#E1306C', label: 'Instagram' },
-  youtube:   { icon: <Youtube className="w-5 h-5" />,   color: '#FF0000', label: 'YouTube' },
-  twitter:   { icon: <Twitter className="w-5 h-5" />,   color: '#1DA1F2', label: 'Twitter / X' },
-  linkedin:  { icon: <Linkedin className="w-5 h-5" />,  color: '#0A66C2', label: 'LinkedIn' },
-  github:    { icon: <Github className="w-5 h-5" />,    color: '#333',    label: 'GitHub' },
-  facebook:  { icon: <Facebook className="w-5 h-5" />,  color: '#1877F2', label: 'Facebook' },
-  spotify:   { icon: <Music className="w-5 h-5" />,     color: '#1DB954', label: 'Spotify' },
-  tiktok:    { icon: <Music className="w-5 h-5" />,     color: '#010101', label: 'TikTok' },
-  default:   { icon: <Link2 className="w-5 h-5" />,     color: '#3B82F6', label: 'Social' },
+  instagram: { icon: <FaInstagram className="w-5 h-5" />, color: '#E1306C', label: 'Instagram' },
+  youtube:   { icon: <FaYoutube className="w-5 h-5" />,   color: '#FF0000', label: 'YouTube' },
+  twitter:   { icon: <FaTwitter className="w-5 h-5" />,   color: '#1DA1F2', label: 'Twitter / X' },
+  linkedin:  { icon: <FaLinkedin className="w-5 h-5" />,  color: '#0A66C2', label: 'LinkedIn' },
+  github:    { icon: <FaGithub className="w-5 h-5" />,    color: '#333',    label: 'GitHub' },
+  facebook:  { icon: <FaFacebook className="w-5 h-5" />,  color: '#1877F2', label: 'Facebook' },
+  spotify:   { icon: <FaSpotify className="w-5 h-5" />,   color: '#1DB954', label: 'Spotify' },
+  tiktok:    { icon: <FaTiktok className="w-5 h-5" />,    color: '#010101', label: 'TikTok' },
+  default:   { icon: <Link2 className="w-5 h-5" />,       color: '#3B82F6', label: 'Social' },
 };
 
 // ── Helper: resolve button styles from theme ──────────────────────────────────
