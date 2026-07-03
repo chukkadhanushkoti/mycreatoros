@@ -22,7 +22,8 @@ export const bioStoreThemes = [
       "buttonRadius": 32,
       "cardRadius": 16,
       "avatarBorder": 0,
-      "iconStyle": "solid"
+      "iconStyle": "solid",
+      "bgEffect": "snow"
     }
   },
   {
@@ -46,7 +47,8 @@ export const bioStoreThemes = [
       "buttonRadius": 12,
       "cardRadius": 16,
       "avatarBorder": 3,
-      "iconStyle": "solid"
+      "iconStyle": "solid",
+      "bgEffect": "blobs"
     }
   },
   {
@@ -57,20 +59,21 @@ export const bioStoreThemes = [
       "backgroundColor": "#ffd700",
       "textColor": "#000000",
       "cardColor": "#ffffff",
-      "buttonColor": "#ffffff",
-      "buttonTextColor": "#000000"
+      "buttonColor": "#000000",
+      "buttonTextColor": "#ffffff"
     },
     "typography": {
       "fontFamily": "Inter"
     },
     "styles": {
-      "buttonStyle": "outline",
+      "buttonStyle": "filled",
       "spacing": "default",
       "shadowStyle": "hard",
       "buttonRadius": 0,
       "cardRadius": 0,
       "avatarBorder": 3,
-      "iconStyle": "solid"
+      "iconStyle": "solid",
+      "bgEffect": "bubbles"
     }
   },
   {
@@ -94,7 +97,8 @@ export const bioStoreThemes = [
       "buttonRadius": 24,
       "cardRadius": 16,
       "avatarBorder": 3,
-      "iconStyle": "solid"
+      "iconStyle": "solid",
+      "bgEffect": "none"
     }
   },
   {
@@ -118,7 +122,8 @@ export const bioStoreThemes = [
       "buttonRadius": 16,
       "cardRadius": 16,
       "avatarBorder": 0,
-      "iconStyle": "solid"
+      "iconStyle": "solid",
+      "bgEffect": "blobs"
     }
   },
   {
@@ -142,7 +147,8 @@ export const bioStoreThemes = [
       "buttonRadius": 16,
       "cardRadius": 24,
       "avatarBorder": 2,
-      "iconStyle": "solid"
+      "iconStyle": "solid",
+      "bgEffect": "blobs"
     }
   },
   {
@@ -166,7 +172,8 @@ export const bioStoreThemes = [
       "buttonRadius": 32,
       "cardRadius": 16,
       "avatarBorder": 0,
-      "iconStyle": "solid"
+      "iconStyle": "solid",
+      "bgEffect": "grid"
     }
   },
   {
@@ -190,7 +197,8 @@ export const bioStoreThemes = [
       "buttonRadius": 4,
       "cardRadius": 8,
       "avatarBorder": 0,
-      "iconStyle": "outline"
+      "iconStyle": "outline",
+      "bgEffect": "grid"
     }
   },
   {
@@ -214,7 +222,8 @@ export const bioStoreThemes = [
       "buttonRadius": 4,
       "cardRadius": 8,
       "avatarBorder": 2,
-      "iconStyle": "solid"
+      "iconStyle": "solid",
+      "bgEffect": "grid"
     }
   },
   {
@@ -238,7 +247,8 @@ export const bioStoreThemes = [
       "buttonRadius": 8,
       "cardRadius": 12,
       "avatarBorder": 2,
-      "iconStyle": "outline"
+      "iconStyle": "outline",
+      "bgEffect": "bubbles"
     }
   },
   {
@@ -262,7 +272,8 @@ export const bioStoreThemes = [
       "buttonRadius": 32,
       "cardRadius": 20,
       "avatarBorder": 4,
-      "iconStyle": "solid"
+      "iconStyle": "solid",
+      "bgEffect": "none"
     }
   },
   {
@@ -286,7 +297,8 @@ export const bioStoreThemes = [
       "buttonRadius": 8,
       "cardRadius": 12,
       "avatarBorder": 3,
-      "iconStyle": "solid"
+      "iconStyle": "solid",
+      "bgEffect": "none"
     }
   },
   {
@@ -310,7 +322,8 @@ export const bioStoreThemes = [
       "buttonRadius": 20,
       "cardRadius": 16,
       "avatarBorder": 4,
-      "iconStyle": "solid"
+      "iconStyle": "solid",
+      "bgEffect": "none"
     }
   },
   {
@@ -334,7 +347,8 @@ export const bioStoreThemes = [
       "buttonRadius": 32,
       "cardRadius": 20,
       "avatarBorder": 4,
-      "iconStyle": "solid"
+      "iconStyle": "solid",
+      "bgEffect": "blobs"
     }
   }
 ];

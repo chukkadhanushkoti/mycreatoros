@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { CheckCircle2 } from "lucide-react";
 import { BlockRenderer } from "@/components/biostore/BlockRenderer";
+import { BackgroundEffects } from "@/components/biostore/BackgroundEffects";
 import { bioStoreThemes } from "@/config/biostore-themes";
 
 export const dynamic = 'force-dynamic';
@@ -65,21 +66,24 @@ export default async function BioStorePage({ params }: { params: Promise<{ usern
     bgStyle.backgroundColor = background;
   }
 
+  const bgEffect: string = (styles as any).bgEffect || 'none';
+
   return (
     <div 
-      className="min-h-screen flex flex-col items-center py-12 px-4 sm:px-6 transition-all duration-500" 
+      className="min-h-screen w-full flex flex-col items-center py-12 px-4 sm:px-6 transition-all duration-500 relative" 
       style={{ ...bgStyle, fontFamily: themeData.typography?.fontFamily }}
     >
-      <div className="w-full max-w-2xl mx-auto space-y-8">
+      <BackgroundEffects effect={bgEffect} themeData={themeData} />
+      <div className="w-full max-w-2xl mx-auto space-y-8 relative z-10">
         
         {/* Profile Header */}
         <div className="flex flex-col items-center text-center space-y-4">
           <div 
-             className="relative h-24 w-24 overflow-hidden shadow-md"
+             className="relative h-28 w-28 overflow-hidden shadow-lg"
              style={{ 
-               borderRadius: bioStore.design?.avatarShape === 'square' ? '16px' : (styles.avatarBorder === 0 ? '0px' : '9999px'),
+               borderRadius: '9999px',
                borderColor: colors.textColor,
-               borderWidth: '2px',
+               borderWidth: '3px',
                borderStyle: 'solid'
              }}
           >
