@@ -171,5 +171,76 @@ export function BackgroundEffects({
     );
   }
 
+  if (effect === 'stars') {
+    const stars = Array.from({ length: 80 }, (_, i) => ({
+      id: i,
+      size: 1 + (i * 3 % 3),
+      left: (i * 12.7 % 100),
+      top: (i * 7.3 % 100),
+      duration: 2 + (i * 1.3 % 3),
+      delay: i * 0.2 % 4,
+    }));
+    return (
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        {stars.map((s) => (
+          <div
+            key={s.id}
+            className="absolute rounded-full bg-white"
+            style={{
+              width: s.size,
+              height: s.size,
+              left: `${s.left}%`,
+              top: `${s.top}%`,
+              opacity: 0.6,
+              animation: `bio-star-twinkle ${s.duration}s ease-in-out ${s.delay}s infinite alternate`,
+            }}
+          />
+        ))}
+        <style>{`
+          @keyframes bio-star-twinkle {
+            0% { opacity: 0.1; transform: scale(0.8); }
+            100% { opacity: 0.9; transform: scale(1.3); }
+          }
+        `}</style>
+      </div>
+    );
+  }
+
+  if (effect === 'particles') {
+    const particles = Array.from({ length: 25 }, (_, i) => ({
+      id: i,
+      size: 3 + (i * 5 % 8),
+      left: (i * 4 % 100),
+      duration: 6 + (i * 2 % 8),
+      delay: i * 0.4 % 6,
+      drift: (i % 2 === 0 ? 1 : -1) * (i * 11 % 80),
+    }));
+    return (
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        {particles.map((p) => (
+          <div
+            key={p.id}
+            className="absolute rounded-full"
+            style={{
+              width: p.size,
+              height: p.size,
+              left: `${p.left}%`,
+              bottom: `-${p.size}px`,
+              backgroundColor: textColor,
+              opacity: 0.25,
+              animation: `bio-particle-rise-${p.id} ${p.duration}s ease-in ${p.delay}s infinite`,
+            }}
+          />
+        ))}
+        <style>{particles.map((p) => `
+          @keyframes bio-particle-rise-${p.id} {
+            0% { transform: translateY(0) translateX(0) scale(1); opacity: 0.3; }
+            100% { transform: translateY(-110vh) translateX(${p.drift}px) scale(0.3); opacity: 0; }
+          }
+        `).join('')}</style>
+      </div>
+    );
+  }
+
   return null;
 }

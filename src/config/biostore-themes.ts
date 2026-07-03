@@ -77,6 +77,31 @@ export const bioStoreThemes = [
     }
   },
   {
+    "id": "candy",
+    "name": "Candy",
+    "category": "Vibrant",
+    "colors": {
+      "backgroundColor": "linear-gradient(135deg, #ff6ec7 0%, #ff9a3c 100%)",
+      "textColor": "#ffffff",
+      "cardColor": "rgba(255,255,255,0.2)",
+      "buttonColor": "#ffffff",
+      "buttonTextColor": "#d4006a"
+    },
+    "typography": {
+      "fontFamily": "Inter"
+    },
+    "styles": {
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "md",
+      "buttonRadius": 50,
+      "cardRadius": 24,
+      "avatarBorder": 3,
+      "iconStyle": "solid",
+      "bgEffect": "bubbles"
+    }
+  },
+  {
     "id": "cherry",
     "name": "Cherry",
     "category": "Dark",
@@ -99,6 +124,31 @@ export const bioStoreThemes = [
       "avatarBorder": 3,
       "iconStyle": "solid",
       "bgEffect": "none"
+    }
+  },
+  {
+    "id": "cyberpunk",
+    "name": "Cyberpunk",
+    "category": "Dark",
+    "colors": {
+      "backgroundColor": "#0a0a0f",
+      "textColor": "#00ffcc",
+      "cardColor": "rgba(0,255,204,0.05)",
+      "buttonColor": "#00ffcc",
+      "buttonTextColor": "#0a0a0f"
+    },
+    "typography": {
+      "fontFamily": "Inter"
+    },
+    "styles": {
+      "buttonStyle": "outline",
+      "spacing": "comfortable",
+      "shadowStyle": "neon",
+      "buttonRadius": 0,
+      "cardRadius": 4,
+      "avatarBorder": 3,
+      "iconStyle": "solid",
+      "bgEffect": "grid"
     }
   },
   {
@@ -127,6 +177,81 @@ export const bioStoreThemes = [
     }
   },
   {
+    "id": "fire",
+    "name": "Fire",
+    "category": "Vibrant",
+    "colors": {
+      "backgroundColor": "linear-gradient(180deg, #0d0000 0%, #7a0000 50%, #ff4500 100%)",
+      "textColor": "#fff4e0",
+      "cardColor": "rgba(255,100,0,0.15)",
+      "buttonColor": "#ff6a00",
+      "buttonTextColor": "#fff4e0"
+    },
+    "typography": {
+      "fontFamily": "Inter"
+    },
+    "styles": {
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "md",
+      "buttonRadius": 12,
+      "cardRadius": 16,
+      "avatarBorder": 3,
+      "iconStyle": "solid",
+      "bgEffect": "particles"
+    }
+  },
+  {
+    "id": "forest",
+    "name": "Forest",
+    "category": "Nature",
+    "colors": {
+      "backgroundColor": "linear-gradient(160deg, #1b4332 0%, #2d6a4f 100%)",
+      "textColor": "#d8f3dc",
+      "cardColor": "rgba(216,243,220,0.1)",
+      "buttonColor": "#52b788",
+      "buttonTextColor": "#1b4332"
+    },
+    "typography": {
+      "fontFamily": "Inter"
+    },
+    "styles": {
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "md",
+      "buttonRadius": 14,
+      "cardRadius": 20,
+      "avatarBorder": 3,
+      "iconStyle": "solid",
+      "bgEffect": "blobs"
+    }
+  },
+  {
+    "id": "galaxy",
+    "name": "Galaxy",
+    "category": "Dark",
+    "colors": {
+      "backgroundColor": "linear-gradient(180deg, #0d0d1a 0%, #1a0533 50%, #0a1628 100%)",
+      "textColor": "#e0d7ff",
+      "cardColor": "rgba(160,120,255,0.08)",
+      "buttonColor": "rgba(140,90,255,0.5)",
+      "buttonTextColor": "#ffffff"
+    },
+    "typography": {
+      "fontFamily": "Inter"
+    },
+    "styles": {
+      "buttonStyle": "glass",
+      "spacing": "comfortable",
+      "shadowStyle": "glass",
+      "buttonRadius": 16,
+      "cardRadius": 24,
+      "avatarBorder": 3,
+      "iconStyle": "solid",
+      "bgEffect": "stars"
+    }
+  },
+  {
     "id": "glass",
     "name": "Glass",
     "category": "Dark",
@@ -147,6 +272,31 @@ export const bioStoreThemes = [
       "buttonRadius": 16,
       "cardRadius": 24,
       "avatarBorder": 2,
+      "iconStyle": "solid",
+      "bgEffect": "blobs"
+    }
+  },
+  {
+    "id": "lavender",
+    "name": "Lavender",
+    "category": "Soft",
+    "colors": {
+      "backgroundColor": "linear-gradient(135deg, #f3e7ff 0%, #e0d0ff 100%)",
+      "textColor": "#4b0082",
+      "cardColor": "rgba(75,0,130,0.06)",
+      "buttonColor": "#9b59b6",
+      "buttonTextColor": "#ffffff"
+    },
+    "typography": {
+      "fontFamily": "Inter"
+    },
+    "styles": {
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "md",
+      "buttonRadius": 50,
+      "cardRadius": 24,
+      "avatarBorder": 3,
       "iconStyle": "solid",
       "bgEffect": "blobs"
     }

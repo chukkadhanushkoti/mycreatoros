@@ -156,25 +156,42 @@ export const VideoBlock = ({ block, themeData, onClick }: any) => {
 };
 
 // ── Unified Button Component (Linktree Style) ───────────────────────────────────
-const UnifiedButton = ({ url, title, subtitle, icon, imageUrl, themeData, onClick }: any) => {
+const UnifiedButton = ({ url, title, subtitle, icon, imageUrl, iconBg, themeData, onClick }: any) => {
   const styles = themeData.styles || {};
   const colors = themeData.colors || {};
 
   const buttonStyle = styles.buttonStyle || 'filled';
+  const radius = styles.buttonRadius ?? 16;
+  const shadowStyle = styles.shadowStyle;
+
+  let boxShadow: string | undefined;
+  if (shadowStyle === 'hard') boxShadow = '4px 4px 0 rgba(0,0,0,1)';
+  else if (shadowStyle === 'md') boxShadow = '0 4px 6px -1px rgba(0,0,0,0.15)';
+  else if (shadowStyle === 'glass') boxShadow = '0 8px 32px 0 rgba(31,38,135,0.18)';
+  else boxShadow = '0 2px 8px 0 rgba(0,0,0,0.08)';
+
   let dynamicStyle: any = {
-    borderRadius: styles.buttonRadius ?? 32,
-    boxShadow: styles.shadowStyle === 'sm' ? '0 1px 2px 0 rgba(0, 0, 0, 0.05)' : (styles.shadowStyle === 'md' ? '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' : (styles.shadowStyle === 'hard' ? '4px 4px 0 rgba(0,0,0,1)' : undefined)),
+    borderRadius: radius,
+    boxShadow,
     color: colors.buttonTextColor || '#fff',
     border: 'none',
+    transition: 'transform 0.15s ease, box-shadow 0.15s ease',
   };
 
   if (buttonStyle === 'filled') {
     dynamicStyle.backgroundColor = colors.buttonColor || colors.cardColor || '#000';
   } else if (buttonStyle === 'outline') {
     dynamicStyle.backgroundColor = 'transparent';
-    dynamicStyle.border = `2px solid ${colors.buttonColor || colors.cardColor || '#000'}`;
+    dynamicStyle.border = `2px solid ${colors.buttonColor || '#fff'}`;
     dynamicStyle.color = colors.buttonColor || colors.textColor || '#000';
+  } else if (buttonStyle === 'glass') {
+    dynamicStyle.backgroundColor = 'rgba(255,255,255,0.12)';
+    dynamicStyle.backdropFilter = 'blur(12px)';
+    dynamicStyle.border = '1px solid rgba(255,255,255,0.2)';
   }
+
+  const textColor = dynamicStyle.color;
+  const iconBgColor = iconBg || (buttonStyle === 'filled' ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.15)');
 
   return (
     <a
@@ -182,33 +199,46 @@ const UnifiedButton = ({ url, title, subtitle, icon, imageUrl, themeData, onClic
       target="_blank"
       rel="noopener noreferrer"
       onClick={onClick}
-      className="flex items-center w-full p-2 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] min-h-[64px]"
+      className="flex items-center w-full px-3 py-3 group"
       style={dynamicStyle}
+      onMouseEnter={(e) => {
+        (e.currentTarget as HTMLAnchorElement).style.transform = 'scale(1.02)';
+        (e.currentTarget as HTMLAnchorElement).style.boxShadow = shadowStyle === 'hard' ? '6px 6px 0 rgba(0,0,0,1)' : '0 6px 20px 0 rgba(0,0,0,0.15)';
+      }}
+      onMouseLeave={(e) => {
+        (e.currentTarget as HTMLAnchorElement).style.transform = 'scale(1)';
+        (e.currentTarget as HTMLAnchorElement).style.boxShadow = boxShadow || '';
+      }}
     >
-      {/* Leading Icon/Image */}
-      <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center overflow-hidden rounded-full"
-        style={{ backgroundColor: 'rgba(0,0,0,0.05)' }}>
+      {/* Leading Icon Circle */}
+      <div
+        className="w-10 h-10 flex-shrink-0 flex items-center justify-center overflow-hidden rounded-full mr-3"
+        style={{ backgroundColor: iconBgColor }}
+      >
         {imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={imageUrl} alt={title} className="w-full h-full object-cover" />
         ) : (
-          <span className="text-2xl flex items-center justify-center">{icon}</span>
+          <span className="text-xl leading-none flex items-center justify-center">{icon}</span>
         )}
       </div>
 
-      {/* Center Content */}
-      <div className="flex-1 min-w-0 px-3 text-center flex flex-col justify-center">
-        <p className="font-semibold truncate text-[15px]">{title || 'Link'}</p>
-        {subtitle && <p className="text-xs opacity-70 mt-0.5 truncate">{subtitle}</p>}
+      {/* Center Content - LEFT aligned */}
+      <div className="flex-1 min-w-0 text-left">
+        <p className="font-semibold text-[15px] leading-tight truncate" style={{ color: textColor }}>{title || 'Link'}</p>
+        {subtitle && (
+          <p className="text-xs mt-0.5 truncate" style={{ color: textColor, opacity: 0.65 }}>{subtitle}</p>
+        )}
       </div>
 
-      {/* Trailing */}
-      <div className="w-12 flex-shrink-0 flex items-center justify-center opacity-60">
+      {/* Trailing External Link */}
+      <div className="w-8 flex-shrink-0 flex items-center justify-center ml-2" style={{ color: textColor, opacity: 0.5 }}>
         <ExternalLink className="w-4 h-4" />
       </div>
     </a>
   );
 };
+
 
 // ── YouTube Block ─────────────────────────────────────────────────────────────
 export const YouTubeBlock = ({ block, themeData, onClick }: any) => {

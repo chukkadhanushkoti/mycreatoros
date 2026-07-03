@@ -111,7 +111,7 @@ export default async function BioStorePage({ params }: { params: Promise<{ usern
         </div>
 
         {/* Blocks Section */}
-        <div className="flex flex-col space-y-4 w-full pt-4">
+        <div className="flex flex-col gap-3 w-full pt-4">
           {bioStore.blocks.sort((a: any, b: any) => a.order - b.order).map((block: any, idx: number) => (
             <BlockRenderer key={block._id || idx} block={block} username={bioStore.username} themeData={themeData} />
           ))}
