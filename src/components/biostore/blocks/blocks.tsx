@@ -82,10 +82,11 @@ interface UnifiedButtonProps {
   imageUrl?: string;
   themeData: any;
   index?: number;
+  clicks?: number;
   onClick?: (e: React.MouseEvent) => void;
 }
 
-const UnifiedButton = ({ url, title, subtitle, iconEl, iconBg, imageUrl, themeData, index, onClick }: UnifiedButtonProps) => {
+const UnifiedButton = ({ url, title, subtitle, iconEl, iconBg, imageUrl, themeData, index, clicks, onClick }: UnifiedButtonProps) => {
   const { containerStyle, textColor, shadow } = resolveButtonStyle(themeData);
 
   const hoverShadow = shadow === 'hard'
@@ -111,14 +112,6 @@ const UnifiedButton = ({ url, title, subtitle, iconEl, iconBg, imageUrl, themeDa
         el.style.boxShadow = (containerStyle.boxShadow as string) || '';
       }}
     >
-      {/* ── Optional Index Number ── */}
-      {index !== undefined && (
-        <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shadow-sm"
-             style={{ backgroundColor: textColor, color: containerStyle.backgroundColor || '#fff', opacity: 0.9 }}>
-          {index}
-        </div>
-      )}
-
       {/* ── Icon Circle ── */}
       <div
         className="w-10 h-10 flex-shrink-0 flex items-center justify-center overflow-hidden rounded-full mr-3 ml-2"
@@ -135,7 +128,7 @@ const UnifiedButton = ({ url, title, subtitle, iconEl, iconBg, imageUrl, themeDa
       {/* ── Title + Subtitle (left-aligned) ── */}
       <div className="flex-1 min-w-0 text-left">
         <p className="font-semibold text-[15px] leading-tight truncate" style={{ color: textColor }}>
-          {title || 'Link'}
+          {index !== undefined ? `${index}. ` : ''}{title || 'Link'}
         </p>
         {subtitle && (
           <p className="text-xs mt-0.5 truncate" style={{ color: textColor, opacity: 0.65 }}>
@@ -144,9 +137,12 @@ const UnifiedButton = ({ url, title, subtitle, iconEl, iconBg, imageUrl, themeDa
         )}
       </div>
 
-      {/* ── External Link Arrow ── */}
-      <div className="w-8 flex-shrink-0 flex items-center justify-center ml-2" style={{ color: textColor, opacity: 0.45 }}>
-        <ExternalLink className="w-4 h-4" />
+      {/* ── Clicks & External Link Arrow ── */}
+      <div className="flex-shrink-0 flex items-center justify-end ml-2 gap-2" style={{ color: textColor, opacity: 0.6 }}>
+        {clicks !== undefined && clicks > 0 && (
+          <span className="text-xs font-medium">{clicks} clicks</span>
+        )}
+        <ExternalLink className="w-4 h-4 opacity-75" />
       </div>
     </a>
   );
@@ -286,6 +282,7 @@ export const YouTubeBlock = ({ block, themeData, index, onClick }: any) => (
     iconBg="#FF0000"
     themeData={themeData}
     index={index}
+    clicks={block.clicks}
     onClick={onClick}
   />
 );
@@ -303,6 +300,7 @@ export const ProductBlock = ({ block, themeData, index, onClick }: any) => {
       imageUrl={imageUrl}
       themeData={themeData}
       index={index}
+      clicks={block.clicks}
       onClick={onClick}
     />
   );
@@ -322,6 +320,7 @@ export const SocialBlock = ({ block, themeData, index, onClick }: any) => {
       iconBg={cfg.color}
       themeData={themeData}
       index={index}
+      clicks={block.clicks}
       onClick={onClick}
     />
   );
@@ -337,6 +336,7 @@ export const ButtonBlock = ({ block, themeData, index, onClick }: any) => (
     iconBg="#6366F1"
     themeData={themeData}
     index={index}
+    clicks={block.clicks}
     onClick={onClick}
   />
 );
@@ -351,6 +351,7 @@ export const LinkBlock = ({ block, themeData, index, onClick }: any) => (
     iconBg="#64748B"
     themeData={themeData}
     index={index}
+    clicks={block.clicks}
     onClick={onClick}
   />
 );

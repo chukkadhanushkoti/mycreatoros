@@ -67,36 +67,17 @@ export default async function BioStorePage({ params }: { params: Promise<{ usern
   }
 
   const bgEffect: string = (styles as any).bgEffect || 'none';
+  const themeColorForMeta = background.startsWith('linear-gradient') ? '#000000' : background;
 
   return (
-    <div 
-      className="min-h-screen w-full flex flex-col items-center py-12 px-4 sm:px-6 transition-all duration-500 relative" 
-      style={{ ...bgStyle, fontFamily: themeData.typography?.fontFamily }}
-    >
+    <>
+      <meta name="theme-color" content={themeColorForMeta} />
+      <div 
+        className="min-h-screen w-full flex flex-col items-center py-12 px-4 sm:px-6 transition-all duration-500 relative" 
+        style={{ ...bgStyle, fontFamily: themeData.typography?.fontFamily }}
+      >
       <BackgroundEffects effect={bgEffect} themeData={themeData} />
       
-      {/* Top Navigation Header */}
-      <div className="absolute top-4 w-full px-6 flex justify-between items-center z-20 max-w-2xl mx-auto left-0 right-0">
-        <a 
-          href="/" 
-          className="p-3 rounded-full flex items-center justify-center transition-transform hover:scale-110"
-          style={{ backgroundColor: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(10px)' }}
-        >
-          <svg className="w-5 h-5" fill="none" stroke={colors.textColor || '#fff'} viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-          </svg>
-        </a>
-        <a 
-          href="/" 
-          className="p-3 rounded-full flex items-center justify-center transition-transform hover:scale-110"
-          style={{ backgroundColor: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(10px)' }}
-        >
-          <svg className="w-5 h-5" fill="none" stroke={colors.textColor || '#fff'} viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
-          </svg>
-        </a>
-      </div>
-
       <div className="w-full max-w-2xl mx-auto space-y-8 relative z-10 pt-8">
         
         {/* Profile Header */}
@@ -150,5 +131,6 @@ export default async function BioStorePage({ params }: { params: Promise<{ usern
         </div>
       )}
     </div>
+    </>
   );
 }
