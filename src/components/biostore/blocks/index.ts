@@ -1,7 +1,7 @@
 import React from 'react';
-import { LinkBlock } from './LinkBlock';
 import { TextBlock } from './TextBlock';
 import {
+  LinkBlock,
   DividerBlock,
   SpacerBlock,
   ImageBlock,

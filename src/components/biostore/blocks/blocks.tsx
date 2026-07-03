@@ -81,10 +81,11 @@ interface UnifiedButtonProps {
   /** Optional image thumbnail to show instead of iconEl */
   imageUrl?: string;
   themeData: any;
+  index?: number;
   onClick?: (e: React.MouseEvent) => void;
 }
 
-const UnifiedButton = ({ url, title, subtitle, iconEl, iconBg, imageUrl, themeData, onClick }: UnifiedButtonProps) => {
+const UnifiedButton = ({ url, title, subtitle, iconEl, iconBg, imageUrl, themeData, index, onClick }: UnifiedButtonProps) => {
   const { containerStyle, textColor, shadow } = resolveButtonStyle(themeData);
 
   const hoverShadow = shadow === 'hard'
@@ -97,7 +98,7 @@ const UnifiedButton = ({ url, title, subtitle, iconEl, iconBg, imageUrl, themeDa
       target="_blank"
       rel="noopener noreferrer"
       onClick={onClick}
-      className="flex items-center w-full px-3 py-3"
+      className="flex items-center w-full px-3 py-3 relative group"
       style={containerStyle}
       onMouseEnter={(e) => {
         const el = e.currentTarget as HTMLAnchorElement;
@@ -110,9 +111,17 @@ const UnifiedButton = ({ url, title, subtitle, iconEl, iconBg, imageUrl, themeDa
         el.style.boxShadow = (containerStyle.boxShadow as string) || '';
       }}
     >
+      {/* ── Optional Index Number ── */}
+      {index !== undefined && (
+        <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shadow-sm"
+             style={{ backgroundColor: textColor, color: containerStyle.backgroundColor || '#fff', opacity: 0.9 }}>
+          {index}
+        </div>
+      )}
+
       {/* ── Icon Circle ── */}
       <div
-        className="w-10 h-10 flex-shrink-0 flex items-center justify-center overflow-hidden rounded-full mr-3"
+        className="w-10 h-10 flex-shrink-0 flex items-center justify-center overflow-hidden rounded-full mr-3 ml-2"
         style={{ backgroundColor: iconBg }}
       >
         {imageUrl ? (
@@ -181,7 +190,7 @@ export const DividerBlock = ({ themeData }: any) => {
 export const SpacerBlock = () => <div className="w-full h-8" />;
 
 // ── Image Block ───────────────────────────────────────────────────────────────
-export const ImageBlock = ({ block, themeData, onClick }: any) => {
+export const ImageBlock = ({ block, themeData, index, onClick }: any) => {
   const colors  = themeData.colors || {};
   const styles  = themeData.styles || {};
   const imageUrl   = block.content?.mediaUrl || block.content?.url;
@@ -197,9 +206,11 @@ export const ImageBlock = ({ block, themeData, onClick }: any) => {
         iconEl={<ImageIcon className="w-5 h-5 text-gray-400" />}
         iconBg="rgba(156,163,175,0.2)"
         themeData={themeData}
+        index={index}
         onClick={onClick}
       />
     );
+
   }
 
   return (
@@ -231,7 +242,7 @@ export const ImageBlock = ({ block, themeData, onClick }: any) => {
 };
 
 // ── Video Block ───────────────────────────────────────────────────────────────
-export const VideoBlock = ({ block, themeData, onClick }: any) => {
+export const VideoBlock = ({ block, themeData, index, onClick }: any) => {
   const videoUrl = block.content?.mediaUrl || block.content?.url;
   const thumbnail = block.content?.thumbnailUrl;
   const title = block.content?.title;
@@ -245,6 +256,7 @@ export const VideoBlock = ({ block, themeData, onClick }: any) => {
         iconEl={<Video className="w-5 h-5 text-gray-400" />}
         iconBg="rgba(156,163,175,0.2)"
         themeData={themeData}
+        index={index}
         onClick={onClick}
       />
     );
@@ -265,7 +277,7 @@ export const VideoBlock = ({ block, themeData, onClick }: any) => {
 };
 
 // ── YouTube Block ─────────────────────────────────────────────────────────────
-export const YouTubeBlock = ({ block, themeData, onClick }: any) => (
+export const YouTubeBlock = ({ block, themeData, index, onClick }: any) => (
   <UnifiedButton
     url={block.content?.url}
     title={block.content?.title || 'YouTube Video'}
@@ -273,12 +285,13 @@ export const YouTubeBlock = ({ block, themeData, onClick }: any) => (
     iconEl={<Play className="w-5 h-5 text-white fill-white" />}
     iconBg="#FF0000"
     themeData={themeData}
+    index={index}
     onClick={onClick}
   />
 );
 
 // ── Product Block ─────────────────────────────────────────────────────────────
-export const ProductBlock = ({ block, themeData, onClick }: any) => {
+export const ProductBlock = ({ block, themeData, index, onClick }: any) => {
   const { title, url, price, imageUrl } = block.content || {};
   return (
     <UnifiedButton
@@ -289,13 +302,14 @@ export const ProductBlock = ({ block, themeData, onClick }: any) => {
       iconBg="#F97316"
       imageUrl={imageUrl}
       themeData={themeData}
+      index={index}
       onClick={onClick}
     />
   );
 };
 
 // ── Social Block ──────────────────────────────────────────────────────────────
-export const SocialBlock = ({ block, themeData, onClick }: any) => {
+export const SocialBlock = ({ block, themeData, index, onClick }: any) => {
   const platform = (block.content?.platform || 'default').toLowerCase();
   const cfg = SOCIAL_CONFIG[platform] || SOCIAL_CONFIG.default;
   const subtitle = block.content?.url?.replace('https://', '').replace('www.', '');
@@ -307,13 +321,14 @@ export const SocialBlock = ({ block, themeData, onClick }: any) => {
       iconEl={<span style={{ color: '#fff' }}>{cfg.icon}</span>}
       iconBg={cfg.color}
       themeData={themeData}
+      index={index}
       onClick={onClick}
     />
   );
 };
 
 // ── Button Block ──────────────────────────────────────────────────────────────
-export const ButtonBlock = ({ block, themeData, onClick }: any) => (
+export const ButtonBlock = ({ block, themeData, index, onClick }: any) => (
   <UnifiedButton
     url={block.content?.url}
     title={block.content?.title || 'Button'}
@@ -321,12 +336,13 @@ export const ButtonBlock = ({ block, themeData, onClick }: any) => (
     iconEl={<Layers className="w-5 h-5 text-white" />}
     iconBg="#6366F1"
     themeData={themeData}
+    index={index}
     onClick={onClick}
   />
 );
 
 // ── Link Block ────────────────────────────────────────────────────────────────
-export const LinkBlock = ({ block, themeData, onClick }: any) => (
+export const LinkBlock = ({ block, themeData, index, onClick }: any) => (
   <UnifiedButton
     url={block.content?.url}
     title={block.content?.title || 'Link'}
@@ -334,6 +350,7 @@ export const LinkBlock = ({ block, themeData, onClick }: any) => (
     iconEl={<Globe className="w-5 h-5 text-white" />}
     iconBg="#64748B"
     themeData={themeData}
+    index={index}
     onClick={onClick}
   />
 );

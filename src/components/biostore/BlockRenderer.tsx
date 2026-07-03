@@ -8,9 +8,10 @@ interface BlockProps {
   block: any;
   username: string;
   themeData: any;
+  index?: number;
 }
 
-export function BlockRenderer({ block, username, themeData }: BlockProps) {
+export function BlockRenderer({ block, username, themeData, index }: BlockProps) {
   const handleBlockClick = async () => {
     if (!['link', 'social', 'youtube', 'product', 'contact'].includes(block.type)) return;
 
@@ -50,7 +51,7 @@ export function BlockRenderer({ block, username, themeData }: BlockProps) {
       transition={{ duration: 0.5, delay: block.order * 0.1 }}
       className="w-full"
     >
-      <Component block={block} themeData={themeData} onClick={handleBlockClick} />
+      <Component block={block} themeData={themeData} index={index} onClick={handleBlockClick} />
     </motion.div>
   );
 }

@@ -74,7 +74,30 @@ export default async function BioStorePage({ params }: { params: Promise<{ usern
       style={{ ...bgStyle, fontFamily: themeData.typography?.fontFamily }}
     >
       <BackgroundEffects effect={bgEffect} themeData={themeData} />
-      <div className="w-full max-w-2xl mx-auto space-y-8 relative z-10">
+      
+      {/* Top Navigation Header */}
+      <div className="absolute top-4 w-full px-6 flex justify-between items-center z-20 max-w-2xl mx-auto left-0 right-0">
+        <a 
+          href="/" 
+          className="p-3 rounded-full flex items-center justify-center transition-transform hover:scale-110"
+          style={{ backgroundColor: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(10px)' }}
+        >
+          <svg className="w-5 h-5" fill="none" stroke={colors.textColor || '#fff'} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+        </a>
+        <a 
+          href="/" 
+          className="p-3 rounded-full flex items-center justify-center transition-transform hover:scale-110"
+          style={{ backgroundColor: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(10px)' }}
+        >
+          <svg className="w-5 h-5" fill="none" stroke={colors.textColor || '#fff'} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+          </svg>
+        </a>
+      </div>
+
+      <div className="w-full max-w-2xl mx-auto space-y-8 relative z-10 pt-8">
         
         {/* Profile Header */}
         <div className="flex flex-col items-center text-center space-y-4">
@@ -113,7 +136,7 @@ export default async function BioStorePage({ params }: { params: Promise<{ usern
         {/* Blocks Section */}
         <div className="flex flex-col gap-3 w-full pt-4">
           {bioStore.blocks.sort((a: any, b: any) => a.order - b.order).map((block: any, idx: number) => (
-            <BlockRenderer key={block._id || idx} block={block} username={bioStore.username} themeData={themeData} />
+            <BlockRenderer key={block._id || idx} block={block} username={bioStore.username} themeData={themeData} index={idx + 1} />
           ))}
         </div>
       </div>
