@@ -106,9 +106,7 @@ export default async function BioStorePage({ params }: { params: Promise<{ usern
               style={{ color: colors.textColor }}
             >
               {bioStore.displayName}
-              {bioStore.isVerified && (
-                <BadgeCheck className="w-6 h-6" style={{ color: colors.textColor, fill: 'currentColor', stroke: colors.backgroundColor || '#000' }} />
-              )}
+              <BadgeCheck className="w-6 h-6" style={{ color: colors.textColor, fill: 'currentColor', stroke: colors.backgroundColor || '#000' }} />
             </h1>
             <p className="mt-2 opacity-80" style={{ color: colors.textColor }}>{bioStore.bio}</p>
           </div>
