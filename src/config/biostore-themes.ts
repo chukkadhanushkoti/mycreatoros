@@ -50,6 +50,30 @@ export const bioStoreThemes = [
     }
   },
   {
+    "id": "brutal",
+    "name": "Brutal",
+    "category": "Solid",
+    "colors": {
+      "backgroundColor": "#ffd700",
+      "textColor": "#000000",
+      "cardColor": "#ffffff",
+      "buttonColor": "#ffffff",
+      "buttonTextColor": "#000000"
+    },
+    "typography": {
+      "fontFamily": "Inter"
+    },
+    "styles": {
+      "buttonStyle": "outline",
+      "spacing": "default",
+      "shadowStyle": "hard",
+      "buttonRadius": 0,
+      "cardRadius": 0,
+      "avatarBorder": 3,
+      "iconStyle": "solid"
+    }
+  },
+  {
     "id": "cherry",
     "name": "Cherry",
     "category": "Dark",

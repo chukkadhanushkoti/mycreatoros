@@ -40,11 +40,33 @@ export const ImageBlock = ({ block, themeData, onClick }: any) => {
     );
   }
 
+  const buttonStyle = styles.buttonStyle || 'filled';
+  let dynamicStyle: any = {
+    borderRadius: styles.buttonRadius || 32,
+    boxShadow: styles.shadowStyle === 'sm' ? '0 1px 2px 0 rgba(0, 0, 0, 0.05)' : (styles.shadowStyle === 'md' ? '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' : (styles.shadowStyle === 'hard' ? '4px 4px 0 rgba(0,0,0,1)' : undefined)),
+    border: 'none',
+    overflow: 'hidden',
+    position: 'relative' as const,
+  };
+
+  if (buttonStyle === 'filled') {
+    dynamicStyle.backgroundColor = colors.buttonColor || colors.cardColor || '#000';
+  } else if (buttonStyle === 'outline') {
+    dynamicStyle.backgroundColor = 'transparent';
+    dynamicStyle.border = `2px solid ${colors.buttonColor || colors.cardColor || '#000'}`;
+  }
+
   return (
     <div
-      className="w-full overflow-hidden group relative"
-      style={{ borderRadius: styles.cardRadius || 16 }}
+      className="w-full group"
+      style={dynamicStyle}
     >
+      {/* Title above image if provided */}
+      {title && (
+        <div className="w-full text-center p-3 font-semibold" style={{ color: colors.buttonTextColor || colors.textColor || '#000' }}>
+          {title}
+        </div>
+      )}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={imageUrl}
@@ -96,13 +118,27 @@ export const VideoBlock = ({ block, themeData, onClick }: any) => {
     );
   }
 
+  const buttonStyle = styles.buttonStyle || 'filled';
+  let dynamicStyle: any = {
+    borderRadius: styles.buttonRadius || 32,
+    boxShadow: styles.shadowStyle === 'sm' ? '0 1px 2px 0 rgba(0, 0, 0, 0.05)' : (styles.shadowStyle === 'md' ? '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' : (styles.shadowStyle === 'hard' ? '4px 4px 0 rgba(0,0,0,1)' : undefined)),
+    border: 'none',
+    overflow: 'hidden',
+  };
+
+  if (buttonStyle === 'filled') {
+    dynamicStyle.backgroundColor = colors.buttonColor || colors.cardColor || '#000';
+  } else if (buttonStyle === 'outline') {
+    dynamicStyle.backgroundColor = 'transparent';
+    dynamicStyle.border = `2px solid ${colors.buttonColor || colors.cardColor || '#000'}`;
+  }
+
   return (
-    <div className="w-full overflow-hidden" style={{ borderRadius: styles.cardRadius || 16 }}>
+    <div className="w-full" style={dynamicStyle}>
+      {/* Title above video if provided */}
       {title && (
-        <div className="flex items-center gap-2 px-3 py-2"
-          style={{ color: colors.textColor, backgroundColor: colors.cardColor || 'rgba(255,255,255,0.05)' }}>
-          <Play className="w-4 h-4" />
-          <span className="text-sm font-medium">{title}</span>
+        <div className="w-full text-center p-3 font-semibold" style={{ color: colors.buttonTextColor || colors.textColor || '#000' }}>
+          {title}
         </div>
       )}
       <video
@@ -126,8 +162,8 @@ const UnifiedButton = ({ url, title, subtitle, icon, imageUrl, themeData, onClic
 
   const buttonStyle = styles.buttonStyle || 'filled';
   let dynamicStyle: any = {
-    borderRadius: styles.buttonRadius || 32,
-    boxShadow: styles.shadowStyle === 'sm' ? '0 1px 2px 0 rgba(0, 0, 0, 0.05)' : (styles.shadowStyle === 'md' ? '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' : undefined),
+    borderRadius: styles.buttonRadius ?? 32,
+    boxShadow: styles.shadowStyle === 'sm' ? '0 1px 2px 0 rgba(0, 0, 0, 0.05)' : (styles.shadowStyle === 'md' ? '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' : (styles.shadowStyle === 'hard' ? '4px 4px 0 rgba(0,0,0,1)' : undefined)),
     color: colors.buttonTextColor || '#fff',
     border: 'none',
   };
@@ -240,6 +276,7 @@ export const ButtonBlock = ({ block, themeData, onClick }: any) => {
     <UnifiedButton
       url={block.content?.url}
       title={block.content?.title || 'Button'}
+      subtitle={block.content?.subtitle}
       icon="🔗"
       themeData={themeData}
       onClick={onClick}
@@ -253,6 +290,7 @@ export const LinkBlock = ({ block, themeData, onClick }: any) => {
     <UnifiedButton
       url={block.content?.url}
       title={block.content?.title || 'Link'}
+      subtitle={block.content?.subtitle}
       icon="🔗"
       themeData={themeData}
       onClick={onClick}
