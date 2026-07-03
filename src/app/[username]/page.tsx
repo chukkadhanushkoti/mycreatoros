@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, BadgeCheck } from "lucide-react";
 import { BlockRenderer } from "@/components/biostore/BlockRenderer";
 import { BackgroundEffects } from "@/components/biostore/BackgroundEffects";
 import { bioStoreThemes } from "@/config/biostore-themes";
@@ -107,7 +107,7 @@ export default async function BioStorePage({ params }: { params: Promise<{ usern
             >
               {bioStore.displayName}
               {bioStore.isVerified && (
-                <CheckCircle2 className="w-5 h-5 text-blue-500" />
+                <BadgeCheck className="w-6 h-6" style={{ color: colors.textColor, fill: 'currentColor', stroke: colors.backgroundColor || '#000' }} />
               )}
             </h1>
             <p className="mt-2 opacity-80" style={{ color: colors.textColor }}>{bioStore.bio}</p>
@@ -115,7 +115,7 @@ export default async function BioStorePage({ params }: { params: Promise<{ usern
         </div>
 
         {/* Blocks Section */}
-        <div className="flex flex-col gap-3 w-full pt-4">
+        <div className="flex flex-col gap-3 w-full pt-4 pb-8">
           {bioStore.blocks.sort((a: any, b: any) => a.order - b.order).map((block: any, idx: number) => (
             <BlockRenderer key={block._id || idx} block={block} username={bioStore.username} themeData={themeData} index={idx + 1} />
           ))}
@@ -124,10 +124,14 @@ export default async function BioStorePage({ params }: { params: Promise<{ usern
       
       {/* Branding Footer */}
       {!bioStore.isPremium && (
-        <div className="mt-16 pb-8">
-          <a href="/" className="text-sm opacity-60 hover:opacity-100 transition-opacity font-medium flex items-center gap-2" style={{ color: colors.textColor }}>
-            Powered by <span className="font-bold">CreatorOS</span>
+        <div className="mt-8 pb-12 w-full max-w-sm mx-auto flex items-center justify-center gap-4">
+          <div className="h-px flex-1 bg-gradient-to-r from-transparent to-current opacity-30" style={{ color: colors.textColor }}></div>
+          <a href="/" className="text-sm font-medium flex items-center gap-2 opacity-90 hover:opacity-100 transition-opacity" style={{ color: colors.textColor }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="CreatorOS Logo" className="w-6 h-6 object-contain" style={{ filter: 'brightness(1.2)' }} />
+            <span style={{ fontWeight: 400 }}>Powered by <span className="font-bold">CreatorOS</span></span>
           </a>
+          <div className="h-px flex-1 bg-gradient-to-l from-transparent to-current opacity-30" style={{ color: colors.textColor }}></div>
         </div>
       )}
     </div>

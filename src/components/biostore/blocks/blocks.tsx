@@ -112,9 +112,9 @@ const UnifiedButton = ({ url, title, subtitle, iconEl, iconBg, imageUrl, themeDa
         el.style.boxShadow = (containerStyle.boxShadow as string) || '';
       }}
     >
-      {/* ── Icon Circle ── */}
+      {/* ── Icon Squircle ── */}
       <div
-        className="w-10 h-10 flex-shrink-0 flex items-center justify-center overflow-hidden rounded-full mr-3 ml-2"
+        className="w-12 h-12 flex-shrink-0 flex items-center justify-center overflow-hidden rounded-[14px] mr-4 ml-1 shadow-sm"
         style={{ backgroundColor: iconBg }}
       >
         {imageUrl ? (
