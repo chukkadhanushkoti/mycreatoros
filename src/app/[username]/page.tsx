@@ -12,7 +12,7 @@ export const fetchCache = 'force-no-store';
 // Mock fetching function until the backend is fully connected
 async function getBioStoreData(username: string) {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://creatoros-backend-rb5b.onrender.com/api';
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://creatoros-backend-tugu.onrender.com/api';
     const res = await fetch(`${apiUrl}/biostore/${username}`, { cache: 'no-store' });
     if (!res.ok) {
       if (res.status === 404) return null;

@@ -16,7 +16,7 @@ export function BlockRenderer({ block, username, themeData, index }: BlockProps)
     if (!['link', 'social', 'youtube', 'product', 'contact'].includes(block.type)) return;
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://creatoros-backend-rb5b.onrender.com/api';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://creatoros-backend-tugu.onrender.com/api';
       await fetch(`${apiUrl}/biostore/${username}/click`, {
         method: 'POST',
         headers: {
