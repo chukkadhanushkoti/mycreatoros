@@ -1,36 +1,36 @@
 import { ReactNode } from "react";
+import Link from "next/link";
+
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 export default function MarketingLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 items-center mx-auto px-4">
-          <div className="mr-4 hidden md:flex">
-            <a className="mr-6 flex items-center space-x-2" href="/">
-              <span className="hidden font-bold sm:inline-block font-outfit">CreatorOS</span>
+      <header className="sticky top-0 z-50 w-full border-b border-neutral-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:border-white/10 dark:bg-black/80 dark:supports-[backdrop-filter]:bg-black/60">
+        <div className="container flex h-16 items-center">
+          <div className="mr-4 flex items-center">
+            <a className="mr-8 flex items-center space-x-2" href="/">
+              <span className="font-sans text-lg font-extrabold text-neutral-900 dark:text-white">
+                Creator<span className="text-orange-500">OS</span>
+              </span>
             </a>
-            <nav className="flex items-center space-x-6 text-sm font-medium">
-              <a className="transition-colors hover:text-foreground/80 text-foreground/60" href="/features">Features</a>
-              <a className="transition-colors hover:text-foreground/80 text-foreground/60" href="/pricing">Pricing</a>
-              <a className="transition-colors hover:text-foreground/80 text-foreground/60" href="/about">About</a>
+            <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
+              <a className="transition-colors hover:text-orange-500 text-neutral-600 dark:text-neutral-400" href="#what-we-do">What we do</a>
+              <a className="transition-colors hover:text-orange-500 text-neutral-600 dark:text-neutral-400" href="#services">Services</a>
+              <a className="transition-colors hover:text-orange-500 text-neutral-600 dark:text-neutral-400" href="#pricing">Pricing</a>
+              <a className="transition-colors hover:text-orange-500 text-neutral-600 dark:text-neutral-400" href="#faqs">FAQs</a>
             </nav>
           </div>
-          <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+          <div className="flex flex-1 items-center justify-end gap-3">
+            <ThemeToggle />
             <nav className="flex items-center space-x-2">
-              <a href="/login" className="px-4 py-2 text-sm font-medium hover:text-primary transition-colors">Log in</a>
-              <a href="/signup" className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors">Get Started</a>
+              <Link href="/login" className="px-4 py-2 text-sm font-medium text-neutral-700 hover:text-orange-500 transition-colors dark:text-neutral-300">Log in</Link>
+              <Link href="/login" className="px-4 py-2 text-sm font-semibold bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-colors">Get Started</Link>
             </nav>
           </div>
         </div>
       </header>
       <main className="flex-1">{children}</main>
-      <footer className="border-t py-6 md:py-0">
-        <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row mx-auto px-4">
-          <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-            Built by <a href="#" className="font-medium underline underline-offset-4">CreatorOS Inc</a>. The source code is available on <a href="#" className="font-medium underline underline-offset-4">GitHub</a>.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }

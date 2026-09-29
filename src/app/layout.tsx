@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
-import { Inter, Outfit } from "next/font/google";
+import { Outfit, Poppins } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+import { ThemeProvider } from "@/components/theme/theme-provider";
+import { AuthProvider } from "@/context/auth-context";
+import { AuthRedirectHandler } from "@/components/auth/auth-redirect-handler";
+
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
 const outfit = Outfit({
@@ -21,17 +26,32 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://mycreatoros.app"),
 };
 
+const noFlashScript = `
+  try {
+    const stored = localStorage.getItem('theme');
+    const theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    if (theme === 'dark') document.documentElement.classList.add('dark');
+  } catch (e) {}
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${outfit.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col font-sans">{children}</body>
+    <html lang="en" className={`${poppins.variable} ${outfit.variable} h-full antialiased`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: noFlashScript }} />
+      </head>
+      <body className="min-h-full flex flex-col font-sans">
+        <ThemeProvider>
+          <AuthProvider>
+            <AuthRedirectHandler />
+            {children}
+          </AuthProvider>
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

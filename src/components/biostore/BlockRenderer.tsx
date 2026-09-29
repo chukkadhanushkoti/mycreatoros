@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
 import { getBlockComponent } from "./blocks";
 import { motion } from "framer-motion";
+import { API_BASE_URL } from "@/lib/api-client";
 
 interface BlockProps {
   block: any;
@@ -16,8 +16,7 @@ export function BlockRenderer({ block, username, themeData, index }: BlockProps)
     if (!['link', 'social', 'youtube', 'product', 'contact'].includes(block.type)) return;
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://creatoros-backend-tugu.onrender.com/api';
-      await fetch(`${apiUrl}/biostore/${username}/click`, {
+      await fetch(`${API_BASE_URL}/api/biostore/${username}/click`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

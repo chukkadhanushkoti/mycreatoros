@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { CheckCircle2, BadgeCheck } from "lucide-react";
+import { BadgeCheck } from "lucide-react";
 import { BlockRenderer } from "@/components/biostore/BlockRenderer";
 import { BackgroundEffects } from "@/components/biostore/BackgroundEffects";
 import { bioStoreThemes } from "@/config/biostore-themes";
+import { API_BASE_URL } from "@/lib/api-client";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -12,8 +13,7 @@ export const fetchCache = 'force-no-store';
 // Mock fetching function until the backend is fully connected
 async function getBioStoreData(username: string) {
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://creatoros-backend-tugu.onrender.com/api';
-    const res = await fetch(`${apiUrl}/biostore/${username}`, { cache: 'no-store' });
+    const res = await fetch(`${API_BASE_URL}/api/biostore/${username}`, { cache: 'no-store' });
     if (!res.ok) {
       if (res.status === 404) return null;
       throw new Error('Failed to fetch data');

@@ -1,6 +1,30 @@
 // GENERATED FILE - DO NOT EDIT MANUALLY
 // Run `node sync_themes.js` in the root directory to update.
-export const bioStoreThemes = [
+export interface BioStoreTheme {
+  id: string;
+  name: string;
+  category: string;
+  colors: {
+    backgroundColor: string;
+    textColor: string;
+    cardColor: string;
+    buttonColor: string;
+    buttonTextColor: string;
+  };
+  typography: { fontFamily: string };
+  styles: {
+    buttonStyle: "filled" | "outline" | "glass";
+    spacing: string;
+    shadowStyle: string;
+    buttonRadius: number;
+    cardRadius: number;
+    avatarBorder: number;
+    iconStyle: string;
+    bgEffect: string;
+  };
+}
+
+export const bioStoreThemes: BioStoreTheme[] = [
   {
     "id": "arctic",
     "name": "Arctic",

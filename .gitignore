@@ -30,8 +30,14 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# env files — never commit secrets
+.env
+.env.*
+.env.local
+.env.development
+.env.production
+.env.staging
+*.env
 
 # vercel
 .vercel
@@ -39,3 +45,32 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# IDE / Editor
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS
+Thumbs.db
+Desktop.ini
+
+# secrets / keys
+*.key
+*.secret
+secrets/
+credentials/
+
+# AI agent config (local only)
+.claude/
+.kilo/
+CLAUDE.md
+AGENTS.md
+
+# logs
+logs/
+*.log
