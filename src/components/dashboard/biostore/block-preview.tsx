@@ -16,24 +16,46 @@ const SOCIAL_CONFIG: Record<string, { icon: React.ReactNode; color: string; labe
   default: { icon: <Link2 className="h-4 w-4" />, color: "#3B82F6", label: "Social" },
 };
 
+function isGradient(c?: string) {
+  return typeof c === "string" && c.includes("gradient");
+}
+
 function resolveButtonStyle(theme: BioStoreTheme) {
   const { styles, colors } = theme;
   const radius = styles.buttonRadius ?? 16;
-  let boxShadow = "0 2px 8px 0 rgba(0,0,0,0.08)";
+  const glowColor =
+    colors.accentColor ||
+    (isGradient(colors.buttonColor) ? colors.textColor : colors.buttonColor) ||
+    "#000";
+
+  let boxShadow = "0 4px 14px 0 rgba(0,0,0,0.10)";
   if (styles.shadowStyle === "hard") boxShadow = "3px 3px 0 rgba(0,0,0,1)";
   else if (styles.shadowStyle === "md") boxShadow = "0 4px 6px -1px rgba(0,0,0,0.15)";
+  else if (styles.shadowStyle === "sm") boxShadow = "0 1px 3px rgba(0,0,0,0.12)";
   else if (styles.shadowStyle === "glass") boxShadow = "0 8px 32px 0 rgba(31,38,135,0.18)";
+  else if (styles.shadowStyle === "glow") boxShadow = `0 6px 24px -4px ${glowColor}66`;
+  else if (styles.shadowStyle === "neon") boxShadow = `0 0 14px ${glowColor}, 0 0 28px ${glowColor}55`;
+  else if (styles.shadowStyle === "none") boxShadow = "none";
 
   const base: React.CSSProperties = { borderRadius: radius, boxShadow, border: "none" };
   let textColor = colors.buttonTextColor || "#fff";
 
   if (styles.buttonStyle === "outline") {
     base.backgroundColor = "transparent";
-    base.border = `2px solid ${colors.buttonColor || "#fff"}`;
-    textColor = colors.buttonColor || colors.textColor || "#000";
+    const borderColor = isGradient(colors.buttonColor)
+      ? (colors.accentColor || colors.textColor || "#fff")
+      : (colors.buttonColor || "#fff");
+    base.border = `2px solid ${borderColor}`;
+    textColor = colors.accentColor || (isGradient(colors.buttonColor) ? colors.textColor : colors.buttonColor) || colors.textColor || "#000";
   } else if (styles.buttonStyle === "glass") {
-    base.backgroundColor = "rgba(255,255,255,0.12)";
+    base.backgroundColor =
+      typeof colors.buttonColor === "string" && colors.buttonColor.startsWith("rgba")
+        ? colors.buttonColor
+        : "rgba(255,255,255,0.12)";
     base.border = "1px solid rgba(255,255,255,0.2)";
+  } else if (isGradient(colors.buttonColor)) {
+    base.backgroundImage = colors.buttonColor;
+    base.backgroundColor = "transparent";
   } else {
     base.backgroundColor = colors.buttonColor || "#000";
   }

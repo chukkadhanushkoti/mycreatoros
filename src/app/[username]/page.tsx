@@ -4,7 +4,40 @@ import { BadgeCheck } from "lucide-react";
 import { BlockRenderer } from "@/components/biostore/BlockRenderer";
 import { BackgroundEffects } from "@/components/biostore/BackgroundEffects";
 import { bioStoreThemes } from "@/config/biostore-themes";
+import { buildGoogleFontsHref, cssFontStack, themeFontFamilies } from "@/lib/biostore-fonts";
 import { API_BASE_URL } from "@/lib/api-client";
+
+const COLOR_KEYS = ["backgroundColor", "textColor", "cardColor", "buttonColor", "buttonTextColor", "accentColor", "mutedColor"];
+const TYPO_KEYS = ["fontFamily", "headingFont"];
+const STYLE_KEYS = ["buttonStyle", "spacing", "shadowStyle", "buttonRadius", "cardRadius", "avatarBorder", "iconStyle", "bgEffect"];
+
+// Merge per-store overrides onto a base theme. Overrides may arrive either
+// nested ({ colors, typography, styles }) or flat ({ backgroundColor, ... });
+// each flat key is routed into its correct nested bucket so customization
+// actually reaches the render (the old Object.assign spread it at the top
+// level, where nothing read it).
+function mergeThemeOverrides(base: any, overrides: any) {
+  const merged = {
+    ...base,
+    colors: { ...(base.colors || {}) },
+    typography: { ...(base.typography || {}) },
+    styles: { ...(base.styles || {}) },
+  };
+  if (!overrides || typeof overrides !== "object") return merged;
+
+  if (overrides.colors) Object.assign(merged.colors, overrides.colors);
+  if (overrides.typography) Object.assign(merged.typography, overrides.typography);
+  if (overrides.styles) Object.assign(merged.styles, overrides.styles);
+
+  for (const [k, v] of Object.entries(overrides)) {
+    if (v === undefined || v === null || v === "") continue;
+    if (k === "colors" || k === "typography" || k === "styles") continue;
+    if (COLOR_KEYS.includes(k)) merged.colors[k] = v;
+    else if (TYPO_KEYS.includes(k)) merged.typography[k] = v;
+    else if (STYLE_KEYS.includes(k)) merged.styles[k] = v;
+  }
+  return merged;
+}
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -48,46 +81,59 @@ export default async function BioStorePage({ params }: { params: Promise<{ usern
   // Determine theme
   const baseTheme = bioStoreThemes.find(t => t.id === bioStore.theme) || bioStoreThemes[0];
   
-  // Apply overrides if any
-  const themeData = { ...baseTheme };
-  if (bioStore.themeOverrides) {
-    Object.assign(themeData, bioStore.themeOverrides);
-  }
+  // Apply per-store overrides (nested-aware merge)
+  const themeData = mergeThemeOverrides(baseTheme, bioStore.themeOverrides);
 
   // Parse background
-  let bgStyle: any = { backgroundColor: '#000000' };
+  const bgStyle: any = {};
   const colors = themeData.colors || {};
   const styles = themeData.styles || {};
+  const typography = themeData.typography || {};
   const background = colors.backgroundColor || '#000000';
-  
+
   if (background.startsWith('linear-gradient')) {
     bgStyle.backgroundImage = background;
+    bgStyle.backgroundColor = '#000000';
   } else {
     bgStyle.backgroundColor = background;
   }
 
+  // Load the theme's fonts (body + heading) for this page only.
+  const fontsHref = buildGoogleFontsHref(themeFontFamilies(themeData));
+  const bodyFont = cssFontStack(typography.fontFamily);
+  const headingFont = cssFontStack(typography.headingFont || typography.fontFamily);
+  const avatarBorder = typeof styles.avatarBorder === 'number' ? styles.avatarBorder : 3;
+
   const bgEffect: string = (styles as any).bgEffect || 'none';
+  const animationsEnabled = bioStore.settings?.animationsEnabled !== false;
   const themeColorForMeta = background.startsWith('linear-gradient') ? '#000000' : background;
 
   return (
     <>
       <meta name="theme-color" content={themeColorForMeta} />
-      <div 
-        className="min-h-screen w-full flex flex-col items-center py-12 px-4 sm:px-6 transition-all duration-500 relative" 
-        style={{ ...bgStyle, fontFamily: themeData.typography?.fontFamily }}
+      {fontsHref && (
+        <>
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+          <link rel="stylesheet" href={fontsHref} />
+        </>
+      )}
+      <div
+        className="min-h-screen w-full flex flex-col items-center py-12 px-4 sm:px-6 transition-all duration-500 relative"
+        style={{ ...bgStyle, fontFamily: bodyFont }}
       >
-      <BackgroundEffects effect={bgEffect} themeData={themeData} />
+      <BackgroundEffects effect={bgEffect} themeData={themeData} animationsEnabled={animationsEnabled} />
       
       <div className="w-full max-w-2xl mx-auto space-y-8 relative z-10 pt-8">
         
         {/* Profile Header */}
         <div className="flex flex-col items-center text-center space-y-4">
-          <div 
+          <div
              className="relative h-28 w-28 overflow-hidden shadow-lg"
-             style={{ 
+             style={{
                borderRadius: '9999px',
                borderColor: colors.textColor,
-               borderWidth: '3px',
+               borderWidth: `${avatarBorder}px`,
                borderStyle: 'solid'
              }}
           >
@@ -101,14 +147,14 @@ export default async function BioStorePage({ params }: { params: Promise<{ usern
           </div>
           
           <div>
-            <h1 
+            <h1
               className="text-2xl font-bold flex items-center justify-center gap-2"
-              style={{ color: colors.textColor }}
+              style={{ color: colors.textColor, fontFamily: headingFont, letterSpacing: '-0.01em' }}
             >
               {bioStore.displayName}
-              <BadgeCheck className="w-6 h-6" style={{ color: colors.textColor, fill: 'currentColor', stroke: colors.backgroundColor || '#000' }} />
+              <BadgeCheck className="w-6 h-6" style={{ color: colors.accentColor || colors.textColor, fill: 'currentColor', stroke: themeColorForMeta }} />
             </h1>
-            <p className="mt-2 opacity-80" style={{ color: colors.textColor }}>{bioStore.bio}</p>
+            <p className="mt-2 opacity-80" style={{ color: colors.mutedColor || colors.textColor }}>{bioStore.bio}</p>
           </div>
         </div>
 

@@ -26,6 +26,10 @@ const SOCIAL_CONFIG: Record<string, { icon: React.ReactNode; color: string; labe
 };
 
 // ── Helper: resolve button styles from theme ──────────────────────────────────
+function isGradient(c?: string) {
+  return typeof c === 'string' && c.includes('gradient');
+}
+
 function resolveButtonStyle(themeData: any) {
   const styles  = themeData.styles  || {};
   const colors  = themeData.colors  || {};
@@ -33,11 +37,24 @@ function resolveButtonStyle(themeData: any) {
   const radius   = styles.buttonRadius ?? 16;
   const shadow   = styles.shadowStyle;
 
+  // Colour used for glow / neon halos (a gradient string can't live in box-shadow).
+  const glowColor =
+    colors.accentColor ||
+    (isGradient(colors.buttonColor) ? colors.textColor : colors.buttonColor) ||
+    '#000';
+
   let boxShadow: string;
-  if (shadow === 'hard') boxShadow = '4px 4px 0 rgba(0,0,0,1)';
-  else if (shadow === 'md') boxShadow = '0 4px 6px -1px rgba(0,0,0,0.15)';
-  else if (shadow === 'glass') boxShadow = '0 8px 32px 0 rgba(31,38,135,0.18)';
-  else boxShadow = '0 2px 8px 0 rgba(0,0,0,0.08)';
+  switch (shadow) {
+    case 'hard':  boxShadow = '4px 4px 0 rgba(0,0,0,1)'; break;
+    case 'md':    boxShadow = '0 4px 6px -1px rgba(0,0,0,0.15)'; break;
+    case 'sm':    boxShadow = '0 1px 3px rgba(0,0,0,0.12)'; break;
+    case 'glass': boxShadow = '0 8px 32px 0 rgba(31,38,135,0.18)'; break;
+    case 'glow':  boxShadow = `0 6px 24px -4px ${glowColor}66`; break;
+    case 'neon':  boxShadow = `0 0 14px ${glowColor}, 0 0 28px ${glowColor}55`; break;
+    case 'none':  boxShadow = 'none'; break;
+    case 'soft':
+    default:      boxShadow = '0 4px 14px 0 rgba(0,0,0,0.10)';
+  }
 
   const base: any = {
     borderRadius: radius,
@@ -48,21 +65,31 @@ function resolveButtonStyle(themeData: any) {
 
   let textColor = colors.buttonTextColor || '#fff';
 
-  if (btnStyle === 'filled') {
-    base.backgroundColor = colors.buttonColor || '#000';
-    base.color = textColor;
-  } else if (btnStyle === 'outline') {
+  if (btnStyle === 'outline') {
     base.backgroundColor = 'transparent';
-    base.border = `2px solid ${colors.buttonColor || '#fff'}`;
-    textColor = colors.buttonColor || colors.textColor || '#000';
+    const borderColor = isGradient(colors.buttonColor)
+      ? (colors.accentColor || colors.textColor || '#fff')
+      : (colors.buttonColor || '#fff');
+    base.border = `2px solid ${borderColor}`;
+    textColor = colors.accentColor || (isGradient(colors.buttonColor) ? colors.textColor : colors.buttonColor) || colors.textColor || '#000';
     base.color = textColor;
   } else if (btnStyle === 'glass') {
-    base.backgroundColor = 'rgba(255,255,255,0.12)';
+    base.backgroundColor =
+      typeof colors.buttonColor === 'string' && colors.buttonColor.startsWith('rgba')
+        ? colors.buttonColor
+        : 'rgba(255,255,255,0.12)';
     base.backdropFilter = 'blur(12px)';
+    base.WebkitBackdropFilter = 'blur(12px)';
     base.border = '1px solid rgba(255,255,255,0.2)';
     base.color = textColor;
   } else {
-    base.backgroundColor = colors.buttonColor || '#000';
+    // filled — supports a solid colour OR a linear-gradient() string
+    if (isGradient(colors.buttonColor)) {
+      base.backgroundImage = colors.buttonColor;
+      base.backgroundColor = 'transparent';
+    } else {
+      base.backgroundColor = colors.buttonColor || '#000';
+    }
     base.color = textColor;
   }
 
@@ -160,13 +187,22 @@ function mediaContainerStyle(themeData: any, extra: any = {}): any {
     ...extra,
   };
   if (btnStyle === 'filled') {
-    base.backgroundColor = colors.buttonColor || '#000';
+    if (isGradient(colors.buttonColor)) {
+      base.backgroundImage = colors.buttonColor;
+      base.backgroundColor = '#000';
+    } else {
+      base.backgroundColor = colors.buttonColor || '#000';
+    }
   } else if (btnStyle === 'outline') {
     base.backgroundColor = 'transparent';
-    base.border = `2px solid ${colors.buttonColor || '#fff'}`;
+    const borderColor = isGradient(colors.buttonColor)
+      ? (colors.accentColor || colors.textColor || '#fff')
+      : (colors.buttonColor || '#fff');
+    base.border = `2px solid ${borderColor}`;
   } else if (btnStyle === 'glass') {
     base.backgroundColor = 'rgba(255,255,255,0.12)';
     base.backdropFilter = 'blur(12px)';
+    base.WebkitBackdropFilter = 'blur(12px)';
     base.border = '1px solid rgba(255,255,255,0.2)';
   }
   return base;

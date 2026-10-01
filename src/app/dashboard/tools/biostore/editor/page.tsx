@@ -14,6 +14,7 @@ import {
   type BioStoreDoc,
 } from "@/lib/biostore-api";
 import { bioStoreThemes } from "@/config/biostore-themes";
+import { buildGoogleFontsHref, themeFontFamilies } from "@/lib/biostore-fonts";
 import { BLOCK_TYPE_MAP } from "@/config/biostore-blocks";
 import { PhoneFrame } from "@/components/dashboard/biostore/phone-frame";
 import { StorePreview } from "@/components/dashboard/biostore/store-preview";
@@ -52,6 +53,10 @@ export default function BioStoreEditorPage() {
     () => bioStoreThemes.find((t) => t.id === store?.theme) || bioStoreThemes[0],
     [store?.theme]
   );
+
+  // Load the selected theme's fonts so the live preview renders real typography
+  // (React 19 hoists this <link> into <head> and dedupes it).
+  const fontsHref = useMemo(() => buildGoogleFontsHref(themeFontFamilies(theme)), [theme]);
 
   const scheduleAutosave = useCallback((next: BioStoreDoc) => {
     setStore(next);
@@ -158,6 +163,7 @@ export default function BioStoreEditorPage() {
 
   return (
     <div className="mx-auto max-w-6xl pb-20">
+      {fontsHref && <link rel="stylesheet" href={fontsHref} />}
       <div className="flex items-center justify-between">
         <Link
           href="/dashboard/tools/biostore"

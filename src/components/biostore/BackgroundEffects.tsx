@@ -26,13 +26,21 @@ function generateSnow(count: number) {
 export function BackgroundEffects({
   effect,
   themeData,
+  animationsEnabled = true,
 }: {
   effect?: string;
   themeData?: any;
+  animationsEnabled?: boolean;
 }) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
   if (!mounted || !effect || effect === "none") return null;
+
+  // Motion-only effects are suppressed entirely when the creator disables
+  // animations; ambient effects (grid, blobs, stars) still render, but static.
+  const anim = animationsEnabled !== false;
+  const motionOnly = effect === "bubbles" || effect === "snow" || effect === "particles";
+  if (!anim && motionOnly) return null;
 
   const textColor = themeData?.colors?.textColor || "#000000";
   const bubbles = generateBubbles(15);
@@ -79,7 +87,7 @@ export function BackgroundEffects({
             left: "-10%",
             backgroundColor: textColor,
             opacity: 0.08,
-            animation: "bio-blob 12s infinite alternate",
+            animation: anim ? "bio-blob 12s infinite alternate" : undefined,
           }}
         />
         <div
@@ -91,7 +99,7 @@ export function BackgroundEffects({
             right: "-10%",
             backgroundColor: textColor,
             opacity: 0.06,
-            animation: "bio-blob 14s 2s infinite alternate",
+            animation: anim ? "bio-blob 14s 2s infinite alternate" : undefined,
           }}
         />
         <div
@@ -103,7 +111,7 @@ export function BackgroundEffects({
             left: "20%",
             backgroundColor: textColor,
             opacity: 0.07,
-            animation: "bio-blob 16s 4s infinite alternate",
+            animation: anim ? "bio-blob 16s 4s infinite alternate" : undefined,
           }}
         />
         <style>{`
@@ -130,7 +138,7 @@ export function BackgroundEffects({
             inset: 0,
             backgroundImage: `linear-gradient(${textColor} 1px, transparent 1px), linear-gradient(90deg, ${textColor} 1px, transparent 1px)`,
             backgroundSize: "40px 40px",
-            animation: "bio-grid 8s linear infinite",
+            animation: anim ? "bio-grid 8s linear infinite" : undefined,
           }}
         />
         <style>{`
@@ -192,7 +200,7 @@ export function BackgroundEffects({
               left: `${s.left}%`,
               top: `${s.top}%`,
               opacity: 0.6,
-              animation: `bio-star-twinkle ${s.duration}s ease-in-out ${s.delay}s infinite alternate`,
+              animation: anim ? `bio-star-twinkle ${s.duration}s ease-in-out ${s.delay}s infinite alternate` : undefined,
             }}
           />
         ))}
