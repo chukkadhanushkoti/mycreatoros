@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Camera, ChevronDown, ChevronUp, Eye, Plus, Trash2, X } from "lucide-react";
+import { ArrowLeft, Camera, ChevronDown, ChevronUp, Eye, Image as ImageIcon, Plus, Search, Trash2, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { getAccessToken } from "@/context/auth-context";
@@ -36,8 +36,10 @@ export default function BioStoreEditorPage() {
   const [addOpen, setAddOpen] = useState(false);
   const [editingBlock, setEditingBlock] = useState<BioStoreBlock | null>(null);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [uploadingBg, setUploadingBg] = useState(false);
   const [mobilePreviewOpen, setMobilePreviewOpen] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const bgFileRef = useRef<HTMLInputElement>(null);
   const autosaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -70,8 +72,10 @@ export default function BioStoreEditorPage() {
           displayName: next.displayName,
           bio: next.bio,
           profileImage: next.profileImage,
+          backgroundImage: next.backgroundImage,
           theme: next.theme,
           blocks: next.blocks,
+          settings: next.settings,
         });
         setSaveError(null);
       } catch (err) {
@@ -91,8 +95,10 @@ export default function BioStoreEditorPage() {
         displayName: store.displayName,
         bio: store.bio,
         profileImage: store.profileImage,
+        backgroundImage: store.backgroundImage,
         theme: store.theme,
         blocks: store.blocks,
+        settings: store.settings,
         status: "published",
       });
       setStore(updated);
@@ -116,6 +122,35 @@ export default function BioStoreEditorPage() {
     } finally {
       setUploadingAvatar(false);
     }
+  };
+
+  const handleBackgroundPick = async (file: File) => {
+    const token = getAccessToken();
+    if (!token || !store) return;
+    setUploadingBg(true);
+    try {
+      // Reuse the existing 'banner' presign path; the URL is stored in the
+      // new backgroundImage field and rendered full-page on web + app.
+      const url = await biostoreApi.uploadFile(token, file, "banner");
+      scheduleAutosave({ ...store, backgroundImage: url });
+    } catch (err) {
+      setSaveError(err instanceof ApiError ? err.message : "Couldn't upload background — check your connection.");
+    } finally {
+      setUploadingBg(false);
+    }
+  };
+
+  const removeBackground = () => {
+    if (!store) return;
+    scheduleAutosave({ ...store, backgroundImage: "" });
+  };
+
+  const toggleSearch = () => {
+    if (!store) return;
+    scheduleAutosave({
+      ...store,
+      settings: { ...store.settings, showSearch: !store.settings?.showSearch },
+    });
   };
 
   const addBlock = (type: BioStoreBlockType) => {
@@ -260,6 +295,56 @@ export default function BioStoreEditorPage() {
           </div>
 
           <div className="rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-neutral-900">
+            <h2 className="text-sm font-semibold text-neutral-900 dark:text-white">Background</h2>
+            <p className="mt-1 text-xs text-neutral-400">
+              Add a full-page image behind your page. A legibility overlay keeps text readable.
+            </p>
+            <div className="mt-4">
+              {store.backgroundImage ? (
+                <div className="relative overflow-hidden rounded-xl border border-neutral-200 dark:border-white/10">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={store.backgroundImage} alt="Background" className="h-28 w-full object-cover" />
+                  <div className="absolute inset-x-0 bottom-0 flex justify-end gap-2 bg-gradient-to-t from-black/60 to-transparent p-2">
+                    <button
+                      onClick={() => bgFileRef.current?.click()}
+                      disabled={uploadingBg}
+                      className="rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-neutral-900 disabled:opacity-50"
+                    >
+                      {uploadingBg ? "Uploading…" : "Replace"}
+                    </button>
+                    <button
+                      onClick={removeBackground}
+                      className="rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-red-600"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  onClick={() => bgFileRef.current?.click()}
+                  disabled={uploadingBg}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-neutral-300 py-6 text-sm font-medium text-neutral-600 transition-colors hover:border-orange-300 hover:text-orange-600 disabled:opacity-50 dark:border-white/15 dark:text-neutral-400"
+                >
+                  <ImageIcon className="h-4 w-4" />
+                  {uploadingBg ? "Uploading…" : "Upload background image"}
+                </button>
+              )}
+              <input
+                ref={bgFileRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleBackgroundPick(file);
+                  e.target.value = "";
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-neutral-900">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold text-neutral-900 dark:text-white">Blocks</h2>
               <span
@@ -271,6 +356,31 @@ export default function BioStoreEditorPage() {
                 {sortedBlocks.length}/{maxBlocks}
               </span>
             </div>
+
+            <button
+              onClick={toggleSearch}
+              className="mt-4 flex w-full items-center justify-between rounded-xl border border-neutral-200 px-3 py-2.5 text-left transition-colors hover:border-neutral-300 dark:border-white/10 dark:hover:border-white/20"
+              aria-pressed={store.settings?.showSearch === true}
+            >
+              <span className="flex items-center gap-2 text-sm text-neutral-700 dark:text-neutral-300">
+                <Search className="h-4 w-4" />
+                Link search
+                <span className="text-xs text-neutral-400">— let visitors filter your links</span>
+              </span>
+              <span
+                className={cn(
+                  "relative h-5 w-9 shrink-0 rounded-full transition-colors",
+                  store.settings?.showSearch ? "bg-orange-500" : "bg-neutral-300 dark:bg-white/15"
+                )}
+              >
+                <span
+                  className={cn(
+                    "absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-all",
+                    store.settings?.showSearch ? "left-4" : "left-0.5"
+                  )}
+                />
+              </span>
+            </button>
 
             <div className="mt-4 flex flex-col gap-2">
               {sortedBlocks.map((block, index) => {

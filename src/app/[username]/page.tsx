@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { BadgeCheck } from "lucide-react";
 import { BlockRenderer } from "@/components/biostore/BlockRenderer";
+import { BioLinkSearch } from "@/components/biostore/BioLinkSearch";
 import { BackgroundEffects } from "@/components/biostore/BackgroundEffects";
 import { bioStoreThemes } from "@/config/biostore-themes";
 import { buildGoogleFontsHref, cssFontStack, themeFontFamilies } from "@/lib/biostore-fonts";
@@ -37,6 +38,19 @@ function mergeThemeOverrides(base: any, overrides: any) {
     else if (STYLE_KEYS.includes(k)) merged.styles[k] = v;
   }
   return merged;
+}
+
+// Rough perceived-luminance of a #hex color (0..1). Used to pick a legibility
+// scrim over a per-store background image: light text ⇒ dark scrim, and vice
+// versa. Mirrors the Flutter editor's computeLuminance() > 0.5 branch.
+function textLuminance(hex: string): number {
+  const c = (hex || "").trim().replace("#", "");
+  const full = c.length === 3 ? c.split("").map((x) => x + x).join("") : c;
+  if (full.length < 6 || /[^0-9a-f]/i.test(full.slice(0, 6))) return 1; // default: treat as light text
+  const r = parseInt(full.slice(0, 2), 16);
+  const g = parseInt(full.slice(2, 4), 16);
+  const b = parseInt(full.slice(4, 6), 16);
+  return (0.299 * r + 0.587 * g + 0.114 * b) / 255;
 }
 
 export const dynamic = 'force-dynamic';
@@ -96,6 +110,21 @@ export default async function BioStorePage({ params }: { params: Promise<{ usern
     bgStyle.backgroundColor = '#000000';
   } else {
     bgStyle.backgroundColor = background;
+  }
+
+  // Per-store background image (Phase 2). A chosen image replaces the theme's
+  // flat/gradient background; a luminance scrim keeps the theme text legible.
+  // Only https URLs are honoured (the backend already enforces this on write).
+  const rawBgImage = typeof bioStore.backgroundImage === 'string' ? bioStore.backgroundImage.trim() : '';
+  const hasBgImage = /^https:\/\//i.test(rawBgImage);
+  if (hasBgImage) {
+    const scrim = textLuminance(colors.textColor) > 0.5 ? 'rgba(0,0,0,0.45)' : 'rgba(255,255,255,0.42)';
+    const safeUrl = rawBgImage.replace(/["\\]/g, '');
+    bgStyle.backgroundImage = `linear-gradient(${scrim}, ${scrim}), url("${safeUrl}")`;
+    bgStyle.backgroundSize = 'cover';
+    bgStyle.backgroundPosition = 'center';
+    bgStyle.backgroundRepeat = 'no-repeat';
+    bgStyle.backgroundAttachment = 'fixed';
   }
 
   // Load the theme's fonts (body + heading) for this page only.
@@ -160,9 +189,21 @@ export default async function BioStorePage({ params }: { params: Promise<{ usern
 
         {/* Blocks Section */}
         <div className="flex flex-col gap-3 w-full pt-4 pb-8">
-          {bioStore.blocks.sort((a: any, b: any) => a.order - b.order).map((block: any, idx: number) => (
-            <BlockRenderer key={block._id || idx} block={block} username={bioStore.username} themeData={themeData} index={idx + 1} />
-          ))}
+          {(() => {
+            const sortedBlocks = [...bioStore.blocks].sort((a: any, b: any) => a.order - b.order);
+            if (bioStore.settings?.showSearch) {
+              return (
+                <BioLinkSearch
+                  blocks={sortedBlocks}
+                  username={bioStore.username}
+                  themeData={themeData}
+                />
+              );
+            }
+            return sortedBlocks.map((block: any, idx: number) => (
+              <BlockRenderer key={block._id || idx} block={block} username={bioStore.username} themeData={themeData} index={idx + 1} />
+            ));
+          })()}
         </div>
       </div>
       

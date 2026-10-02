@@ -45,6 +45,7 @@ export interface BioStoreDoc {
   bio?: string;
   profileImage?: string;
   bannerImage?: string;
+  backgroundImage?: string;
   theme: string;
   themeOverrides?: BioStoreThemeOverrides;
   design?: Record<string, unknown>;
@@ -52,6 +53,7 @@ export interface BioStoreDoc {
     animationsEnabled?: boolean;
     showBranding?: boolean;
     openLinksInNewTab?: boolean;
+    showSearch?: boolean;
   };
   isPremium?: boolean;
   isVerified?: boolean;
@@ -116,6 +118,7 @@ export interface BioStoreUpdatePayload {
   bio?: string;
   profileImage?: string;
   bannerImage?: string;
+  backgroundImage?: string;
   theme?: string;
   themeOverrides?: BioStoreThemeOverrides;
   design?: Record<string, unknown>;
