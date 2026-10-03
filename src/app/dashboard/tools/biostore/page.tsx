@@ -19,7 +19,7 @@ import {
 
 import { getAccessToken } from "@/context/auth-context";
 import { ApiError } from "@/lib/api-client";
-import { biostoreApi, type BioStoreDoc, type DeletedBioStoreInfo, type StorageUsage } from "@/lib/biostore-api";
+import { biostoreApi, type BioStoreDoc, type DeletedBioStoreInfo } from "@/lib/biostore-api";
 import { StatCard } from "@/components/dashboard/biostore/stat-card";
 import { BioStoreDashboardSkeleton } from "@/components/dashboard/biostore/skeleton";
 import { cn } from "@/lib/utils";
@@ -199,13 +199,6 @@ function BioStoreDashboard({
 }) {
   const [copied, setCopied] = useState(false);
   const [publishing, setPublishing] = useState(false);
-  const [storage, setStorage] = useState<StorageUsage | null>(null);
-
-  useEffect(() => {
-    const token = getAccessToken();
-    if (!token) return;
-    biostoreApi.getStorage(token).then(setStorage).catch(() => {});
-  }, [store._id]);
 
   const publicUrl = `${SITE_URL.replace(/\/$/, "")}/${store.username}`;
   const isLive = store.status === "published";
@@ -234,7 +227,7 @@ function BioStoreDashboard({
     <div className="mx-auto max-w-5xl">
       <div
         className="relative overflow-hidden rounded-3xl p-6 sm:p-8"
-        style={{ backgroundImage: "linear-gradient(135deg, #6C63FF 0%, #3F3D56 100%)" }}
+        style={{ backgroundImage: "linear-gradient(135deg, #213B45 0%, #365760 100%)" }}
       >
         <div className="flex items-center justify-between">
           <span
@@ -297,25 +290,6 @@ function BioStoreDashboard({
         <QuickAction href="/dashboard/tools/biostore/settings" icon={Settings} label="Settings" color="#71717A" />
       </div>
 
-      {storage && (
-        <div className="mt-8 rounded-2xl border border-neutral-200 bg-white p-4 dark:border-white/10 dark:bg-neutral-900">
-          <div className="flex items-center justify-between text-sm">
-            <span className="font-medium text-neutral-700 dark:text-neutral-300">Storage</span>
-            <span className="text-neutral-500 dark:text-neutral-400">
-              {storage.usedMB} MB / {storage.quotaLabel}
-            </span>
-          </div>
-          <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-neutral-100 dark:bg-white/10">
-            <div
-              className={cn(
-                "h-full rounded-full",
-                storage.percent > 90 ? "bg-red-500" : storage.percent > 70 ? "bg-amber-500" : "bg-blue-500"
-              )}
-              style={{ width: `${Math.min(storage.percent, 100)}%` }}
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 }

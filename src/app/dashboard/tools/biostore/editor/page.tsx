@@ -13,7 +13,7 @@ import {
   type BioStoreBlockType,
   type BioStoreDoc,
 } from "@/lib/biostore-api";
-import { bioStoreThemes } from "@/config/biostore-themes";
+import { resolveBioStoreTheme } from "@/lib/biostore-theme";
 import { buildGoogleFontsHref, themeFontFamilies } from "@/lib/biostore-fonts";
 import { BLOCK_TYPE_MAP } from "@/config/biostore-blocks";
 import { PhoneFrame } from "@/components/dashboard/biostore/phone-frame";
@@ -25,7 +25,7 @@ import { BlockEditSheet } from "@/components/dashboard/biostore/block-edit-sheet
 import { BioStoreEditorSkeleton } from "@/components/dashboard/biostore/skeleton";
 import { cn } from "@/lib/utils";
 
-const MAX_BLOCKS_FREE = 10;
+const MAX_BLOCKS = 40;
 
 export default function BioStoreEditorPage() {
   const [store, setStore] = useState<BioStoreDoc | null>(null);
@@ -52,8 +52,8 @@ export default function BioStoreEditorPage() {
   }, []);
 
   const theme = useMemo(
-    () => bioStoreThemes.find((t) => t.id === store?.theme) || bioStoreThemes[0],
-    [store?.theme]
+    () => resolveBioStoreTheme(store?.theme, store?.themeOverrides),
+    [store?.theme, store?.themeOverrides]
   );
 
   // Load the selected theme's fonts so the live preview renders real typography
@@ -74,6 +74,7 @@ export default function BioStoreEditorPage() {
           profileImage: next.profileImage,
           backgroundImage: next.backgroundImage,
           theme: next.theme,
+          themeOverrides: next.themeOverrides,
           blocks: next.blocks,
           settings: next.settings,
         });
@@ -97,6 +98,7 @@ export default function BioStoreEditorPage() {
         profileImage: store.profileImage,
         backgroundImage: store.backgroundImage,
         theme: store.theme,
+        themeOverrides: store.themeOverrides,
         blocks: store.blocks,
         settings: store.settings,
         status: "published",
@@ -154,7 +156,7 @@ export default function BioStoreEditorPage() {
   };
 
   const addBlock = (type: BioStoreBlockType) => {
-    if (!store) return;
+    if (!store || store.blocks.length >= MAX_BLOCKS) return;
     setAddOpen(false);
     const meta = BLOCK_TYPE_MAP[type];
     const newBlock: BioStoreBlock = {
@@ -189,7 +191,7 @@ export default function BioStoreEditorPage() {
     setEditingBlock(null);
   };
 
-  const maxBlocks = store?.isPremium ? 40 : MAX_BLOCKS_FREE;
+  const maxBlocks = MAX_BLOCKS;
   const sortedBlocks = store?.blocks.slice().sort((a, b) => a.order - b.order) || [];
 
   if (loading || !store) {
@@ -288,7 +290,7 @@ export default function BioStoreEditorPage() {
             <div className="mt-4">
               <ThemeStrip
                 currentTheme={store.theme}
-                onSelectAction={(id) => scheduleAutosave({ ...store, theme: id })}
+                onSelectAction={(id) => scheduleAutosave({ ...store, theme: id, themeOverrides: {} })}
                 onSeeAllAction={() => setThemeOpen(true)}
               />
             </div>
@@ -489,7 +491,7 @@ export default function BioStoreEditorPage() {
       <ThemePicker
         open={themeOpen}
         currentTheme={store.theme}
-        onSelectAction={(id) => scheduleAutosave({ ...store, theme: id })}
+        onSelectAction={(id) => scheduleAutosave({ ...store, theme: id, themeOverrides: {} })}
         onCloseAction={() => setThemeOpen(false)}
       />
       <AddBlockSheet open={addOpen} onSelectAction={addBlock} onCloseAction={() => setAddOpen(false)} />

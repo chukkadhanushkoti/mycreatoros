@@ -33,15 +33,15 @@ export const bioStoreThemes: BioStoreTheme[] = [
   {
     "id": "arctic",
     "name": "Arctic",
-    "category": "Light",
+    "category": "Standard",
     "colors": {
-      "backgroundColor": "linear-gradient(180deg, #ffffff 0%, #eef3f9 100%)",
-      "textColor": "#0f172a",
-      "cardColor": "rgba(15, 23, 42, 0.04)",
-      "buttonColor": "linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%)",
-      "buttonTextColor": "#ffffff",
-      "accentColor": "#0ea5e9",
-      "mutedColor": "#64748b"
+      "backgroundColor": "#F3F8FA",
+      "textColor": "#183042",
+      "cardColor": "#FFFFFF",
+      "buttonColor": "#215B75",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#286E85",
+      "mutedColor": "#4D6776"
     },
     "typography": {
       "fontFamily": "Inter",
@@ -50,54 +50,278 @@ export const bioStoreThemes: BioStoreTheme[] = [
     "styles": {
       "buttonStyle": "filled",
       "spacing": "comfortable",
-      "shadowStyle": "soft",
+      "shadowStyle": "sm",
       "buttonRadius": 16,
       "cardRadius": 20,
-      "avatarBorder": 3,
+      "avatarBorder": 2,
       "iconStyle": "solid",
-      "bgEffect": "snow"
+      "bgEffect": "none"
     }
   },
   {
-    "id": "aurora",
-    "name": "Aurora",
-    "category": "Dark",
+    "id": "forest",
+    "name": "Forest",
+    "category": "Standard",
     "colors": {
-      "backgroundColor": "linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)",
-      "textColor": "#e0f7fa",
-      "cardColor": "rgba(224, 247, 250, 0.08)",
-      "buttonColor": "linear-gradient(135deg, #00e5ff 0%, #2979ff 100%)",
-      "buttonTextColor": "#06121f",
-      "accentColor": "#00e5ff",
-      "mutedColor": "#9fb3c8"
+      "backgroundColor": "#EDF3EC",
+      "textColor": "#203A2C",
+      "cardColor": "#FFFFFF",
+      "buttonColor": "#27543A",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#376D4B",
+      "mutedColor": "#587061"
     },
     "typography": {
-      "fontFamily": "Inter",
-      "headingFont": "Sora"
+      "fontFamily": "Figtree",
+      "headingFont": "Fraunces"
     },
     "styles": {
       "buttonStyle": "filled",
       "spacing": "comfortable",
-      "shadowStyle": "glow",
+      "shadowStyle": "soft",
+      "buttonRadius": 14,
+      "cardRadius": 18,
+      "avatarBorder": 2,
+      "iconStyle": "solid",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "midnight",
+    "name": "Midnight",
+    "category": "Standard",
+    "colors": {
+      "backgroundColor": "#111827",
+      "textColor": "#F9FAFB",
+      "cardColor": "#1F2937",
+      "buttonColor": "#E5E7EB",
+      "buttonTextColor": "#111827",
+      "accentColor": "#D1D5DB",
+      "mutedColor": "#CBD2DC"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "Space Grotesk"
+    },
+    "styles": {
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "sm",
+      "buttonRadius": 14,
+      "cardRadius": 18,
+      "avatarBorder": 0,
+      "iconStyle": "solid",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "mono",
+    "name": "Mono",
+    "category": "Standard",
+    "colors": {
+      "backgroundColor": "#F8F7F4",
+      "textColor": "#242424",
+      "cardColor": "#FFFFFF",
+      "buttonColor": "#242424",
+      "buttonTextColor": "#242424",
+      "accentColor": "#242424",
+      "mutedColor": "#595955"
+    },
+    "typography": {
+      "fontFamily": "DM Sans",
+      "headingFont": "DM Serif Display"
+    },
+    "styles": {
+      "buttonStyle": "outline",
+      "spacing": "spacious",
+      "shadowStyle": "none",
+      "buttonRadius": 12,
+      "cardRadius": 18,
+      "avatarBorder": 0,
+      "iconStyle": "outline",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "sand",
+    "name": "Sand",
+    "category": "Standard",
+    "colors": {
+      "backgroundColor": "#F7F2E8",
+      "textColor": "#362B24",
+      "cardColor": "#FFFCF7",
+      "buttonColor": "#76503A",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#76503A",
+      "mutedColor": "#6E625B"
+    },
+    "typography": {
+      "fontFamily": "Figtree",
+      "headingFont": "Fraunces"
+    },
+    "styles": {
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "sm",
       "buttonRadius": 18,
       "cardRadius": 20,
       "avatarBorder": 2,
       "iconStyle": "solid",
-      "bgEffect": "blobs"
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "cherry",
+    "name": "Cherry",
+    "category": "Aesthetic",
+    "colors": {
+      "backgroundColor": "#291820",
+      "textColor": "#FFF1F3",
+      "cardColor": "#3A232D",
+      "buttonColor": "#F2B4BF",
+      "buttonTextColor": "#341B25",
+      "accentColor": "#F2B4BF",
+      "mutedColor": "#E0C6CC"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "Playfair Display"
+    },
+    "styles": {
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 20,
+      "cardRadius": 24,
+      "avatarBorder": 3,
+      "iconStyle": "solid",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "emerald",
+    "name": "Emerald",
+    "category": "Aesthetic",
+    "colors": {
+      "backgroundColor": "#E9F4EF",
+      "textColor": "#1D3D30",
+      "cardColor": "#FFFFFF",
+      "buttonColor": "#22644A",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#22644A",
+      "mutedColor": "#587267"
+    },
+    "typography": {
+      "fontFamily": "Figtree",
+      "headingFont": "Fraunces"
+    },
+    "styles": {
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "sm",
+      "buttonRadius": 20,
+      "cardRadius": 24,
+      "avatarBorder": 2,
+      "iconStyle": "solid",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "lavender",
+    "name": "Lavender",
+    "category": "Aesthetic",
+    "colors": {
+      "backgroundColor": "#F5F2FA",
+      "textColor": "#2D2744",
+      "cardColor": "#FFFFFF",
+      "buttonColor": "#59477C",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#59477C",
+      "mutedColor": "#6E687C"
+    },
+    "typography": {
+      "fontFamily": "Plus Jakarta Sans",
+      "headingFont": "Plus Jakarta Sans"
+    },
+    "styles": {
+      "buttonStyle": "outline",
+      "spacing": "comfortable",
+      "shadowStyle": "none",
+      "buttonRadius": 22,
+      "cardRadius": 24,
+      "avatarBorder": 3,
+      "iconStyle": "solid",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "ocean",
+    "name": "Ocean",
+    "category": "Aesthetic",
+    "colors": {
+      "backgroundColor": "#EAF4F3",
+      "textColor": "#153B43",
+      "cardColor": "#FFFFFF",
+      "buttonColor": "#176373",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#176373",
+      "mutedColor": "#506E73"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "Outfit"
+    },
+    "styles": {
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 18,
+      "cardRadius": 22,
+      "avatarBorder": 2,
+      "iconStyle": "solid",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "rose",
+    "name": "Rose",
+    "category": "Aesthetic",
+    "colors": {
+      "backgroundColor": "#FFF4F4",
+      "textColor": "#452B32",
+      "cardColor": "#FFFFFF",
+      "buttonColor": "#8E455C",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#8E455C",
+      "mutedColor": "#745E65"
+    },
+    "typography": {
+      "fontFamily": "Figtree",
+      "headingFont": "Fraunces"
+    },
+    "styles": {
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 22,
+      "cardRadius": 24,
+      "avatarBorder": 3,
+      "iconStyle": "solid",
+      "bgEffect": "none"
     }
   },
   {
     "id": "brutal",
     "name": "Brutal",
-    "category": "Solid",
+    "category": "Bold",
     "colors": {
-      "backgroundColor": "#fdf4df",
-      "textColor": "#000000",
-      "cardColor": "#ffffff",
-      "buttonColor": "#facc15",
-      "buttonTextColor": "#000000",
-      "accentColor": "#ff5a1f",
-      "mutedColor": "#44403c"
+      "backgroundColor": "#F7F1DC",
+      "textColor": "#151515",
+      "cardColor": "#FFFFFF",
+      "buttonColor": "#E7C45B",
+      "buttonTextColor": "#171717",
+      "accentColor": "#9F3B24",
+      "mutedColor": "#504A42"
     },
     "typography": {
       "fontFamily": "Space Grotesk",
@@ -107,8 +331,8 @@ export const bioStoreThemes: BioStoreTheme[] = [
       "buttonStyle": "filled",
       "spacing": "comfortable",
       "shadowStyle": "hard",
-      "buttonRadius": 0,
-      "cardRadius": 0,
+      "buttonRadius": 4,
+      "cardRadius": 6,
       "avatarBorder": 4,
       "iconStyle": "solid",
       "bgEffect": "none"
@@ -117,15 +341,15 @@ export const bioStoreThemes: BioStoreTheme[] = [
   {
     "id": "candy",
     "name": "Candy",
-    "category": "Vibrant",
+    "category": "Bold",
     "colors": {
-      "backgroundColor": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-      "textColor": "#ffffff",
-      "cardColor": "rgba(255, 255, 255, 0.18)",
-      "buttonColor": "#ffffff",
-      "buttonTextColor": "#d6336c",
-      "accentColor": "#ffe066",
-      "mutedColor": "rgba(255, 255, 255, 0.82)"
+      "backgroundColor": "#FFF0E8",
+      "textColor": "#4C2D3A",
+      "cardColor": "#FFFFFF",
+      "buttonColor": "#985069",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#985069",
+      "mutedColor": "#775B64"
     },
     "typography": {
       "fontFamily": "Inter",
@@ -136,52 +360,24 @@ export const bioStoreThemes: BioStoreTheme[] = [
       "spacing": "comfortable",
       "shadowStyle": "soft",
       "buttonRadius": 28,
-      "cardRadius": 24,
+      "cardRadius": 28,
       "avatarBorder": 3,
       "iconStyle": "solid",
-      "bgEffect": "bubbles"
-    }
-  },
-  {
-    "id": "cherry",
-    "name": "Cherry",
-    "category": "Dark",
-    "colors": {
-      "backgroundColor": "linear-gradient(160deg, #1a0a0f 0%, #2d0b16 100%)",
-      "textColor": "#ffe4ec",
-      "cardColor": "rgba(255, 228, 236, 0.06)",
-      "buttonColor": "linear-gradient(135deg, #ff4d6d 0%, #c9184a 100%)",
-      "buttonTextColor": "#ffffff",
-      "accentColor": "#ff4d6d",
-      "mutedColor": "#c08497"
-    },
-    "typography": {
-      "fontFamily": "Inter",
-      "headingFont": "Playfair Display"
-    },
-    "styles": {
-      "buttonStyle": "filled",
-      "spacing": "comfortable",
-      "shadowStyle": "glow",
-      "buttonRadius": 24,
-      "cardRadius": 20,
-      "avatarBorder": 2,
-      "iconStyle": "solid",
-      "bgEffect": "blobs"
+      "bgEffect": "none"
     }
   },
   {
     "id": "cyberpunk",
     "name": "Cyberpunk",
-    "category": "Dark",
+    "category": "Bold",
     "colors": {
-      "backgroundColor": "linear-gradient(135deg, #0d0221 0%, #190b2e 100%)",
-      "textColor": "#e0faff",
-      "cardColor": "rgba(0, 240, 255, 0.05)",
-      "buttonColor": "linear-gradient(135deg, #00f0ff 0%, #ff00e5 100%)",
-      "buttonTextColor": "#05010a",
-      "accentColor": "#00f0ff",
-      "mutedColor": "#8aa0b2"
+      "backgroundColor": "#151C2D",
+      "textColor": "#F6F7FB",
+      "cardColor": "#243047",
+      "buttonColor": "#8ED7D1",
+      "buttonTextColor": "#102A2D",
+      "accentColor": "#A3DFDA",
+      "mutedColor": "#CBD4E0"
     },
     "typography": {
       "fontFamily": "Inter",
@@ -190,54 +386,26 @@ export const bioStoreThemes: BioStoreTheme[] = [
     "styles": {
       "buttonStyle": "filled",
       "spacing": "comfortable",
-      "shadowStyle": "neon",
-      "buttonRadius": 6,
-      "cardRadius": 10,
+      "shadowStyle": "glow",
+      "buttonRadius": 10,
+      "cardRadius": 16,
       "avatarBorder": 2,
       "iconStyle": "solid",
       "bgEffect": "grid"
     }
   },
   {
-    "id": "emerald",
-    "name": "Emerald",
-    "category": "Dark",
-    "colors": {
-      "backgroundColor": "linear-gradient(160deg, #021b12 0%, #064e3b 100%)",
-      "textColor": "#d1fae5",
-      "cardColor": "rgba(209, 250, 229, 0.07)",
-      "buttonColor": "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-      "buttonTextColor": "#022c22",
-      "accentColor": "#34d399",
-      "mutedColor": "#8bbfa8"
-    },
-    "typography": {
-      "fontFamily": "Figtree",
-      "headingFont": "Fraunces"
-    },
-    "styles": {
-      "buttonStyle": "filled",
-      "spacing": "comfortable",
-      "shadowStyle": "glow",
-      "buttonRadius": 18,
-      "cardRadius": 20,
-      "avatarBorder": 2,
-      "iconStyle": "solid",
-      "bgEffect": "blobs"
-    }
-  },
-  {
     "id": "fire",
     "name": "Fire",
-    "category": "Vibrant",
+    "category": "Bold",
     "colors": {
-      "backgroundColor": "linear-gradient(160deg, #1a0600 0%, #2b0a00 100%)",
-      "textColor": "#fff0e6",
-      "cardColor": "rgba(255, 120, 40, 0.08)",
-      "buttonColor": "linear-gradient(135deg, #f83600 0%, #fe8c00 100%)",
-      "buttonTextColor": "#1a0600",
-      "accentColor": "#ff6b00",
-      "mutedColor": "#c99a86"
+      "backgroundColor": "#2C1E19",
+      "textColor": "#FFF2E9",
+      "cardColor": "#443026",
+      "buttonColor": "#F0B66D",
+      "buttonTextColor": "#402212",
+      "accentColor": "#F0B66D",
+      "mutedColor": "#E5C6B6"
     },
     "typography": {
       "fontFamily": "Inter",
@@ -246,58 +414,30 @@ export const bioStoreThemes: BioStoreTheme[] = [
     "styles": {
       "buttonStyle": "filled",
       "spacing": "comfortable",
-      "shadowStyle": "neon",
+      "shadowStyle": "md",
       "buttonRadius": 14,
-      "cardRadius": 16,
+      "cardRadius": 18,
       "avatarBorder": 2,
       "iconStyle": "solid",
-      "bgEffect": "particles"
+      "bgEffect": "none"
     }
   },
   {
-    "id": "forest",
-    "name": "Forest",
-    "category": "Nature",
+    "id": "neon",
+    "name": "Neon",
+    "category": "Bold",
     "colors": {
-      "backgroundColor": "linear-gradient(160deg, #0b2818 0%, #14432a 100%)",
-      "textColor": "#eafaf1",
-      "cardColor": "rgba(234, 250, 241, 0.06)",
-      "buttonColor": "linear-gradient(135deg, #2d6a4f 0%, #40916c 100%)",
-      "buttonTextColor": "#f0fff4",
-      "accentColor": "#95d5b2",
-      "mutedColor": "#9bb8a9"
-    },
-    "typography": {
-      "fontFamily": "Figtree",
-      "headingFont": "Fraunces"
-    },
-    "styles": {
-      "buttonStyle": "filled",
-      "spacing": "comfortable",
-      "shadowStyle": "soft",
-      "buttonRadius": 16,
-      "cardRadius": 20,
-      "avatarBorder": 2,
-      "iconStyle": "solid",
-      "bgEffect": "blobs"
-    }
-  },
-  {
-    "id": "galaxy",
-    "name": "Galaxy",
-    "category": "Dark",
-    "colors": {
-      "backgroundColor": "linear-gradient(160deg, #0b0033 0%, #1b0a4e 60%, #2d1b4e 100%)",
-      "textColor": "#ede9fe",
-      "cardColor": "rgba(237, 233, 254, 0.07)",
-      "buttonColor": "linear-gradient(135deg, #7c3aed 0%, #2563eb 100%)",
-      "buttonTextColor": "#ffffff",
-      "accentColor": "#a78bfa",
-      "mutedColor": "#a39bc8"
+      "backgroundColor": "#111024",
+      "textColor": "#F7F4FF",
+      "cardColor": "#211B38",
+      "buttonColor": "#C5F273",
+      "buttonTextColor": "#172112",
+      "accentColor": "#C5F273",
+      "mutedColor": "#CFC7DE"
     },
     "typography": {
       "fontFamily": "Inter",
-      "headingFont": "Sora"
+      "headingFont": "Syne"
     },
     "styles": {
       "buttonStyle": "filled",
@@ -307,21 +447,77 @@ export const bioStoreThemes: BioStoreTheme[] = [
       "cardRadius": 20,
       "avatarBorder": 2,
       "iconStyle": "solid",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "aurora",
+    "name": "Aurora",
+    "category": "Signature",
+    "colors": {
+      "backgroundColor": "linear-gradient(180deg, #141F2D 0%, #233A43 100%)",
+      "textColor": "#F6FBF8",
+      "cardColor": "rgba(255,255,255,0.09)",
+      "buttonColor": "#D4E9D9",
+      "buttonTextColor": "#193027",
+      "accentColor": "#B7DDC4",
+      "mutedColor": "#D1E0D9"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "Sora"
+    },
+    "styles": {
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 22,
+      "cardRadius": 24,
+      "avatarBorder": 3,
+      "iconStyle": "solid",
+      "bgEffect": "blobs"
+    }
+  },
+  {
+    "id": "galaxy",
+    "name": "Galaxy",
+    "category": "Signature",
+    "colors": {
+      "backgroundColor": "linear-gradient(180deg, #19162B 0%, #30233F 100%)",
+      "textColor": "#FAF7FF",
+      "cardColor": "rgba(255,255,255,0.09)",
+      "buttonColor": "#D9CAE9",
+      "buttonTextColor": "#2C213C",
+      "accentColor": "#DCC8ED",
+      "mutedColor": "#D3CADC"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "Sora"
+    },
+    "styles": {
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 22,
+      "cardRadius": 24,
+      "avatarBorder": 3,
+      "iconStyle": "solid",
       "bgEffect": "stars"
     }
   },
   {
     "id": "glass",
     "name": "Glass",
-    "category": "Dark",
+    "category": "Signature",
     "colors": {
-      "backgroundColor": "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
-      "textColor": "#f8fafc",
-      "cardColor": "rgba(255, 255, 255, 0.08)",
-      "buttonColor": "rgba(255, 255, 255, 0.14)",
-      "buttonTextColor": "#f8fafc",
-      "accentColor": "#818cf8",
-      "mutedColor": "#94a3b8"
+      "backgroundColor": "#1F2E34",
+      "textColor": "#F6FAF9",
+      "cardColor": "rgba(255,255,255,0.10)",
+      "buttonColor": "rgba(255,255,255,0.18)",
+      "buttonTextColor": "#F6FAF9",
+      "accentColor": "#C5E2DA",
+      "mutedColor": "#D1DEDB"
     },
     "typography": {
       "fontFamily": "Inter",
@@ -333,191 +529,23 @@ export const bioStoreThemes: BioStoreTheme[] = [
       "shadowStyle": "glass",
       "buttonRadius": 20,
       "cardRadius": 24,
-      "avatarBorder": 1,
-      "iconStyle": "solid",
-      "bgEffect": "blobs"
-    }
-  },
-  {
-    "id": "lavender",
-    "name": "Lavender",
-    "category": "Soft",
-    "colors": {
-      "backgroundColor": "linear-gradient(180deg, #f5f3ff 0%, #ede9fe 100%)",
-      "textColor": "#3b0764",
-      "cardColor": "rgba(59, 7, 100, 0.05)",
-      "buttonColor": "linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)",
-      "buttonTextColor": "#ffffff",
-      "accentColor": "#8b5cf6",
-      "mutedColor": "#7c6a93"
-    },
-    "typography": {
-      "fontFamily": "Plus Jakarta Sans",
-      "headingFont": "Plus Jakarta Sans"
-    },
-    "styles": {
-      "buttonStyle": "filled",
-      "spacing": "comfortable",
-      "shadowStyle": "soft",
-      "buttonRadius": 24,
-      "cardRadius": 22,
-      "avatarBorder": 3,
-      "iconStyle": "solid",
-      "bgEffect": "blobs"
-    }
-  },
-  {
-    "id": "midnight",
-    "name": "Midnight",
-    "category": "Dark",
-    "colors": {
-      "backgroundColor": "linear-gradient(180deg, #0a0a0f 0%, #111118 100%)",
-      "textColor": "#fafafa",
-      "cardColor": "rgba(255, 255, 255, 0.05)",
-      "buttonColor": "#fafafa",
-      "buttonTextColor": "#0a0a0f",
-      "accentColor": "#6366f1",
-      "mutedColor": "#a1a1aa"
-    },
-    "typography": {
-      "fontFamily": "Inter",
-      "headingFont": "Space Grotesk"
-    },
-    "styles": {
-      "buttonStyle": "filled",
-      "spacing": "comfortable",
-      "shadowStyle": "soft",
-      "buttonRadius": 14,
-      "cardRadius": 16,
-      "avatarBorder": 0,
-      "iconStyle": "solid",
-      "bgEffect": "grid"
-    }
-  },
-  {
-    "id": "mono",
-    "name": "Mono",
-    "category": "Light",
-    "colors": {
-      "backgroundColor": "#ffffff",
-      "textColor": "#111111",
-      "cardColor": "rgba(0, 0, 0, 0.04)",
-      "buttonColor": "#111111",
-      "buttonTextColor": "#ffffff",
-      "accentColor": "#111111",
-      "mutedColor": "#6b7280"
-    },
-    "typography": {
-      "fontFamily": "DM Sans",
-      "headingFont": "DM Serif Display"
-    },
-    "styles": {
-      "buttonStyle": "filled",
-      "spacing": "spacious",
-      "shadowStyle": "none",
-      "buttonRadius": 8,
-      "cardRadius": 12,
-      "avatarBorder": 0,
-      "iconStyle": "outline",
-      "bgEffect": "none"
-    }
-  },
-  {
-    "id": "neon",
-    "name": "Neon",
-    "category": "Dark",
-    "colors": {
-      "backgroundColor": "linear-gradient(135deg, #0a0014 0%, #120024 100%)",
-      "textColor": "#f0f0ff",
-      "cardColor": "rgba(247, 37, 133, 0.06)",
-      "buttonColor": "linear-gradient(135deg, #f72585 0%, #7209b7 100%)",
-      "buttonTextColor": "#ffffff",
-      "accentColor": "#f72585",
-      "mutedColor": "#9a8fb0"
-    },
-    "typography": {
-      "fontFamily": "Inter",
-      "headingFont": "Syne"
-    },
-    "styles": {
-      "buttonStyle": "filled",
-      "spacing": "comfortable",
-      "shadowStyle": "neon",
-      "buttonRadius": 12,
-      "cardRadius": 16,
       "avatarBorder": 2,
       "iconStyle": "solid",
-      "bgEffect": "grid"
-    }
-  },
-  {
-    "id": "ocean",
-    "name": "Ocean",
-    "category": "Gradient",
-    "colors": {
-      "backgroundColor": "linear-gradient(160deg, #0b486b 0%, #2193b0 100%)",
-      "textColor": "#f0fbff",
-      "cardColor": "rgba(255, 255, 255, 0.1)",
-      "buttonColor": "linear-gradient(135deg, #00c6ff 0%, #0072ff 100%)",
-      "buttonTextColor": "#ffffff",
-      "accentColor": "#00c6ff",
-      "mutedColor": "#bcdfe9"
-    },
-    "typography": {
-      "fontFamily": "Inter",
-      "headingFont": "Outfit"
-    },
-    "styles": {
-      "buttonStyle": "filled",
-      "spacing": "comfortable",
-      "shadowStyle": "soft",
-      "buttonRadius": 20,
-      "cardRadius": 22,
-      "avatarBorder": 3,
-      "iconStyle": "solid",
-      "bgEffect": "bubbles"
-    }
-  },
-  {
-    "id": "rose",
-    "name": "Rose",
-    "category": "Light",
-    "colors": {
-      "backgroundColor": "linear-gradient(180deg, #fff1f2 0%, #ffe4e6 100%)",
-      "textColor": "#4c0519",
-      "cardColor": "rgba(76, 5, 25, 0.05)",
-      "buttonColor": "linear-gradient(135deg, #fb7185 0%, #e11d48 100%)",
-      "buttonTextColor": "#ffffff",
-      "accentColor": "#e11d48",
-      "mutedColor": "#9f5a6b"
-    },
-    "typography": {
-      "fontFamily": "Figtree",
-      "headingFont": "Fraunces"
-    },
-    "styles": {
-      "buttonStyle": "filled",
-      "spacing": "comfortable",
-      "shadowStyle": "soft",
-      "buttonRadius": 24,
-      "cardRadius": 24,
-      "avatarBorder": 3,
-      "iconStyle": "solid",
-      "bgEffect": "blobs"
+      "bgEffect": "none"
     }
   },
   {
     "id": "royal",
     "name": "Royal",
-    "category": "Dark",
+    "category": "Signature",
     "colors": {
-      "backgroundColor": "linear-gradient(160deg, #1a0b2e 0%, #2d1b4e 100%)",
-      "textColor": "#f3e8ff",
-      "cardColor": "rgba(243, 232, 255, 0.07)",
-      "buttonColor": "linear-gradient(135deg, #a855f7 0%, #6d28d9 100%)",
-      "buttonTextColor": "#ffffff",
-      "accentColor": "#fbbf24",
-      "mutedColor": "#b3a3c9"
+      "backgroundColor": "#20233C",
+      "textColor": "#F8F6F1",
+      "cardColor": "#303652",
+      "buttonColor": "#DFC99B",
+      "buttonTextColor": "#322A20",
+      "accentColor": "#E6D2A8",
+      "mutedColor": "#D1CFD3"
     },
     "typography": {
       "fontFamily": "Inter",
@@ -526,38 +554,10 @@ export const bioStoreThemes: BioStoreTheme[] = [
     "styles": {
       "buttonStyle": "filled",
       "spacing": "comfortable",
-      "shadowStyle": "glow",
-      "buttonRadius": 16,
+      "shadowStyle": "md",
+      "buttonRadius": 14,
       "cardRadius": 20,
-      "avatarBorder": 2,
-      "iconStyle": "solid",
-      "bgEffect": "stars"
-    }
-  },
-  {
-    "id": "sand",
-    "name": "Sand",
-    "category": "Light",
-    "colors": {
-      "backgroundColor": "linear-gradient(180deg, #faf3e0 0%, #f0e2c4 100%)",
-      "textColor": "#3d2b1f",
-      "cardColor": "rgba(61, 43, 31, 0.05)",
-      "buttonColor": "linear-gradient(135deg, #d99a6c 0%, #a85b3b 100%)",
-      "buttonTextColor": "#fff8ef",
-      "accentColor": "#c2714f",
-      "mutedColor": "#8a7461"
-    },
-    "typography": {
-      "fontFamily": "Figtree",
-      "headingFont": "Fraunces"
-    },
-    "styles": {
-      "buttonStyle": "filled",
-      "spacing": "comfortable",
-      "shadowStyle": "soft",
-      "buttonRadius": 18,
-      "cardRadius": 20,
-      "avatarBorder": 2,
+      "avatarBorder": 3,
       "iconStyle": "solid",
       "bgEffect": "none"
     }
@@ -565,15 +565,15 @@ export const bioStoreThemes: BioStoreTheme[] = [
   {
     "id": "sunset",
     "name": "Sunset",
-    "category": "Warm",
+    "category": "Signature",
     "colors": {
-      "backgroundColor": "linear-gradient(160deg, #ff512f 0%, #dd2476 100%)",
-      "textColor": "#fff5f0",
-      "cardColor": "rgba(255, 255, 255, 0.12)",
-      "buttonColor": "#ffffff",
-      "buttonTextColor": "#dd2476",
-      "accentColor": "#ffd166",
-      "mutedColor": "rgba(255, 245, 240, 0.78)"
+      "backgroundColor": "linear-gradient(180deg, #FAF0E8 0%, #F1DED7 100%)",
+      "textColor": "#492F2E",
+      "cardColor": "#FFF9F4",
+      "buttonColor": "#895348",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#895348",
+      "mutedColor": "#755B57"
     },
     "typography": {
       "fontFamily": "Inter",
@@ -583,11 +583,11 @@ export const bioStoreThemes: BioStoreTheme[] = [
       "buttonStyle": "filled",
       "spacing": "comfortable",
       "shadowStyle": "soft",
-      "buttonRadius": 22,
-      "cardRadius": 24,
+      "buttonRadius": 24,
+      "cardRadius": 26,
       "avatarBorder": 3,
       "iconStyle": "solid",
-      "bgEffect": "blobs"
+      "bgEffect": "none"
     }
   }
 ];

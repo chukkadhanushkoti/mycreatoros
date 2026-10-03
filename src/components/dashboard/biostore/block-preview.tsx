@@ -70,8 +70,6 @@ function UnifiedRow({
   iconBg,
   imageUrl,
   theme,
-  index,
-  clicks,
 }: {
   title?: string;
   subtitle?: string;
@@ -98,7 +96,7 @@ function UnifiedRow({
       </div>
       <div className="min-w-0 flex-1 text-left">
         <p className="truncate text-sm font-medium leading-tight" style={{ color: textColor }}>
-          {index}. {title || "Untitled"}
+          {title || "Untitled"}
         </p>
         {subtitle && (
           <p className="truncate text-xs" style={{ color: textColor, opacity: 0.65 }}>
@@ -107,7 +105,6 @@ function UnifiedRow({
         )}
       </div>
       <div className="ml-2 flex shrink-0 items-center gap-2" style={{ color: textColor, opacity: 0.6 }}>
-        {!!clicks && <span className="text-xs font-medium">{clicks} clicks</span>}
         <ExternalLink className="h-3.5 w-3.5" />
       </div>
     </div>

@@ -28,6 +28,7 @@ export function StorePreview({ store, theme }: { store: BioStoreDoc; theme: BioS
   const accentColor = theme.colors.accentColor || theme.colors.textColor;
   const mutedColor = theme.colors.mutedColor || theme.colors.textColor;
   const textColor = theme.colors.textColor;
+  const avatarBorder = Math.max(0, Math.min(theme.styles.avatarBorder || 0, 8));
 
   // Background: a per-store image (https only) overrides the theme bg, with a
   // luminance scrim matching [username]/page.tsx; otherwise theme flat/gradient.
@@ -74,18 +75,20 @@ export function StorePreview({ store, theme }: { store: BioStoreDoc; theme: BioS
       className="flex min-h-full w-full flex-col items-center px-4 pb-10 pt-9"
       style={containerStyle}
     >
-      <div
-        className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-black/10"
-        style={{ border: `${theme.styles.avatarBorder}px solid ${textColor}` }}
-      >
-        {store.profileImage ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={store.profileImage} alt={store.displayName} className="h-full w-full object-cover" />
-        ) : (
-          <span className="text-xl font-semibold" style={{ color: textColor }}>
-            {(store.displayName || store.username).charAt(0).toUpperCase()}
-          </span>
-        )}
+      <div className="h-20 w-20 shrink-0 rounded-full" style={{
+        padding: avatarBorder,
+        backgroundColor: avatarBorder ? accentColor : "transparent",
+      }}>
+        <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-black/10">
+          {store.profileImage ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={store.profileImage} alt={store.displayName} className="h-full w-full object-cover" />
+          ) : (
+            <span className="text-xl font-semibold" style={{ color: textColor }}>
+              {(store.displayName || store.username).charAt(0).toUpperCase()}
+            </span>
+          )}
+        </div>
       </div>
 
       <p

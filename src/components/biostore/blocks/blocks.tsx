@@ -113,12 +113,8 @@ interface UnifiedButtonProps {
   onClick?: (e: React.MouseEvent) => void;
 }
 
-const UnifiedButton = ({ url, title, subtitle, iconEl, iconBg, imageUrl, themeData, index, clicks, onClick }: UnifiedButtonProps) => {
-  const { containerStyle, textColor, shadow } = resolveButtonStyle(themeData);
-
-  const hoverShadow = shadow === 'hard'
-    ? '6px 6px 0 rgba(0,0,0,1)'
-    : '0 6px 20px 0 rgba(0,0,0,0.18)';
+const UnifiedButton = ({ url, title, subtitle, iconEl, iconBg, imageUrl, themeData, onClick }: UnifiedButtonProps) => {
+  const { containerStyle, textColor } = resolveButtonStyle(themeData);
 
   return (
     <a
@@ -126,18 +122,8 @@ const UnifiedButton = ({ url, title, subtitle, iconEl, iconBg, imageUrl, themeDa
       target="_blank"
       rel="noopener noreferrer"
       onClick={onClick}
-      className="flex items-center w-full px-3 py-3 relative group"
+      className="group relative flex min-h-[72px] w-full items-center px-4 py-3 transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
       style={containerStyle}
-      onMouseEnter={(e) => {
-        const el = e.currentTarget as HTMLAnchorElement;
-        el.style.transform = 'scale(1.02)';
-        el.style.boxShadow = hoverShadow;
-      }}
-      onMouseLeave={(e) => {
-        const el = e.currentTarget as HTMLAnchorElement;
-        el.style.transform = 'scale(1)';
-        el.style.boxShadow = (containerStyle.boxShadow as string) || '';
-      }}
     >
       {/* ── Icon Squircle ── */}
       <div
@@ -153,9 +139,9 @@ const UnifiedButton = ({ url, title, subtitle, iconEl, iconBg, imageUrl, themeDa
       </div>
 
       {/* ── Title + Subtitle (left-aligned) ── */}
-      <div className="flex-1 min-w-0 text-left">
+      <div className="min-w-0 flex-1 text-left">
         <p className="font-semibold text-[15px] leading-tight truncate" style={{ color: textColor }}>
-          {index !== undefined ? `${index}. ` : ''}{title || 'Link'}
+          {title || 'Link'}
         </p>
         {subtitle && (
           <p className="text-xs mt-0.5 truncate" style={{ color: textColor, opacity: 0.65 }}>
@@ -164,11 +150,8 @@ const UnifiedButton = ({ url, title, subtitle, iconEl, iconBg, imageUrl, themeDa
         )}
       </div>
 
-      {/* ── Clicks & External Link Arrow ── */}
+      {/* The public card keeps analytics out of the visitor-facing link. */}
       <div className="flex-shrink-0 flex items-center justify-end ml-2 gap-2" style={{ color: textColor, opacity: 0.6 }}>
-        {clicks !== undefined && clicks > 0 && (
-          <span className="text-xs font-medium">{clicks} clicks</span>
-        )}
         <ExternalLink className="w-4 h-4 opacity-75" />
       </div>
     </a>
