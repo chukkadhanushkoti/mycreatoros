@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { bioTile } from '@/lib/biostore-layout';
 import {
   ExternalLink, Download, Play, Link2, Image as ImageIcon,
   Video, ShoppingBag, Layers,
@@ -113,8 +114,9 @@ interface UnifiedButtonProps {
   onClick?: (e: React.MouseEvent) => void;
 }
 
-const UnifiedButton = ({ url, title, subtitle, iconEl, iconBg, imageUrl, themeData, onClick }: UnifiedButtonProps) => {
+const UnifiedButton = ({ url, title, subtitle, iconEl, iconBg, imageUrl, themeData, onClick, index }: UnifiedButtonProps) => {
   const { containerStyle, textColor } = resolveButtonStyle(themeData);
+  const tile = bioTile(themeData.styles?.layout, index);
 
   return (
     <a
@@ -122,9 +124,10 @@ const UnifiedButton = ({ url, title, subtitle, iconEl, iconBg, imageUrl, themeDa
       target="_blank"
       rel="noopener noreferrer"
       onClick={onClick}
-      className="group relative flex min-h-[72px] w-full items-center px-4 py-3 transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-      style={containerStyle}
+      className={`group relative flex w-full px-4 py-3 transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${tile ? 'flex-col items-start justify-between gap-4 min-h-[164px]' : 'min-h-[72px] items-center'}`}
+      style={{...containerStyle,minHeight: tile && themeData.styles?.layout === 'spotlight' ? 180 : undefined}}
     >
+      {themeData.styles?.layout === 'editorial' && <span className="mr-4 text-xl opacity-40 tabular-nums">{String(index ?? 1).padStart(2,'0')}</span>}
       {/* ── Icon Squircle ── */}
       <div
         className="w-12 h-12 flex-shrink-0 flex items-center justify-center overflow-hidden rounded-[14px] mr-4 ml-1 shadow-sm"
@@ -139,8 +142,8 @@ const UnifiedButton = ({ url, title, subtitle, iconEl, iconBg, imageUrl, themeDa
       </div>
 
       {/* ── Title + Subtitle (left-aligned) ── */}
-      <div className="min-w-0 flex-1 text-left">
-        <p className="font-semibold text-[15px] leading-tight truncate" style={{ color: textColor }}>
+      <div className={`min-w-0 text-left ${tile ? 'w-full mt-auto' : 'flex-1'}`}>
+        <p className={`font-semibold leading-tight ${tile ? 'line-clamp-2 text-base' : 'truncate text-[15px]'}`} style={{ color: textColor }}>
           {title || 'Link'}
         </p>
         {subtitle && (
@@ -151,7 +154,7 @@ const UnifiedButton = ({ url, title, subtitle, iconEl, iconBg, imageUrl, themeDa
       </div>
 
       {/* The public card keeps analytics out of the visitor-facing link. */}
-      <div className="flex-shrink-0 flex items-center justify-end ml-2 gap-2" style={{ color: textColor, opacity: 0.6 }}>
+      <div className={`flex-shrink-0 flex items-center justify-end gap-2 ${tile ? 'absolute right-4 top-4' : 'ml-2'}`} style={{ color: textColor, opacity: 0.6 }}>
         <ExternalLink className="w-4 h-4 opacity-75" />
       </div>
     </a>

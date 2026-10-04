@@ -20,6 +20,7 @@ export interface BioStoreTheme {
     headingFont?: string;
   };
   styles: {
+    layout?: "classic" | "editorial" | "bento" | "spotlight";
     buttonStyle: "filled" | "outline" | "glass";
     spacing: string;
     shadowStyle: string;

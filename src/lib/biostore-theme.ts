@@ -3,7 +3,7 @@ import type { BioStoreThemeOverrides } from "@/lib/biostore-api";
 
 const COLOR_KEYS = ["backgroundColor", "textColor", "cardColor", "buttonColor", "buttonTextColor", "accentColor", "mutedColor"];
 const TYPO_KEYS = ["fontFamily", "headingFont"];
-const STYLE_KEYS = ["buttonStyle", "spacing", "shadowStyle", "buttonRadius", "cardRadius", "avatarBorder", "iconStyle", "bgEffect"];
+const STYLE_KEYS = ["layout", "buttonStyle", "spacing", "shadowStyle", "buttonRadius", "cardRadius", "avatarBorder", "iconStyle", "bgEffect"];
 
 /** Resolve the same appearance for the public page and the editor preview. */
 export function resolveBioStoreTheme(id?: string, overrides?: BioStoreThemeOverrides | Record<string, unknown>, config?: BioStoreTheme): BioStoreTheme {

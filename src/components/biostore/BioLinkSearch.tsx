@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { Search, X } from "lucide-react";
 import { BlockRenderer } from "./BlockRenderer";
+import { bioBlockLayout, bioBlockSpan } from "@/lib/biostore-layout";
 
 interface BioLinkSearchProps {
   blocks: any[];
@@ -67,7 +68,7 @@ export function BioLinkSearch({ blocks, username, themeData }: BioLinkSearchProp
         )}
       </div>
 
-      <div className="flex flex-col gap-3 w-full">
+      <div className={bioBlockLayout(styles.layout)}>
         {filtered.length === 0 ? (
           <p
             className="text-center text-sm py-6 opacity-80"
@@ -77,13 +78,12 @@ export function BioLinkSearch({ blocks, username, themeData }: BioLinkSearchProp
           </p>
         ) : (
           filtered.map((block, idx) => (
-            <BlockRenderer
-              key={block._id || idx}
+            <div key={block._id || idx} className={bioBlockSpan(styles.layout,block.type)}><BlockRenderer
               block={block}
               username={username}
               themeData={themeData}
               index={idx + 1}
-            />
+            /></div>
           ))
         )}
       </div>

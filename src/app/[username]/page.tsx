@@ -7,6 +7,7 @@ import { BlockRenderer } from "@/components/biostore/BlockRenderer";
 import { BioLinkSearch } from "@/components/biostore/BioLinkSearch";
 import { BackgroundEffects } from "@/components/biostore/BackgroundEffects";
 import { resolveBioStoreTheme } from "@/lib/biostore-theme";
+import { bioBlockLayout, bioBlockSpan } from "@/lib/biostore-layout";
 import { buildGoogleFontsHref, cssFontStack, themeFontFamilies } from "@/lib/biostore-fonts";
 import { API_BASE_URL } from "@/lib/api-client";
 import type { BioStoreDoc } from "@/lib/biostore-api";
@@ -129,7 +130,7 @@ export default async function BioStorePage({ params }: { params: Promise<{ usern
       <div className="w-full max-w-2xl mx-auto space-y-8 relative z-10 pt-8">
         
         {/* Profile Header */}
-        <div className="flex flex-col items-center text-center space-y-4">
+        <div className={`flex flex-col space-y-4 ${styles.layout === 'editorial' ? 'items-start text-left' : 'items-center text-center'}`}>
           <div
              className="h-28 w-28 shrink-0 rounded-full shadow-lg"
              style={{
@@ -156,7 +157,7 @@ export default async function BioStorePage({ params }: { params: Promise<{ usern
           
           <div>
             <h1
-              className="text-2xl font-bold flex items-center justify-center gap-2"
+              className={`text-2xl font-bold flex items-center gap-2 ${styles.layout === 'editorial' ? '' : 'justify-center'}`}
               style={{ color: colors.textColor, fontFamily: headingFont, letterSpacing: '-0.01em' }}
             >
               {bioStore.displayName}
@@ -179,9 +180,9 @@ export default async function BioStorePage({ params }: { params: Promise<{ usern
                 />
               );
             }
-            return sortedBlocks.map((block, idx: number) => (
-              <BlockRenderer key={block._id || idx} block={block} username={bioStore.username} themeData={themeData} index={idx + 1} />
-            ));
+            return <div className={bioBlockLayout(styles.layout)}>{sortedBlocks.map((block, idx: number) => (
+              <div key={block._id || idx} className={bioBlockSpan(styles.layout,block.type)}><BlockRenderer block={block} username={bioStore.username} themeData={themeData} index={idx + 1} /></div>
+            ))}</div>;
           })()}
         </div>
       </div>

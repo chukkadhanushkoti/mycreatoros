@@ -3,6 +3,7 @@ import { FaInstagram, FaYoutube, FaXTwitter, FaLinkedin, FaGithub, FaFacebook, F
 
 import type { BioStoreBlock } from "@/lib/biostore-api";
 import type { BioStoreTheme } from "@/config/biostore-themes";
+import { bioTile } from "@/lib/biostore-layout";
 
 const SOCIAL_CONFIG: Record<string, { icon: React.ReactNode; color: string; label: string }> = {
   instagram: { icon: <FaInstagram className="h-4 w-4" />, color: "#E1306C", label: "Instagram" },
@@ -70,6 +71,7 @@ function UnifiedRow({
   iconBg,
   imageUrl,
   theme,
+  index,
 }: {
   title?: string;
   subtitle?: string;
@@ -81,8 +83,10 @@ function UnifiedRow({
   clicks?: number;
 }) {
   const { containerStyle, textColor } = resolveButtonStyle(theme);
+  const tile = bioTile(theme.styles.layout,index);
   return (
-    <div className="flex w-full items-center px-3 py-3" style={containerStyle}>
+    <div className={`relative flex w-full px-3 py-3 ${tile ? 'min-h-[164px] flex-col items-start justify-between gap-4' : 'items-center'}`} style={{...containerStyle,minHeight: tile && theme.styles.layout === 'spotlight' ? 180 : undefined}}>
+      {theme.styles.layout === 'editorial' && <span className="mr-4 text-xl opacity-40 tabular-nums">{String(index).padStart(2,'0')}</span>}
       <div
         className="mr-3 flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl"
         style={{ backgroundColor: iconBg }}
@@ -94,8 +98,8 @@ function UnifiedRow({
           iconEl
         )}
       </div>
-      <div className="min-w-0 flex-1 text-left">
-        <p className="truncate text-sm font-medium leading-tight" style={{ color: textColor }}>
+      <div className={`min-w-0 text-left ${tile ? 'mt-auto w-full' : 'flex-1'}`}>
+        <p className={`${tile ? 'line-clamp-2' : 'truncate'} text-sm font-medium leading-tight`} style={{ color: textColor }}>
           {title || "Untitled"}
         </p>
         {subtitle && (
@@ -104,7 +108,7 @@ function UnifiedRow({
           </p>
         )}
       </div>
-      <div className="ml-2 flex shrink-0 items-center gap-2" style={{ color: textColor, opacity: 0.6 }}>
+      <div className={`flex shrink-0 items-center gap-2 ${tile ? 'absolute top-4 right-4' : 'ml-2'}`} style={{ color: textColor, opacity: 0.6 }}>
         <ExternalLink className="h-3.5 w-3.5" />
       </div>
     </div>

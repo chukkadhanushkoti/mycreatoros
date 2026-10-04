@@ -7,6 +7,7 @@ import type { BioStoreDoc } from "@/lib/biostore-api";
 import type { BioStoreTheme } from "@/config/biostore-themes";
 import { BlockPreview } from "@/components/dashboard/biostore/block-preview";
 import { cssFontStack } from "@/lib/biostore-fonts";
+import { bioBlockLayout, bioBlockSpan } from "@/lib/biostore-layout";
 
 // Perceived-luminance of a #hex color (0..1). Mirrors the public page's scrim
 // rule so the editor preview and the live site pick the same legibility overlay.
@@ -72,7 +73,7 @@ export function StorePreview({ store, theme }: { store: BioStoreDoc; theme: BioS
 
   return (
     <div
-      className="flex min-h-full w-full flex-col items-center px-4 pb-10 pt-9"
+      className={`flex min-h-full w-full flex-col px-4 pb-10 pt-9 ${theme.styles.layout === 'editorial' ? 'items-start text-left' : 'items-center text-center'}`}
       style={containerStyle}
     >
       <div className="h-20 w-20 shrink-0 rounded-full" style={{
@@ -99,7 +100,7 @@ export function StorePreview({ store, theme }: { store: BioStoreDoc; theme: BioS
         {store.isVerified && <BadgeCheck className="h-4 w-4" style={{ color: accentColor }} />}
       </p>
       {store.bio && (
-        <p className="mt-1 max-w-[85%] text-center text-xs" style={{ color: mutedColor, opacity: 0.9 }}>
+        <p className={`mt-1 max-w-[85%] text-xs ${theme.styles.layout === 'editorial' ? 'text-left' : 'text-center'}`} style={{ color: mutedColor, opacity: 0.9 }}>
           {store.bio}
         </p>
       )}
@@ -137,14 +138,14 @@ export function StorePreview({ store, theme }: { store: BioStoreDoc; theme: BioS
         </div>
       )}
 
-      <div className={`${showSearch ? "mt-3" : "mt-5"} flex w-full flex-col gap-2.5`}>
+      <div className={`${showSearch ? "mt-3" : "mt-5"} ${bioBlockLayout(theme.styles.layout)}`}>
         {visibleBlocks.length === 0 && showSearch && q ? (
           <p className="py-5 text-center text-xs" style={{ color: mutedColor, opacity: 0.85 }}>
             No links match &ldquo;{query}&rdquo;.
           </p>
         ) : (
           visibleBlocks.map((block, index) => (
-            <BlockPreview key={block._id || index} block={block} theme={theme} index={index + 1} />
+            <div key={block._id || index} className={bioBlockSpan(theme.styles.layout,block.type)}><BlockPreview block={block} theme={theme} index={index + 1} /></div>
           ))
         )}
       </div>
