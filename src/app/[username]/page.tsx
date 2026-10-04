@@ -63,7 +63,7 @@ export default async function BioStorePage({ params }: { params: Promise<{ usern
   }
 
   // Determine theme
-  const themeData = resolveBioStoreTheme(bioStore.theme, bioStore.themeOverrides);
+  const themeData = resolveBioStoreTheme(bioStore.theme, bioStore.themeOverrides, bioStore.themeConfig);
 
   // Parse background
   const bgStyle: CSSProperties = {};

@@ -19,7 +19,7 @@ import {
 
 import { getAccessToken } from "@/context/auth-context";
 import { ApiError } from "@/lib/api-client";
-import { biostoreApi, type BioStoreDoc, type DeletedBioStoreInfo } from "@/lib/biostore-api";
+import { biostoreApi, type BioStoreDoc, type DeletedBioStoreInfo, type BioStoreAnalytics } from "@/lib/biostore-api";
 import { StatCard } from "@/components/dashboard/biostore/stat-card";
 import { BioStoreDashboardSkeleton } from "@/components/dashboard/biostore/skeleton";
 import { cn } from "@/lib/utils";
@@ -199,14 +199,15 @@ function BioStoreDashboard({
 }) {
   const [copied, setCopied] = useState(false);
   const [publishing, setPublishing] = useState(false);
+  const [overview,setOverview]=useState<BioStoreAnalytics["summary"]|null>(null);
+  const [error,setError]=useState("");
+  useEffect(()=>{let mounted=true;const token=getAccessToken();if(token)biostoreApi.getAnalytics(token,28).then(data=>{if(mounted)setOverview(data.summary);}).catch(()=>{if(mounted)setError("Unable to load the 28-day overview.");});return()=>{mounted=false;};},[store.username]);
 
   const publicUrl = `${SITE_URL.replace(/\/$/, "")}/${store.username}`;
   const isLive = store.status === "published";
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(publicUrl);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1800);
+    try{await navigator.clipboard.writeText(publicUrl);setCopied(true);setTimeout(() => setCopied(false), 1800);}catch{setError("Could not copy the link. Please try again.");}
   };
 
   const togglePublish = async () => {
@@ -216,8 +217,8 @@ function BioStoreDashboard({
     try {
       const updated = await biostoreApi.update(token, { status: isLive ? "unpublished" : "published" });
       onChangeAction(updated);
-    } catch {
-      // no-op, UI stays as-is on failure
+    } catch (err) {
+      setError(err instanceof ApiError?err.message:"Could not change publication status.");
     } finally {
       setPublishing(false);
     }
@@ -267,11 +268,13 @@ function BioStoreDashboard({
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <StatCard icon={Eye} label="Views" value={store.analytics.views} color="#3B82F6" />
-        <StatCard icon={MousePointerClick} label="Clicks" value={store.analytics.clicks} color="#8B5CF6" />
-        <StatCard icon={BarChart3} label="CTR" value={`${store.analytics.ctr ?? 0}%`} color="#F97316" />
-        <StatCard icon={Users} label="Visitors" value={store.analytics.uniqueVisitors} color="#14B8A6" />
+      {error&&<p role="alert" className="mt-4 text-sm text-rose-500">{error}</p>}
+      <h2 className="mt-6 text-sm font-semibold">Overview · last 28 days</h2>
+      <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <StatCard icon={Eye} label="Views" value={overview?.views??"—"} color="#3B82F6" />
+        <StatCard icon={MousePointerClick} label="Clicks" value={overview?.clicks??"—"} color="#8B5CF6" />
+        <StatCard icon={BarChart3} label="CTR" value={overview?`${overview.ctr}%`:"—"} color="#F97316" />
+        <StatCard icon={Users} label="Visitors" value={overview?.uniqueVisitors??"—"} color="#14B8A6" />
       </div>
 
       <p className="mt-8 text-xs font-semibold uppercase tracking-wide text-neutral-400 dark:text-neutral-500">

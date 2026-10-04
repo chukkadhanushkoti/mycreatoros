@@ -6,6 +6,7 @@ import { ArrowLeft, Camera, ChevronDown, ChevronUp, Eye, Image as ImageIcon, Plu
 import { AnimatePresence, motion } from "framer-motion";
 
 import { getAccessToken } from "@/context/auth-context";
+import { getAccess, type Access } from "@/lib/access-api";
 import { ApiError } from "@/lib/api-client";
 import {
   biostoreApi,
@@ -19,20 +20,21 @@ import { BLOCK_TYPE_MAP } from "@/config/biostore-blocks";
 import { PhoneFrame } from "@/components/dashboard/biostore/phone-frame";
 import { StorePreview } from "@/components/dashboard/biostore/store-preview";
 import { ThemeStrip } from "@/components/dashboard/biostore/theme-strip";
-import { ThemePicker } from "@/components/dashboard/biostore/theme-picker";
+
 import { AddBlockSheet } from "@/components/dashboard/biostore/add-block-sheet";
 import { BlockEditSheet } from "@/components/dashboard/biostore/block-edit-sheet";
 import { BioStoreEditorSkeleton } from "@/components/dashboard/biostore/skeleton";
 import { cn } from "@/lib/utils";
 
-const MAX_BLOCKS = 40;
+const MAX_BLOCKS = 5000; // drafts support previews, publication enforces the server plan
 
 export default function BioStoreEditorPage() {
+  const [access, setAccess]=useState<Access|null>(null);
   const [store, setStore] = useState<BioStoreDoc | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
-  const [themeOpen, setThemeOpen] = useState(false);
+
   const [addOpen, setAddOpen] = useState(false);
   const [editingBlock, setEditingBlock] = useState<BioStoreBlock | null>(null);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
@@ -45,15 +47,20 @@ export default function BioStoreEditorPage() {
   useEffect(() => {
     const token = getAccessToken();
     if (!token) return;
+    const refreshAccess=()=>getAccess(token).then(setAccess).catch(e=>setSaveError(e.message));
+    void refreshAccess();const timer=setInterval(()=>{if(!document.hidden)void refreshAccess();},30000);
+    window.addEventListener("focus",refreshAccess);
     biostoreApi
       .getMine(token)
       .then(setStore)
+      .catch(e=>setSaveError(e instanceof Error?e.message:"Unable to load BioStore."))
       .finally(() => setLoading(false));
+    return()=>{clearInterval(timer);window.removeEventListener("focus",refreshAccess);if(autosaveTimer.current)clearTimeout(autosaveTimer.current);};
   }, []);
 
   const theme = useMemo(
-    () => resolveBioStoreTheme(store?.theme, store?.themeOverrides),
-    [store?.theme, store?.themeOverrides]
+    () => resolveBioStoreTheme(store?.theme, store?.themeOverrides, access?.catalog.themes.biostore.find(t=>t.id===store?.theme)),
+    [store?.theme, store?.themeOverrides,access]
   );
 
   // Load the selected theme's fonts so the live preview renders real typography
@@ -90,6 +97,7 @@ export default function BioStoreEditorPage() {
   const handlePublish = async () => {
     const token = getAccessToken();
     if (!token || !store) return;
+    if(autosaveTimer.current)clearTimeout(autosaveTimer.current);
     setSaving(true);
     try {
       const updated = await biostoreApi.update(token, {
@@ -192,28 +200,32 @@ export default function BioStoreEditorPage() {
   };
 
   const maxBlocks = MAX_BLOCKS;
+  const chosenTheme=access?.catalog.themes.biostore.find(t=>t.id===store?.theme);
+  const override=access?.limits.themeAccess?.biostore?.[store?.theme||""];
+  const allowedTheme=!!chosenTheme&&chosenTheme.enabled!==false&&(typeof override==="boolean"?override:["free","pro","max","ultra"].indexOf(access?.plan||"free")>=["free","pro","max","ultra"].indexOf(chosenTheme?.minPlan||"free"));
+  const needsUpgrade=!!store&&!!access&&(!allowedTheme||!access.limits.features.biostore||(access.limits.bioBlocks!==null&&store.blocks.length>access.limits.bioBlocks)||(!!store.backgroundImage&&!access.limits.features.bioBackground)||(!!store.settings?.showSearch&&!access.limits.features.bioSearch));
   const sortedBlocks = store?.blocks.slice().sort((a, b) => a.order - b.order) || [];
 
-  if (loading || !store) {
-    return <BioStoreEditorSkeleton />;
-  }
+  if (loading) return <BioStoreEditorSkeleton />;
+  if(!store)return <div className="space-y-4"><p role="alert">{saveError||"Create a BioStore before editing it."}</p><Link href="/dashboard/tools/biostore">Back to BioStore</Link></div>;
 
   return (
     <div className="mx-auto max-w-6xl pb-20">
       {fontsHref && <link rel="stylesheet" href={fontsHref} />}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <Link
           href="/dashboard/tools/biostore"
           className="flex items-center gap-1.5 text-sm font-medium text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back
+          Edit BioStore
         </Link>
-        <div className="flex items-center gap-3">
+        <span className="text-xs text-neutral-500">{store.blocks.length} / {access?(access.limits.bioBlocks??"∞"):"—"} blocks</span>
+        <div className="flex flex-wrap items-center gap-3">
           {saveError ? (
             <span className="text-xs text-red-500">{saveError}</span>
           ) : (
-            saving && <span className="text-xs text-neutral-400">Saving...</span>
+            <span className="text-xs text-neutral-400">{saving?"Saving…":"Saved"}</span>
           )}
           <button
             onClick={() => setMobilePreviewOpen(true)}
@@ -224,9 +236,10 @@ export default function BioStoreEditorPage() {
           </button>
           <button
             onClick={handlePublish}
-            className="rounded-full bg-orange-500 px-4 py-1.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+            disabled={saving||!access}
+            className={cn("rounded-full px-4 py-1.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50",needsUpgrade?"bg-rose-500":"bg-orange-500")}
           >
-            Publish
+            {!access?"Checking access…":needsUpgrade?"Plan required":"Publish"}
           </button>
         </div>
       </div>
@@ -289,15 +302,15 @@ export default function BioStoreEditorPage() {
             <h2 className="text-sm font-semibold text-neutral-900 dark:text-white">Theme</h2>
             <div className="mt-4">
               <ThemeStrip
+                themes={access?.catalog.themes.biostore}
                 currentTheme={store.theme}
                 onSelectAction={(id) => scheduleAutosave({ ...store, theme: id, themeOverrides: {} })}
-                onSeeAllAction={() => setThemeOpen(true)}
               />
             </div>
           </div>
 
           <div className="rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-neutral-900">
-            <h2 className="text-sm font-semibold text-neutral-900 dark:text-white">Background</h2>
+            <h2 className="text-sm font-semibold text-neutral-900 dark:text-white">Background · Max and Ultra</h2>
             <p className="mt-1 text-xs text-neutral-400">
               Add a full-page image behind your page. A legibility overlay keeps text readable.
             </p>
@@ -349,14 +362,7 @@ export default function BioStoreEditorPage() {
           <div className="rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-neutral-900">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold text-neutral-900 dark:text-white">Blocks</h2>
-              <span
-                className={cn(
-                  "text-xs font-medium",
-                  sortedBlocks.length >= maxBlocks ? "text-red-500" : "text-neutral-400"
-                )}
-              >
-                {sortedBlocks.length}/{maxBlocks}
-              </span>
+
             </div>
 
             <button
@@ -488,12 +494,7 @@ export default function BioStoreEditorPage() {
         )}
       </AnimatePresence>
 
-      <ThemePicker
-        open={themeOpen}
-        currentTheme={store.theme}
-        onSelectAction={(id) => scheduleAutosave({ ...store, theme: id, themeOverrides: {} })}
-        onCloseAction={() => setThemeOpen(false)}
-      />
+
       <AddBlockSheet open={addOpen} onSelectAction={addBlock} onCloseAction={() => setAddOpen(false)} />
       <BlockEditSheet block={editingBlock} onSaveAction={saveBlockContent} onCloseAction={() => setEditingBlock(null)} />
     </div>

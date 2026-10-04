@@ -1,6 +1,8 @@
 // GENERATED FILE - DO NOT EDIT MANUALLY
 // Run: node sync_themes.js (in the repo root) to update.
 export interface BioStoreTheme {
+  minPlan?: string;
+  enabled?: boolean;
   id: string;
   name: string;
   category: string;

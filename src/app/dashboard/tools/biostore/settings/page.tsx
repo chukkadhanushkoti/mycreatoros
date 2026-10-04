@@ -6,6 +6,7 @@ import Link from "next/link";
 import { AlertTriangle, ArrowLeft } from "lucide-react";
 
 import { getAccessToken } from "@/context/auth-context";
+import { changeUsername } from "@/lib/access-api";
 import { ApiError } from "@/lib/api-client";
 import { biostoreApi, type BioStoreDoc } from "@/lib/biostore-api";
 import { BioStoreSettingsSkeleton } from "@/components/dashboard/biostore/skeleton";
@@ -21,6 +22,8 @@ interface SeoDesign {
 export default function BioStoreSettingsPage() {
   const router = useRouter();
   const [store, setStore] = useState<BioStoreDoc | null>(null);
+  const [username,setUsername]=useState("");
+  const [changingUsername,setChangingUsername]=useState(false);
   const [metaTitle, setMetaTitle] = useState("");
   const [metaDescription, setMetaDescription] = useState("");
   const [saving, setSaving] = useState(false);
@@ -36,7 +39,7 @@ export default function BioStoreSettingsPage() {
     biostoreApi
       .getMine(token)
       .then((doc) => {
-        setStore(doc);
+        setStore(doc);setUsername(doc?.username||"");
         const seo = (doc.design as SeoDesign | undefined)?.seo;
         setMetaTitle(seo?.metaTitle || "");
         setMetaDescription(seo?.metaDescription || "");
@@ -115,7 +118,9 @@ export default function BioStoreSettingsPage() {
         <h2 className="text-sm font-semibold text-neutral-900 dark:text-white">Account</h2>
         <div className="mt-3">
           <label className={labelClass}>Username</label>
-          <input value={store.username} disabled className={`${inputClass} cursor-not-allowed opacity-70`} />
+          <input value={username} onChange={e=>setUsername(e.target.value.toLowerCase())} maxLength={30} className={inputClass} />
+          <p className="mt-2 text-xs text-neutral-500">Change once every 15 days. Your previous link stops working.</p>
+          <button type="button" disabled={changingUsername||username===store.username} className="mt-3 rounded-xl border px-4 py-2 text-sm disabled:opacity-50" onClick={async()=>{const token=getAccessToken();if(!token)return;setChangingUsername(true);setError(null);try{const updated=await changeUsername(token,username.trim());setStore(updated);setUsername(updated.username);}catch(e){setError(e instanceof Error?e.message:"Unable to change username.");}finally{setChangingUsername(false);}}}>{changingUsername?"Updating…":"Update username"}</button>
         </div>
       </div>
 

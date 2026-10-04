@@ -47,6 +47,8 @@ export interface BioStoreDoc {
   bannerImage?: string;
   backgroundImage?: string;
   theme: string;
+  themeConfig?: import("@/config/biostore-themes").BioStoreTheme;
+  usernameChangedAt?: string;
   themeOverrides?: BioStoreThemeOverrides;
   design?: Record<string, unknown>;
   settings?: {
@@ -80,6 +82,8 @@ export interface DeletedBioStoreInfo {
 }
 
 export interface BioStoreAnalytics {
+  days?: number;
+  trackingSince?: string;
   summary: { views: number; clicks: number; ctr: number; uniqueVisitors: number };
   blocks: { _id: string; type: string; title: string; clicks: number }[];
   chart: { labels: string[]; views: number[]; clicks: number[] };
@@ -170,7 +174,7 @@ export const biostoreApi = {
       { method: "DELETE" }
     ),
 
-  getAnalytics: (accessToken: string) => request<BioStoreAnalytics>("/api/biostore/me/analytics", accessToken),
+  getAnalytics: (accessToken: string, days=28) => request<BioStoreAnalytics>(`/api/biostore/me/analytics?days=${days}`, accessToken),
 
   getStorage: (accessToken: string) => request<StorageUsage>("/api/biostore/storage", accessToken),
 

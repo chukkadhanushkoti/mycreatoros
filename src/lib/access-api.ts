@@ -1,0 +1,5 @@
+import {API_BASE_URL,ApiError} from "./api-client";
+import type {BioStoreTheme} from "@/config/biostore-themes";
+export type Access = {plan:string;credits:number;limits:{bioBlocks:number|null;features:Record<string,boolean>;themeAccess?:Record<string,Record<string,boolean>>};catalog:{themes:{biostore:BioStoreTheme[]}}};
+export async function getAccess(token:string):Promise<Access>{const response=await fetch(`${API_BASE_URL}/api/access/me`,{headers:{Authorization:`Bearer ${token}`},cache:"no-store"});const data=await response.json();if(!response.ok)throw new ApiError(data.error||"Unable to verify access.",response.status,data.code);return data;}
+export async function changeUsername(token:string,username:string){const response=await fetch(`${API_BASE_URL}/api/biostore/me/username`,{method:"PATCH",headers:{Authorization:`Bearer ${token}`,"Content-Type":"application/json"},body:JSON.stringify({username})});const data=await response.json();if(!response.ok)throw new ApiError(data.error||"Unable to change username.",response.status);return data;}

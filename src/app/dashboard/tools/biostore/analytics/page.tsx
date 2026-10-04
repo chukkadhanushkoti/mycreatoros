@@ -10,6 +10,7 @@ import { StatCard } from "@/components/dashboard/biostore/stat-card";
 import { BioStoreAnalyticsSkeleton } from "@/components/dashboard/biostore/skeleton";
 
 export default function BioStoreAnalyticsPage() {
+  const [days,setDays]=useState(28);
   const [data, setData] = useState<BioStoreAnalytics | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -18,11 +19,11 @@ export default function BioStoreAnalyticsPage() {
     const token = getAccessToken();
     if (!token) return;
     biostoreApi
-      .getAnalytics(token)
+      .getAnalytics(token,days)
       .then(setData)
       .catch(() => setError(true))
       .finally(() => setLoading(false));
-  }, []);
+  }, [days]);
 
   if (loading) {
     return <BioStoreAnalyticsSkeleton />;
@@ -53,16 +54,18 @@ export default function BioStoreAnalyticsPage() {
         Analytics
       </h1>
 
+      <div className="mt-5 flex gap-2">{[28,90,365].map(value=><button key={value} type="button" onClick={()=>setDays(value)} className={`rounded-full border px-4 py-2 text-sm ${value===days?"bg-neutral-900 text-white dark:bg-neutral-100 dark:text-black":"border-neutral-200 dark:border-white/10"}`}>{value===365?"1 year":`${value} days`}</button>)}</div>
+      <p className="mt-3 text-xs text-neutral-500">Recorded page views{data.trackingSince?` from ${data.trackingSince}`:" from the tracking start date"}. Unique visitors cover the latest 90 days.</p>
       <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <StatCard icon={Eye} label="Total views" value={data.summary.views} color="#3B82F6" />
-        <StatCard icon={MousePointerClick} label="Link clicks" value={data.summary.clicks} color="#8B5CF6" />
-        <StatCard icon={BarChart3} label="CTR" value={`${data.summary.ctr}%`} color="#F97316" />
-        <StatCard icon={Users} label="Unique visitors" value={data.summary.uniqueVisitors} color="#14B8A6" />
+        <StatCard icon={Eye} label="Total views" value={data.summary.views} color="#637E95" />
+        <StatCard icon={MousePointerClick} label="Link clicks" value={data.summary.clicks} color="#637E95" />
+        <StatCard icon={BarChart3} label="CTR" value={`${data.summary.ctr}%`} color="#637E95" />
+        <StatCard icon={Users} label="Unique visitors" value={data.summary.uniqueVisitors} color="#637E95" />
       </div>
 
       <div className="mt-8 rounded-2xl border border-neutral-200 bg-white p-5 dark:border-white/10 dark:bg-neutral-900">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-neutral-900 dark:text-white">Last 7 days</h2>
+          <h2 className="text-sm font-semibold text-neutral-900 dark:text-white">Last {days} days</h2>
           <div className="flex items-center gap-3 text-xs text-neutral-500 dark:text-neutral-400">
             <span className="flex items-center gap-1.5">
               <span className="h-2 w-2 rounded-full bg-blue-500" /> Views
@@ -72,7 +75,7 @@ export default function BioStoreAnalyticsPage() {
             </span>
           </div>
         </div>
-        <div className="mt-5 flex h-40 items-end justify-between gap-2">
+        <div className="mt-5 flex h-40 items-end gap-2 overflow-x-auto">
           {data.chart.labels.map((label, i) => (
             <div key={i} className="flex flex-1 flex-col items-center gap-1.5">
               <div className="flex h-32 w-full items-end justify-center gap-1">

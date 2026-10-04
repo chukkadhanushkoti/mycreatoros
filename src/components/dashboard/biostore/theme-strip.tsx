@@ -1,56 +1,6 @@
-import { Check } from "lucide-react";
-
-import { bioStoreThemes } from "@/config/biostore-themes";
-import { cn } from "@/lib/utils";
-
-const PREVIEW_COUNT = 6;
-
-function backgroundStyle(bg: string): React.CSSProperties {
-  return bg.startsWith("linear-gradient") ? { backgroundImage: bg } : { backgroundColor: bg };
-}
-
-export function ThemeStrip({
-  currentTheme,
-  onSelectAction,
-  onSeeAllAction,
-}: {
-  currentTheme: string;
-  onSelectAction: (id: string) => void;
-  onSeeAllAction: () => void;
-}) {
-  const selected = bioStoreThemes.find((t) => t.id === currentTheme);
-  const preview = bioStoreThemes.slice(0, PREVIEW_COUNT);
-  const visible = selected && !preview.some((t) => t.id === selected.id) ? [selected, ...preview.slice(0, -1)] : preview;
-
-  return (
-    <div className="flex flex-wrap items-center gap-2.5">
-      {visible.map((theme) => {
-        const active = currentTheme === theme.id;
-        return (
-          <button
-            key={theme.id}
-            onClick={() => onSelectAction(theme.id)}
-            title={theme.name}
-            className={cn(
-              "relative h-11 w-11 shrink-0 rounded-full border-2 transition-transform",
-              active ? "border-orange-500" : "border-neutral-200 dark:border-white/10"
-            )}
-            style={backgroundStyle(theme.colors.backgroundColor)}
-          >
-            {active && (
-              <span className="absolute -bottom-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-orange-500 text-white">
-                <Check className="h-2.5 w-2.5" />
-              </span>
-            )}
-          </button>
-        );
-      })}
-      <button
-        onClick={onSeeAllAction}
-        className="flex h-11 shrink-0 items-center rounded-full border border-neutral-200 px-3.5 text-xs font-medium text-neutral-600 transition-colors hover:border-orange-300 dark:border-white/10 dark:text-neutral-300"
-      >
-        See more ({bioStoreThemes.length})
-      </button>
-    </div>
-  );
+import {Check,Star} from "lucide-react";
+import {bioStoreThemes,type BioStoreTheme} from "@/config/biostore-themes";
+import {cn} from "@/lib/utils";
+export function ThemeStrip({currentTheme,onSelectAction,themes=bioStoreThemes}:{currentTheme:string;onSelectAction:(id:string)=>void;onSeeAllAction?:()=>void;themes?:BioStoreTheme[]}){
+ return <div className="flex gap-3 overflow-x-auto pb-3" aria-label="Theme previews">{themes.filter(t=>t.enabled!==false).map(theme=><button key={theme.id} type="button" aria-pressed={currentTheme===theme.id} onClick={()=>onSelectAction(theme.id)} className={cn("relative w-36 shrink-0 rounded-2xl border p-3 text-left transition-transform hover:-translate-y-0.5",currentTheme===theme.id?"border-neutral-500 ring-2 ring-neutral-400/30":"border-neutral-200 dark:border-white/10")} style={{background:theme.colors.backgroundColor,color:theme.colors.textColor}}><div className="flex items-center justify-between gap-1"><span className="truncate text-xs font-semibold">{theme.name}</span><span className="inline-flex items-center gap-0.5 rounded-md bg-black/10 px-1.5 py-1 text-[9px] uppercase">{["max","ultra"].includes(theme.minPlan||"")&&<Star className="size-2.5"/>}{theme.minPlan||"free"}</span></div><div className="mx-auto my-4 size-8 rounded-full border-2" style={{borderColor:theme.colors.accentColor}}/>{[0,1,2].map(i=><div key={i} className="mb-2 h-5" style={{background:theme.colors.buttonColor,borderRadius:theme.styles.buttonRadius}}/>)}{currentTheme===theme.id&&<Check className="mx-auto mt-2 size-4"/>}</button>)}</div>;
 }
