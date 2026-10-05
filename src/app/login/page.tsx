@@ -26,10 +26,7 @@ export default function LoginPage() {
   const [info, setInfo] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!loading) {
-      setSlowNotice(false);
-      return;
-    }
+    if (!loading) return;
     const timer = setTimeout(() => setSlowNotice(true), 4000);
     return () => clearTimeout(timer);
   }, [loading]);
@@ -56,6 +53,7 @@ export default function LoginPage() {
   const handleLogin = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     resetMessages();
+    setSlowNotice(false);
     setLoading(true);
     try {
       const { accessToken, refreshToken, user } = await authApi.signin({ email, password });
@@ -79,6 +77,7 @@ export default function LoginPage() {
   const handleSignup = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     resetMessages();
+    setSlowNotice(false);
     setLoading(true);
     try {
       const [firstName, ...rest] = fullName.trim().split(/\s+/);
@@ -98,6 +97,7 @@ export default function LoginPage() {
     e.preventDefault();
     resetMessages();
     if (!pendingUserId) return;
+    setSlowNotice(false);
     setLoading(true);
     try {
       const result = await authApi.verifyOtp({ userId: pendingUserId, otp, type: "verify_email" });
@@ -129,6 +129,7 @@ export default function LoginPage() {
   const handleForgotPassword = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     resetMessages();
+    setSlowNotice(false);
     setLoading(true);
     try {
       const { userId } = await authApi.forgotPassword(email);
@@ -146,6 +147,7 @@ export default function LoginPage() {
     e.preventDefault();
     resetMessages();
     if (!pendingUserId) return;
+    setSlowNotice(false);
     setLoading(true);
     try {
       const result = await authApi.verifyOtp({ userId: pendingUserId, otp, type: "reset_password" });
@@ -164,6 +166,7 @@ export default function LoginPage() {
     e.preventDefault();
     resetMessages();
     if (!resetToken) return;
+    setSlowNotice(false);
     setLoading(true);
     try {
       await authApi.resetPassword({ resetToken, newPassword });
@@ -336,7 +339,7 @@ export default function LoginPage() {
               {info}
             </div>
           )}
-          {slowNotice && !error && (
+          {loading && slowNotice && !error && (
             <div className="mb-4 rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-600 dark:border-white/10 dark:bg-white/5 dark:text-neutral-400">
               Still working — our server may be waking up from sleep. This can take up to 30 seconds.
             </div>

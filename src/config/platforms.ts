@@ -13,7 +13,7 @@ import type { IconType } from "react-icons";
 
 import type { SocialPlatform } from "@/lib/social-api";
 
-export const PLATFORM_ORDER: SocialPlatform[] = ["youtube", "instagram", "facebook", "linkedin"];
+export const PLATFORM_ORDER: SocialPlatform[] = ["youtube", "instagram"];
 
 export const PLATFORM_META: Record<SocialPlatform, { label: string; icon: IconType; color: string }> = {
   youtube: { label: "YouTube", icon: FaYoutube, color: "#FF0000" },

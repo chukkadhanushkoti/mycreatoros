@@ -1,13 +1,16 @@
 "use client";
 
+import { createElement } from "react";
+import type { BioStoreBlock } from "@/lib/biostore-api";
+import type { BioStoreTheme } from "@/config/biostore-themes";
 import { getBlockComponent } from "./blocks";
 import { motion } from "framer-motion";
 import { API_BASE_URL } from "@/lib/api-client";
 
 interface BlockProps {
-  block: any;
+  block: BioStoreBlock;
   username: string;
-  themeData: any;
+  themeData: BioStoreTheme;
   index?: number;
 }
 
@@ -50,7 +53,7 @@ export function BlockRenderer({ block, username, themeData, index }: BlockProps)
       transition={{ duration: 0.5, delay: block.order * 0.1 }}
       className="w-full"
     >
-      <Component block={block} themeData={themeData} index={index} onClick={handleBlockClick} />
+      {createElement(Component, {block, themeData, index, onClick: handleBlockClick})}
     </motion.div>
   );
 }

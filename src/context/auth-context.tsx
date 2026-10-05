@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
-import { authApi, type AuthTokens, type AuthUser } from "@/lib/api-client";
+import { ApiError, authApi, type AuthTokens, type AuthUser } from "@/lib/api-client";
 
 const ACCESS_TOKEN_KEY = "creatoros_access_token";
 const REFRESH_TOKEN_KEY = "creatoros_refresh_token";
@@ -54,24 +54,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     try {
       const { user: freshUser } = await authApi.me(accessToken);
-      setUser(freshUser);
-    } catch {
+      if (getAccessToken() === accessToken) setUser(freshUser);
+    } catch (error) {
+      if (!(error instanceof ApiError) || error.status !== 401) return;
       try {
         const tokens = await authApi.refresh(refreshToken);
+        if (getRefreshToken() !== refreshToken) return;
         localStorage.setItem(ACCESS_TOKEN_KEY, tokens.accessToken);
         localStorage.setItem(REFRESH_TOKEN_KEY, tokens.refreshToken);
         const { user: freshUser } = await authApi.me(tokens.accessToken);
-        setUser(freshUser);
-      } catch {
-        clearSession();
+        if (getAccessToken() === tokens.accessToken) setUser(freshUser);
+      } catch (error) {
+        if (error instanceof ApiError && error.status === 401 && getRefreshToken() === refreshToken) clearSession();
       }
     }
   }, [clearSession]);
 
   useEffect(() => {
-    refreshUser().finally(() => setIsLoading(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const task = setTimeout(() => { void refreshUser().finally(() => setIsLoading(false)); }, 0);
+    const retry = () => { void refreshUser(); };
+    window.addEventListener("online", retry);
+    window.addEventListener("focus", retry);
+    return () => { clearTimeout(task); window.removeEventListener("online", retry); window.removeEventListener("focus", retry); };
+  }, [refreshUser]);
 
   const logout = useCallback(async () => {
     try {

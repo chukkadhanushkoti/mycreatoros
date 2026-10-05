@@ -9,11 +9,11 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-50 w-full border-b border-neutral-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:border-white/10 dark:bg-black/80 dark:supports-[backdrop-filter]:bg-black/60">
         <div className="container flex h-16 items-center">
           <div className="mr-4 flex items-center">
-            <a className="mr-8 flex items-center space-x-2" href="/">
+            <Link className="mr-8 flex items-center space-x-2" href="/">
               <span className="font-sans text-lg font-extrabold text-neutral-900 dark:text-white">
                 Creator<span className="text-orange-500">OS</span>
               </span>
-            </a>
+            </Link>
             <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
               <a className="transition-colors hover:text-orange-500 text-neutral-600 dark:text-neutral-400" href="#what-we-do">What we do</a>
               <a className="transition-colors hover:text-orange-500 text-neutral-600 dark:text-neutral-400" href="#services">Services</a>

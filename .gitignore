@@ -33,6 +33,7 @@ yarn-error.log*
 # env files — never commit secrets
 .env
 .env.*
+!.env.example
 .env.local
 .env.development
 .env.production
@@ -74,3 +75,4 @@ AGENTS.md
 # logs
 logs/
 *.log
+/audit-*.json

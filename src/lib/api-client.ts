@@ -43,7 +43,7 @@ export class ApiError extends Error {
 
 const REQUEST_TIMEOUT_MS = 45_000; // Render free-tier services can take 30-50s to wake from cold start.
 
-async function fetchWithTimeout(url: string, options: RequestInit): Promise<Response> {
+export async function fetchWithTimeout(url: string, options: RequestInit): Promise<Response> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
   try {
@@ -68,7 +68,7 @@ async function request<T>(path: string, options: RequestInit = {}, attempt = 0):
     res = await fetchWithTimeout(url, init);
   } catch (err) {
     // Cold-start services sometimes refuse/reset the first connection while waking up — retry once.
-    if (attempt === 0) {
+    if (attempt === 0 && (!options.method || options.method === "GET")) {
       await new Promise((resolve) => setTimeout(resolve, 2500));
       return request<T>(path, options, attempt + 1);
     }

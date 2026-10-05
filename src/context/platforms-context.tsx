@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
-import { getAccessToken } from "@/context/auth-context";
+import { getAccessToken, useAuth } from "@/context/auth-context";
 import { socialApi, type PlatformStatusMap } from "@/lib/social-api";
 
 interface PlatformsContextValue {
@@ -15,29 +15,32 @@ interface PlatformsContextValue {
 const PlatformsContext = createContext<PlatformsContextValue | undefined>(undefined);
 
 export function PlatformsProvider({ children }: { children: ReactNode }) {
-  const [statuses, setStatuses] = useState<PlatformStatusMap>({});
-  const [isLoading, setIsLoading] = useState(true);
+  const { user, isLoading: authLoading } = useAuth();
+  const userId = user?.id;
+  const [snapshot, setSnapshot] = useState<{userId?: string; statuses: PlatformStatusMap}>({statuses: {}});
+  const [loadedUser, setLoadedUser] = useState<string>();
+  const statuses = useMemo(() => snapshot.userId === userId ? snapshot.statuses : {}, [snapshot, userId]);
+  const isLoading = authLoading || (!!userId && loadedUser !== userId);
 
   const refresh = useCallback(async () => {
     const token = getAccessToken();
-    if (!token) {
-      setStatuses({});
-      setIsLoading(false);
-      return;
-    }
+    if (!token || !userId) return;
     try {
       const result = await socialApi.getAllStatuses(token);
-      setStatuses(result);
+      setSnapshot({userId, statuses: result});
     } catch {
-      // If the status check fails, treat as "nothing connected" rather than blocking the dashboard.
-      setStatuses({});
+      // A network failure does not disconnect previously confirmed accounts.
     } finally {
-      setIsLoading(false);
+      setLoadedUser(userId);
     }
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
-    refresh();
+    const initial = setTimeout(() => { void refresh(); }, 0);
+    const retry = () => { void refresh(); };
+    window.addEventListener("online", retry);
+    window.addEventListener("focus", retry);
+    return () => { clearTimeout(initial); window.removeEventListener("online", retry); window.removeEventListener("focus", retry); };
   }, [refresh]);
 
   const hasAnyConnected = useMemo(() => Object.values(statuses).some((s) => s?.connected), [statuses]);

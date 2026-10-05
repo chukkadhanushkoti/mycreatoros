@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight, Plus, Settings } from "lucide-react";
@@ -48,20 +48,18 @@ export function Sidebar({ collapsed }: { collapsed: boolean }) {
 
   const connectedPlatforms = PLATFORM_ORDER.filter((key) => statuses[key]?.connected);
 
-  useEffect(() => {
-    if (activeIndex >= connectedPlatforms.length) setActiveIndex(0);
-  }, [activeIndex, connectedPlatforms.length]);
+  const safeIndex = activeIndex < connectedPlatforms.length ? activeIndex : 0;
 
   const isActive = (href: string) => (href === "/dashboard" ? pathname === href : pathname.startsWith(href));
 
-  const activeKey: SocialPlatform | undefined = connectedPlatforms[activeIndex];
+  const activeKey: SocialPlatform | undefined = connectedPlatforms[safeIndex];
   const activeStatus = activeKey ? statuses[activeKey] : undefined;
   const activeMeta = activeKey ? PLATFORM_META[activeKey] : undefined;
   const navItems = activeKey ? PLATFORM_NAV[activeKey] : [];
 
   const cyclePlatform = (dir: 1 | -1) => {
     if (connectedPlatforms.length === 0) return;
-    const nextIndex = (activeIndex + dir + connectedPlatforms.length) % connectedPlatforms.length;
+    const nextIndex = (safeIndex + dir + connectedPlatforms.length) % connectedPlatforms.length;
     setActiveIndex(nextIndex);
 
     // If the current page isn't part of the newly-selected platform's services

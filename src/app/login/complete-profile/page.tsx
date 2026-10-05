@@ -24,7 +24,8 @@ export default function CompleteProfilePage() {
       router.replace("/login");
       return;
     }
-    setTempToken(token);
+    const initial = setTimeout(() => setTempToken(token), 0);
+    return () => clearTimeout(initial);
   }, [router]);
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {

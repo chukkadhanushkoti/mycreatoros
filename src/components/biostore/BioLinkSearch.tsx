@@ -1,14 +1,16 @@
 "use client";
 
+import type { BioStoreBlock } from "@/lib/biostore-api";
+import type { BioStoreTheme } from "@/config/biostore-themes";
 import { useMemo, useState } from "react";
 import { Search, X } from "lucide-react";
 import { BlockRenderer } from "./BlockRenderer";
 import { bioBlockLayout, bioBlockSpan } from "@/lib/biostore-layout";
 
 interface BioLinkSearchProps {
-  blocks: any[];
+  blocks: BioStoreBlock[];
   username: string;
-  themeData: any;
+  themeData: BioStoreTheme;
 }
 
 // Client-side link search for the public bio page. Filters the creator's OWN

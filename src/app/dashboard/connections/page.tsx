@@ -5,6 +5,7 @@ import { CheckCircle2, Link as LinkIcon, Loader2, Unlink } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { getAccessToken } from "@/context/auth-context";
+import { usePlatforms } from "@/context/platforms-context";
 import { ApiError } from "@/lib/api-client";
 import { socialApi, type PlatformStatus, type PlatformStatusMap, type SocialPlatform } from "@/lib/social-api";
 import { PLATFORM_META, PLATFORM_ORDER } from "@/config/platforms";
@@ -35,6 +36,7 @@ const PLATFORMS: PlatformConfig[] = PLATFORM_ORDER.map((key) => ({
 }));
 
 export default function ConnectionsPage() {
+  const { refresh: refreshPlatforms } = usePlatforms();
   const [statuses, setStatuses] = useState<PlatformStatusMap>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -47,14 +49,16 @@ export default function ConnectionsPage() {
     try {
       const result = await socialApi.getAllStatuses(token);
       setStatuses(result);
+      void refreshPlatforms();
       setError(null);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Could not load connection status.");
     }
-  }, []);
+  }, [refreshPlatforms]);
 
   useEffect(() => {
-    fetchStatuses().finally(() => setLoading(false));
+    const initial = setTimeout(() => { void fetchStatuses().finally(() => setLoading(false)); }, 0);
+    return () => clearTimeout(initial);
   }, [fetchStatuses]);
 
   useEffect(() => {
@@ -95,6 +99,7 @@ export default function ConnectionsPage() {
         const result = await socialApi.getAllStatuses(token).catch(() => null);
         if (result && result[platform]?.connected) {
           setStatuses(result);
+          void refreshPlatforms();
           popup.close();
           stopPolling();
         }

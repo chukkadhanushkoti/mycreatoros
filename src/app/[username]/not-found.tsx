@@ -11,7 +11,7 @@ export default function NotFound() {
         Creator Not Found
       </h1>
       <p className="text-muted-foreground max-w-[500px] mb-8 text-lg">
-        We couldn't find a BioStore for this username. They might have changed their username or the account doesn't exist yet.
+        We couldn&apos;t find a BioStore for this username. They might have changed their username or the account doesn&apos;t exist yet.
       </p>
       <div className="flex flex-col sm:flex-row gap-4">
         <Link 

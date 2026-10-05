@@ -1,11 +1,13 @@
 "use client";
+import type { BioStoreTheme } from '@/config/biostore-themes';
+import type { PublicBlockProps } from './types';
 
 import React from 'react';
 import { bioTile } from '@/lib/biostore-layout';
 import {
   ExternalLink, Download, Play, Link2, Image as ImageIcon,
   Video, ShoppingBag, Layers,
-  AlignJustify, Globe, Music
+  Globe
 } from 'lucide-react';
 import {
   FaInstagram, FaYoutube, FaTwitter, FaLinkedin,
@@ -31,7 +33,7 @@ function isGradient(c?: string) {
   return typeof c === 'string' && c.includes('gradient');
 }
 
-function resolveButtonStyle(themeData: any) {
+function resolveButtonStyle(themeData: BioStoreTheme) {
   const styles  = themeData.styles  || {};
   const colors  = themeData.colors  || {};
   const btnStyle = styles.buttonStyle || 'filled';
@@ -57,7 +59,7 @@ function resolveButtonStyle(themeData: any) {
     default:      boxShadow = '0 4px 14px 0 rgba(0,0,0,0.10)';
   }
 
-  const base: any = {
+  const base: React.CSSProperties = {
     borderRadius: radius,
     boxShadow,
     border: 'none',
@@ -108,7 +110,7 @@ interface UnifiedButtonProps {
   iconBg: string;
   /** Optional image thumbnail to show instead of iconEl */
   imageUrl?: string;
-  themeData: any;
+  themeData: BioStoreTheme;
   index?: number;
   clicks?: number;
   onClick?: (e: React.MouseEvent) => void;
@@ -162,11 +164,11 @@ const UnifiedButton = ({ url, title, subtitle, iconEl, iconBg, imageUrl, themeDa
 };
 
 // ── Shared card/media container style ────────────────────────────────────────
-function mediaContainerStyle(themeData: any, extra: any = {}): any {
+function mediaContainerStyle(themeData: BioStoreTheme, extra: React.CSSProperties = {}): React.CSSProperties {
   const styles = themeData.styles || {};
   const colors = themeData.colors || {};
   const btnStyle = styles.buttonStyle || 'filled';
-  const base: any = {
+  const base: React.CSSProperties = {
     borderRadius: styles.buttonRadius ?? 16,
     overflow: 'hidden',
     position: 'relative',
@@ -195,7 +197,7 @@ function mediaContainerStyle(themeData: any, extra: any = {}): any {
 }
 
 // ── Divider ───────────────────────────────────────────────────────────────────
-export const DividerBlock = ({ themeData }: any) => {
+export const DividerBlock = ({ themeData }: PublicBlockProps) => {
   const colors = themeData.colors || {};
   return (
     <div className="w-full py-6 flex justify-center">
@@ -208,9 +210,8 @@ export const DividerBlock = ({ themeData }: any) => {
 export const SpacerBlock = () => <div className="w-full h-8" />;
 
 // ── Image Block ───────────────────────────────────────────────────────────────
-export const ImageBlock = ({ block, themeData, index, onClick }: any) => {
+export const ImageBlock = ({ block, themeData, index, onClick }: PublicBlockProps) => {
   const colors  = themeData.colors || {};
-  const styles  = themeData.styles || {};
   const imageUrl   = block.content?.mediaUrl || block.content?.url;
   const title      = block.content?.title;
   const downloadUrl = block.content?.downloadUrl;
@@ -260,7 +261,7 @@ export const ImageBlock = ({ block, themeData, index, onClick }: any) => {
 };
 
 // ── Video Block ───────────────────────────────────────────────────────────────
-export const VideoBlock = ({ block, themeData, index, onClick }: any) => {
+export const VideoBlock = ({ block, themeData, index, onClick }: PublicBlockProps) => {
   const videoUrl = block.content?.mediaUrl || block.content?.url;
   const thumbnail = block.content?.thumbnailUrl;
   const title = block.content?.title;
@@ -295,7 +296,7 @@ export const VideoBlock = ({ block, themeData, index, onClick }: any) => {
 };
 
 // ── YouTube Block ─────────────────────────────────────────────────────────────
-export const YouTubeBlock = ({ block, themeData, index, onClick }: any) => (
+export const YouTubeBlock = ({ block, themeData, index, onClick }: PublicBlockProps) => (
   <UnifiedButton
     url={block.content?.url}
     title={block.content?.title || 'YouTube Video'}
@@ -310,7 +311,7 @@ export const YouTubeBlock = ({ block, themeData, index, onClick }: any) => (
 );
 
 // ── Product Block ─────────────────────────────────────────────────────────────
-export const ProductBlock = ({ block, themeData, index, onClick }: any) => {
+export const ProductBlock = ({ block, themeData, index, onClick }: PublicBlockProps) => {
   const { title, url, price, imageUrl } = block.content || {};
   return (
     <UnifiedButton
@@ -329,7 +330,7 @@ export const ProductBlock = ({ block, themeData, index, onClick }: any) => {
 };
 
 // ── Social Block ──────────────────────────────────────────────────────────────
-export const SocialBlock = ({ block, themeData, index, onClick }: any) => {
+export const SocialBlock = ({ block, themeData, index, onClick }: PublicBlockProps) => {
   const platform = (block.content?.platform || 'default').toLowerCase();
   const cfg = SOCIAL_CONFIG[platform] || SOCIAL_CONFIG.default;
   const subtitle = block.content?.url?.replace('https://', '').replace('www.', '');
@@ -349,7 +350,7 @@ export const SocialBlock = ({ block, themeData, index, onClick }: any) => {
 };
 
 // ── Button Block ──────────────────────────────────────────────────────────────
-export const ButtonBlock = ({ block, themeData, index, onClick }: any) => (
+export const ButtonBlock = ({ block, themeData, index, onClick }: PublicBlockProps) => (
   <UnifiedButton
     url={block.content?.url}
     title={block.content?.title || 'Button'}
@@ -364,7 +365,7 @@ export const ButtonBlock = ({ block, themeData, index, onClick }: any) => (
 );
 
 // ── Link Block ────────────────────────────────────────────────────────────────
-export const LinkBlock = ({ block, themeData, index, onClick }: any) => (
+export const LinkBlock = ({ block, themeData, index, onClick }: PublicBlockProps) => (
   <UnifiedButton
     url={block.content?.url}
     title={block.content?.title || 'Link'}

@@ -1,4 +1,5 @@
-import { API_BASE_URL, ApiError } from "@/lib/api-client";
+import {authedRequest} from "./social-api";
+import { API_BASE_URL, ApiError, fetchWithTimeout } from "@/lib/api-client";
 
 export type BioStoreBlockType =
   | "link"
@@ -15,7 +16,7 @@ export type BioStoreBlockType =
 export interface BioStoreBlock {
   _id?: string;
   type: BioStoreBlockType;
-  content: Record<string, unknown>;
+  content: { [key: string]: unknown; title?: string; text?: string; subtitle?: string; label?: string; url?: string; mediaUrl?: string; downloadUrl?: string; thumbnailUrl?: string; imageUrl?: string; price?: string; platform?: string; };
   order: number;
   isVisible?: boolean;
   clicks?: number;
@@ -98,24 +99,7 @@ export interface StorageUsage {
   isPremium: boolean;
 }
 
-async function request<T>(path: string, accessToken: string, options: RequestInit = {}): Promise<T> {
-  const res = await fetch(`${API_BASE_URL}${path}`, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-      ...options.headers,
-    },
-  });
-
-  const data = await res.json().catch(() => ({}));
-
-  if (!res.ok) {
-    throw new ApiError(data.error || "Request failed.", res.status, data.code);
-  }
-
-  return data as T;
-}
+const request = authedRequest;
 
 export interface BioStoreUpdatePayload {
   displayName?: string;
@@ -133,7 +117,7 @@ export interface BioStoreUpdatePayload {
 
 export const biostoreApi = {
   checkUsername: (username: string) =>
-    fetch(`${API_BASE_URL}/api/biostore/check/${encodeURIComponent(username)}`)
+    fetchWithTimeout(`${API_BASE_URL}/api/biostore/check/${encodeURIComponent(username)}`, {})
       .then(async (res) => {
         const data = await res.json().catch(() => ({}));
         if (!res.ok) return { available: false, message: data.error || "Not available" };

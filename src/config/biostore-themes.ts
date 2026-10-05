@@ -592,5 +592,803 @@ export const bioStoreThemes: BioStoreTheme[] = [
       "iconStyle": "solid",
       "bgEffect": "none"
     }
+  },
+  {
+    "id": "quiet-gold",
+    "name": "Quiet Gold",
+    "category": "Premium",
+    "colors": {
+      "backgroundColor": "#F5F0E5",
+      "textColor": "#302C21",
+      "cardColor": "#F5F0E5",
+      "buttonColor": "#80652C",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#80652C",
+      "mutedColor": "#80652C"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "Space Grotesk"
+    },
+    "styles": {
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "sm",
+      "buttonRadius": 16,
+      "cardRadius": 20,
+      "avatarBorder": 2,
+      "iconStyle": "solid",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "ink-studio",
+    "name": "Ink Studio",
+    "category": "Premium",
+    "colors": {
+      "backgroundColor": "#12161C",
+      "textColor": "#EDF1F5",
+      "cardColor": "#12161C",
+      "buttonColor": "#ADC0D4",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#ADC0D4",
+      "mutedColor": "#ADC0D4"
+    },
+    "typography": {
+      "fontFamily": "Figtree",
+      "headingFont": "Fraunces"
+    },
+    "styles": {
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 14,
+      "cardRadius": 18,
+      "avatarBorder": 2,
+      "iconStyle": "solid",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "olive-atelier",
+    "name": "Olive Atelier",
+    "category": "Premium",
+    "colors": {
+      "backgroundColor": "#ECEEE3",
+      "textColor": "#263123",
+      "cardColor": "#ECEEE3",
+      "buttonColor": "#4D6041",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#4D6041",
+      "mutedColor": "#4D6041"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "Space Grotesk"
+    },
+    "styles": {
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "sm",
+      "buttonRadius": 14,
+      "cardRadius": 18,
+      "avatarBorder": 0,
+      "iconStyle": "solid",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "clay-house",
+    "name": "Clay House",
+    "category": "Premium",
+    "colors": {
+      "backgroundColor": "#F2E6DF",
+      "textColor": "#372823",
+      "cardColor": "#F2E6DF",
+      "buttonColor": "#935D49",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#935D49",
+      "mutedColor": "#935D49"
+    },
+    "typography": {
+      "fontFamily": "DM Sans",
+      "headingFont": "DM Serif Display"
+    },
+    "styles": {
+      "buttonStyle": "outline",
+      "spacing": "spacious",
+      "shadowStyle": "none",
+      "buttonRadius": 12,
+      "cardRadius": 18,
+      "avatarBorder": 0,
+      "iconStyle": "outline",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "blue-hour",
+    "name": "Blue Hour",
+    "category": "Premium",
+    "colors": {
+      "backgroundColor": "#182431",
+      "textColor": "#E6EDF5",
+      "cardColor": "#182431",
+      "buttonColor": "#86A8C6",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#86A8C6",
+      "mutedColor": "#86A8C6"
+    },
+    "typography": {
+      "fontFamily": "Figtree",
+      "headingFont": "Fraunces"
+    },
+    "styles": {
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "sm",
+      "buttonRadius": 18,
+      "cardRadius": 20,
+      "avatarBorder": 2,
+      "iconStyle": "solid",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "studio-paper",
+    "name": "Studio Paper",
+    "minPlan": "pro",
+    "category": "Curated",
+    "colors": {
+      "backgroundColor": "#F5F1E8",
+      "textColor": "#292820",
+      "cardColor": "#FFFFFF",
+      "buttonColor": "#403B32",
+      "buttonTextColor": "#403B32",
+      "accentColor": "#81745C",
+      "mutedColor": "#292820"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "DM Serif Display"
+    },
+    "styles": {
+      "buttonStyle": "outline",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 0,
+      "cardRadius": 0,
+      "avatarBorder": 2,
+      "iconStyle": "outline",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "sage-bubble",
+    "name": "Sage Bubble",
+    "minPlan": "pro",
+    "category": "Curated",
+    "colors": {
+      "backgroundColor": "#E9F0E8",
+      "textColor": "#243D32",
+      "cardColor": "#F9FCF7",
+      "buttonColor": "#355846",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#5A8467",
+      "mutedColor": "#243D32"
+    },
+    "typography": {
+      "fontFamily": "Figtree",
+      "headingFont": "Fraunces"
+    },
+    "styles": {
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 32,
+      "cardRadius": 32,
+      "avatarBorder": 2,
+      "iconStyle": "outline",
+      "bgEffect": "blobs"
+    }
+  },
+  {
+    "id": "cobalt-grid",
+    "name": "Cobalt Grid",
+    "minPlan": "max",
+    "category": "Curated",
+    "colors": {
+      "backgroundColor": "#121E31",
+      "textColor": "#E8EEF7",
+      "cardColor": "#1D2D46",
+      "buttonColor": "#D6E4F7",
+      "buttonTextColor": "#162944",
+      "accentColor": "#88ADD9",
+      "mutedColor": "#E8EEF7"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "Space Grotesk"
+    },
+    "styles": {
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 4,
+      "cardRadius": 4,
+      "avatarBorder": 2,
+      "iconStyle": "outline",
+      "bgEffect": "grid"
+    }
+  },
+  {
+    "id": "rose-milk",
+    "name": "Rose Milk",
+    "minPlan": "max",
+    "category": "Curated",
+    "colors": {
+      "backgroundColor": "#F4E9EA",
+      "textColor": "#4A343C",
+      "cardColor": "#FFFAFA",
+      "buttonColor": "#825C69",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#A77C89",
+      "mutedColor": "#4A343C"
+    },
+    "typography": {
+      "fontFamily": "DM Sans",
+      "headingFont": "Fraunces"
+    },
+    "styles": {
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 32,
+      "cardRadius": 32,
+      "avatarBorder": 2,
+      "iconStyle": "outline",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "graphite-editorial",
+    "name": "Graphite Editorial",
+    "minPlan": "max",
+    "category": "Curated",
+    "colors": {
+      "backgroundColor": "#ECECEC",
+      "textColor": "#222526",
+      "cardColor": "#FFFFFF",
+      "buttonColor": "#303436",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#5C656A",
+      "mutedColor": "#222526"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "Space Grotesk"
+    },
+    "styles": {
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 0,
+      "cardRadius": 0,
+      "avatarBorder": 2,
+      "iconStyle": "outline",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "champagne-atelier",
+    "name": "Champagne Atelier",
+    "minPlan": "ultra",
+    "category": "Curated",
+    "colors": {
+      "backgroundColor": "#F1EBDF",
+      "textColor": "#423B2E",
+      "cardColor": "#FAF8F0",
+      "buttonColor": "#65593E",
+      "buttonTextColor": "#65593E",
+      "accentColor": "#9B885E",
+      "mutedColor": "#423B2E"
+    },
+    "typography": {
+      "fontFamily": "DM Sans",
+      "headingFont": "DM Serif Display"
+    },
+    "styles": {
+      "buttonStyle": "outline",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 8,
+      "cardRadius": 8,
+      "avatarBorder": 3,
+      "iconStyle": "outline",
+      "bgEffect": "stars"
+    }
+  },
+  {
+    "id": "orbit-bubbles",
+    "name": "Orbit Bubbles",
+    "minPlan": "ultra",
+    "category": "Curated",
+    "colors": {
+      "backgroundColor": "#151D29",
+      "textColor": "#E8EEF5",
+      "cardColor": "#202D40",
+      "buttonColor": "#D8E7F1",
+      "buttonTextColor": "#182B3A",
+      "accentColor": "#85A7BB",
+      "mutedColor": "#E8EEF5"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "Space Grotesk"
+    },
+    "styles": {
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 32,
+      "cardRadius": 32,
+      "avatarBorder": 3,
+      "iconStyle": "outline",
+      "bgEffect": "bubbles"
+    }
+  },
+  {
+    "id": "porcelain-line",
+    "name": "Porcelain Line",
+    "minPlan": "ultra",
+    "category": "Curated",
+    "colors": {
+      "backgroundColor": "#F5F6F3",
+      "textColor": "#293733",
+      "cardColor": "#FFFFFF",
+      "buttonColor": "#365B4B",
+      "buttonTextColor": "#365B4B",
+      "accentColor": "#638474",
+      "mutedColor": "#293733"
+    },
+    "typography": {
+      "fontFamily": "Figtree",
+      "headingFont": "Fraunces"
+    },
+    "styles": {
+      "buttonStyle": "outline",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 0,
+      "cardRadius": 0,
+      "avatarBorder": 3,
+      "iconStyle": "outline",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "journal-sage",
+    "name": "Sage Journal",
+    "minPlan": "max",
+    "category": "Signature layouts",
+    "colors": {
+      "backgroundColor": "#F1F2E9",
+      "textColor": "#283F35",
+      "cardColor": "#FFFFFF",
+      "buttonColor": "#345749",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#789580",
+      "mutedColor": "#61766A"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "DM Serif Display"
+    },
+    "styles": {
+      "layout": "editorial",
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 0,
+      "cardRadius": 0,
+      "avatarBorder": 1,
+      "iconStyle": "outline",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "terracotta-grid",
+    "name": "Terracotta Grid",
+    "minPlan": "max",
+    "category": "Signature layouts",
+    "colors": {
+      "backgroundColor": "#F5EAE2",
+      "textColor": "#4D332A",
+      "cardColor": "#FBEFDF",
+      "buttonColor": "#DFC1AD",
+      "buttonTextColor": "#442E26",
+      "accentColor": "#AD765B",
+      "mutedColor": "#80695C"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "Space Grotesk"
+    },
+    "styles": {
+      "layout": "bento",
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 18,
+      "cardRadius": 18,
+      "avatarBorder": 1,
+      "iconStyle": "outline",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "cobalt-studio",
+    "name": "Cobalt Studio",
+    "minPlan": "max",
+    "category": "Signature layouts",
+    "colors": {
+      "backgroundColor": "#121D2D",
+      "textColor": "#EBF1F7",
+      "cardColor": "#1F3046",
+      "buttonColor": "#C4DAEF",
+      "buttonTextColor": "#15283B",
+      "accentColor": "#779BBD",
+      "mutedColor": "#A7BACD"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "Space Grotesk"
+    },
+    "styles": {
+      "layout": "spotlight",
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 8,
+      "cardRadius": 8,
+      "avatarBorder": 1,
+      "iconStyle": "outline",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "ivory-editorial",
+    "name": "Ivory Editorial",
+    "minPlan": "ultra",
+    "category": "Signature layouts",
+    "colors": {
+      "backgroundColor": "#F5F1E9",
+      "textColor": "#302B26",
+      "cardColor": "#FFFDF7",
+      "buttonColor": "#3B332D",
+      "buttonTextColor": "#F8F3E9",
+      "accentColor": "#9F896C",
+      "mutedColor": "#80776B"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "DM Serif Display"
+    },
+    "styles": {
+      "layout": "editorial",
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 0,
+      "cardRadius": 0,
+      "avatarBorder": 3,
+      "iconStyle": "outline",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "midnight-gallery",
+    "name": "Midnight Gallery",
+    "minPlan": "ultra",
+    "category": "Signature layouts",
+    "colors": {
+      "backgroundColor": "#151725",
+      "textColor": "#F3EFF8",
+      "cardColor": "#25263A",
+      "buttonColor": "#DDD1EE",
+      "buttonTextColor": "#29223D",
+      "accentColor": "#B59ACC",
+      "mutedColor": "#B1A8C5"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "Space Grotesk"
+    },
+    "styles": {
+      "layout": "bento",
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 28,
+      "cardRadius": 28,
+      "avatarBorder": 3,
+      "iconStyle": "outline",
+      "bgEffect": "stars"
+    }
+  },
+  {
+    "id": "champagne-spotlight",
+    "name": "Champagne Spotlight",
+    "minPlan": "ultra",
+    "category": "Signature layouts",
+    "colors": {
+      "backgroundColor": "#24201C",
+      "textColor": "#F5ECDF",
+      "cardColor": "#36302A",
+      "buttonColor": "#E2CCAB",
+      "buttonTextColor": "#33291E",
+      "accentColor": "#C1A27C",
+      "mutedColor": "#B9AA98"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "Space Grotesk"
+    },
+    "styles": {
+      "layout": "spotlight",
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 4,
+      "cardRadius": 4,
+      "avatarBorder": 3,
+      "iconStyle": "outline",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "moss-portfolio",
+    "name": "Moss Portfolio",
+    "minPlan": "ultra",
+    "category": "Signature layouts",
+    "colors": {
+      "backgroundColor": "#142724",
+      "textColor": "#EEF5EE",
+      "cardColor": "#203D36",
+      "buttonColor": "#B6D7C2",
+      "buttonTextColor": "#17362B",
+      "accentColor": "#89B49B",
+      "mutedColor": "#A3C0B1"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "Space Grotesk"
+    },
+    "styles": {
+      "layout": "bento",
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 4,
+      "cardRadius": 4,
+      "avatarBorder": 3,
+      "iconStyle": "outline",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "rose-journal",
+    "name": "Rose Journal",
+    "minPlan": "ultra",
+    "category": "Signature layouts",
+    "colors": {
+      "backgroundColor": "#F6EFF0",
+      "textColor": "#49333F",
+      "cardColor": "#FFF9FA",
+      "buttonColor": "#684351",
+      "buttonTextColor": "#FFF1F4",
+      "accentColor": "#AD7D8E",
+      "mutedColor": "#8E7480"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "DM Serif Display"
+    },
+    "styles": {
+      "layout": "editorial",
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 18,
+      "cardRadius": 18,
+      "avatarBorder": 3,
+      "iconStyle": "outline",
+      "bgEffect": "none"
+    }
+  },
+  {
+    "id": "pearl-orbit",
+    "name": "Pearl Orbit",
+    "minPlan": "ultra",
+    "category": "Signature",
+    "colors": {
+      "backgroundColor": "#F3F0EC",
+      "textColor": "#24323D",
+      "cardColor": "#F3F0EC",
+      "buttonColor": "#466779",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#466779",
+      "mutedColor": "#466779"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "Inter"
+    },
+    "styles": {
+      "layout": "spotlight",
+      "buttonStyle": "glass",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 28,
+      "cardRadius": 28,
+      "avatarBorder": 3,
+      "iconStyle": "outline",
+      "bgEffect": "blobs"
+    },
+    "enabled": true
+  },
+  {
+    "id": "graphite-grid",
+    "name": "Graphite Grid",
+    "minPlan": "max",
+    "category": "Signature",
+    "colors": {
+      "backgroundColor": "#151C24",
+      "textColor": "#E8EEF4",
+      "cardColor": "#151C24",
+      "buttonColor": "#416882",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#416882",
+      "mutedColor": "#416882"
+    },
+    "typography": {
+      "fontFamily": "Space Grotesk",
+      "headingFont": "Space Grotesk"
+    },
+    "styles": {
+      "layout": "bento",
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 6,
+      "cardRadius": 6,
+      "avatarBorder": 3,
+      "iconStyle": "outline",
+      "bgEffect": "grid"
+    },
+    "enabled": true
+  },
+  {
+    "id": "linen-journal",
+    "name": "Linen Journal",
+    "minPlan": "max",
+    "category": "Signature",
+    "colors": {
+      "backgroundColor": "#F5EFE5",
+      "textColor": "#3A322C",
+      "cardColor": "#F5EFE5",
+      "buttonColor": "#78604D",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#78604D",
+      "mutedColor": "#78604D"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "Inter"
+    },
+    "styles": {
+      "layout": "editorial",
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 4,
+      "cardRadius": 4,
+      "avatarBorder": 3,
+      "iconStyle": "outline",
+      "bgEffect": "none"
+    },
+    "enabled": true
+  },
+  {
+    "id": "violet-night",
+    "name": "Violet Night",
+    "minPlan": "ultra",
+    "category": "Signature",
+    "colors": {
+      "backgroundColor": "#171325",
+      "textColor": "#F1EBFF",
+      "cardColor": "#171325",
+      "buttonColor": "#7D5DAD",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#7D5DAD",
+      "mutedColor": "#7D5DAD"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "Inter"
+    },
+    "styles": {
+      "layout": "spotlight",
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 24,
+      "cardRadius": 24,
+      "avatarBorder": 3,
+      "iconStyle": "outline",
+      "bgEffect": "stars"
+    },
+    "enabled": true
+  },
+  {
+    "id": "mint-gallery",
+    "name": "Mint Gallery",
+    "minPlan": "ultra",
+    "category": "Signature",
+    "colors": {
+      "backgroundColor": "#EEF5F1",
+      "textColor": "#193F36",
+      "cardColor": "#EEF5F1",
+      "buttonColor": "#3E7966",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#3E7966",
+      "mutedColor": "#3E7966"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "Inter"
+    },
+    "styles": {
+      "layout": "bento",
+      "buttonStyle": "glass",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 22,
+      "cardRadius": 22,
+      "avatarBorder": 3,
+      "iconStyle": "outline",
+      "bgEffect": "blobs"
+    },
+    "enabled": true
+  },
+  {
+    "id": "copper-notes",
+    "name": "Copper Notes",
+    "minPlan": "max",
+    "category": "Signature",
+    "colors": {
+      "backgroundColor": "#241C1A",
+      "textColor": "#F8EDE4",
+      "cardColor": "#241C1A",
+      "buttonColor": "#986B52",
+      "buttonTextColor": "#FFFFFF",
+      "accentColor": "#986B52",
+      "mutedColor": "#986B52"
+    },
+    "typography": {
+      "fontFamily": "Inter",
+      "headingFont": "Inter"
+    },
+    "styles": {
+      "layout": "editorial",
+      "buttonStyle": "filled",
+      "spacing": "comfortable",
+      "shadowStyle": "soft",
+      "buttonRadius": 10,
+      "cardRadius": 10,
+      "avatarBorder": 3,
+      "iconStyle": "outline",
+      "bgEffect": "grid"
+    },
+    "enabled": true
   }
 ];

@@ -65,12 +65,9 @@ export default function AutoDmDashboardPage() {
   }, [connected, timeframe]);
 
   useEffect(() => {
-    if (platformsLoading) return;
-    if (!connected) {
-      setLoading(false);
-      return;
-    }
-    load();
+    if (platformsLoading || !connected) return;
+    const initial = setTimeout(() => { void load(); }, 0);
+    return () => clearTimeout(initial);
   }, [platformsLoading, connected, load]);
 
   const handleAction = async (id: string, action: "pause" | "resume" | "duplicate" | "delete") => {

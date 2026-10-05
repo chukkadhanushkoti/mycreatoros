@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import {
   BarChart3,
@@ -29,6 +29,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://mycreatoros.app";
 export default function BioStorePage() {
   const [loading, setLoading] = useState(true);
   const [store, setStore] = useState<BioStoreDoc | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [deletedInfo, setDeletedInfo] = useState<DeletedBioStoreInfo | null>(null);
 
   const load = useCallback(async () => {
@@ -37,7 +38,13 @@ export default function BioStorePage() {
     try {
       const doc = await biostoreApi.getMine(token);
       setStore(doc);
-    } catch {
+      setLoadError(null);
+    } catch (err) {
+      if (!(err instanceof ApiError) || ![404, 410].includes(err.status)) {
+        setLoadError(err instanceof ApiError ? err.message : "Could not load your BioStore. Please try again.");
+        return;
+      }
+      setLoadError(null);
       setStore(null);
       try {
         const info = await biostoreApi.getDeleted(token);
@@ -49,11 +56,16 @@ export default function BioStorePage() {
   }, []);
 
   useEffect(() => {
-    load().finally(() => setLoading(false));
+    const initial = setTimeout(() => { void load().finally(() => setLoading(false)); }, 0);
+    return () => clearTimeout(initial);
   }, [load]);
 
   if (loading) {
     return <BioStoreDashboardSkeleton />;
+  }
+
+  if (loadError) {
+    return <div role="alert" className="mx-auto max-w-lg p-6"><p>{loadError}</p><button className="mt-4 rounded-full bg-orange-500 px-5 py-2 text-white" onClick={() => {setLoading(true); void load().finally(() => setLoading(false));}}>Try again</button></div>;
   }
 
   if (!store) {
@@ -78,29 +90,30 @@ function Onboarding({
   const [creating, setCreating] = useState(false);
   const [restoring, setRestoring] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
+  const [checkedUsername, setCheckedUsername] = useState("");
+  const currentStatus = checkedUsername === username.trim().toLowerCase() ? status : "idle";
   useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
     const clean = username.trim().toLowerCase();
-    if (!clean) {
-      setStatus("idle");
-      return;
-    }
-    setStatus("checking");
-    debounceRef.current = setTimeout(async () => {
-      const result = await biostoreApi.checkUsername(clean);
-      setStatus(result.available ? "available" : "unavailable");
-      setMessage(result.message || "");
+    if (!clean) return;
+    let cancelled = false;
+    const timer = setTimeout(async () => {
+      setCheckedUsername(clean);
+      setStatus("checking");
+      try {
+        const result = await biostoreApi.checkUsername(clean);
+        if (cancelled) return;
+        setStatus(result.available ? "available" : "unavailable");
+        setMessage(result.message || "");
+      } catch {
+        if (!cancelled) {setStatus("unavailable"); setMessage("Could not check this username. Try again.");}
+      }
     }, 500);
-    return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current);
-    };
+    return () => {cancelled = true; clearTimeout(timer);};
   }, [username]);
 
   const handleCreate = async () => {
     const token = getAccessToken();
-    if (!token || status !== "available") return;
+    if (!token || currentStatus !== "available") return;
     setCreating(true);
     setError(null);
     try {
@@ -172,16 +185,16 @@ function Onboarding({
             placeholder="yourname"
             className="w-full bg-transparent text-sm text-neutral-900 outline-none dark:text-white"
           />
-          {status === "available" && <Check className="h-4 w-4 shrink-0 text-emerald-500" />}
-          {status === "unavailable" && <X className="h-4 w-4 shrink-0 text-red-500" />}
+          {currentStatus === "available" && <Check className="h-4 w-4 shrink-0 text-emerald-500" />}
+          {currentStatus === "unavailable" && <X className="h-4 w-4 shrink-0 text-red-500" />}
         </div>
-        {status === "unavailable" && <p className="mt-1.5 text-xs text-red-600 dark:text-red-400">{message}</p>}
+        {currentStatus === "unavailable" && <p className="mt-1.5 text-xs text-red-600 dark:text-red-400">{message}</p>}
         {error && <p className="mt-1.5 text-xs text-red-600 dark:text-red-400">{error}</p>}
       </div>
 
       <button
         onClick={handleCreate}
-        disabled={status !== "available" || creating}
+        disabled={currentStatus !== "available" || creating}
         className="mt-5 w-full rounded-full bg-orange-500 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
       >
         {creating ? "Creating..." : "Create BioStore"}

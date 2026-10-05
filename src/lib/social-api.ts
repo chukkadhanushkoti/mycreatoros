@@ -1,4 +1,4 @@
-import { API_BASE_URL, ApiError } from "@/lib/api-client";
+import { API_BASE_URL, ApiError, authApi, fetchWithTimeout } from "@/lib/api-client";
 
 export type SocialPlatform = "youtube" | "instagram" | "facebook" | "linkedin";
 
@@ -16,22 +16,51 @@ export interface PlatformStatus {
 
 export type PlatformStatusMap = Partial<Record<SocialPlatform, PlatformStatus>>;
 
+let refreshInFlight: {refresh: string; promise: ReturnType<typeof authApi.refresh>} | null = null;
+const ACCESS = "creatoros_access_token";
+const REFRESH = "creatoros_refresh_token";
+function stored(key: string) { return typeof window === "undefined" ? null : localStorage.getItem(key); }
+
+function accountKey(token: string | null) {
+  if (!token) return null;
+  try { return JSON.parse(atob(token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))).id || token; } catch { return token; }
+}
+
 export async function authedRequest<T>(path: string, accessToken: string, options: RequestInit = {}): Promise<T> {
-  const res = await fetch(`${API_BASE_URL}${path}`, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-      ...options.headers,
-    },
-  });
-
-  const data = await res.json().catch(() => ({}));
-
-  if (!res.ok) {
-    throw new ApiError(data.error || "Request failed.", res.status, data.code);
+  const sessionAtStart = stored(REFRESH);
+  const send = async (token: string) => {
+    try {
+      return await fetchWithTimeout(`${API_BASE_URL}${path}`, {...options, headers:{"Content-Type":"application/json",...options.headers,Authorization:`Bearer ${token}`}});
+    } catch {
+      throw new ApiError("Could not reach the server. Check your connection and try again.",0,"NETWORK_ERROR");
+    }
+  };
+  let res = await send(accessToken);
+  if (res.status === 401 && sessionAtStart) {
+    if (stored(REFRESH) !== sessionAtStart) throw new ApiError("Account changed. Please try again.",401,"SESSION_CHANGED");
+    const newerToken = stored(ACCESS);
+    if (newerToken && newerToken !== accessToken) {
+      res = await send(newerToken);
+    } else {
+      if (!refreshInFlight || refreshInFlight.refresh !== sessionAtStart) {
+        const pending = authApi.refresh(sessionAtStart);
+        refreshInFlight = {refresh:sessionAtStart,promise:pending};
+        void pending.finally(() => {if(refreshInFlight?.promise === pending) refreshInFlight=null;}).catch(() => {});
+      }
+      const tokens = await refreshInFlight.promise;
+      // Another concurrent request may already have saved these refreshed tokens.
+      const current = stored(REFRESH);
+      if (current !== sessionAtStart && !(current === tokens.refreshToken && stored(ACCESS) === tokens.accessToken)) {
+        throw new ApiError("Account changed. Please try again.",401,"SESSION_CHANGED");
+      }
+      localStorage.setItem(ACCESS,tokens.accessToken);
+      localStorage.setItem(REFRESH,tokens.refreshToken);
+      res = await send(tokens.accessToken);
+    }
   }
-
+  const data = await res.json().catch(() => ({}));
+  if (sessionAtStart && accountKey(stored(ACCESS)) !== accountKey(accessToken)) throw new ApiError("Account changed. Please try again.",401,"SESSION_CHANGED");
+  if (!res.ok) throw new ApiError(data.error || "Request failed.",res.status,data.code);
   return data as T;
 }
 

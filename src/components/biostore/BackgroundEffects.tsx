@@ -1,6 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useSyncExternalStore } from "react";
+
+const subscribeMounted = () => () => {};
+function subscribeMotion(callback: () => void) {
+  const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+  media.addEventListener("change", callback);
+  return () => media.removeEventListener("change", callback);
+}
+const motionSnapshot = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 function generateBubbles(count: number) {
   return Array.from({ length: count }, (_, i) => ({
@@ -29,16 +37,16 @@ export function BackgroundEffects({
   animationsEnabled = true,
 }: {
   effect?: string;
-  themeData?: any;
+  themeData?: { colors?: { textColor?: string } };
   animationsEnabled?: boolean;
 }) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => { setMounted(true); }, []);
+  const mounted = useSyncExternalStore(subscribeMounted, () => true, () => false);
+  const reducedMotion = useSyncExternalStore(subscribeMotion, motionSnapshot, () => false);
   if (!mounted || !effect || effect === "none") return null;
 
   // Motion-only effects are suppressed entirely when the creator disables
   // animations; ambient effects (grid, blobs, stars) still render, but static.
-  const anim = animationsEnabled !== false;
+  const anim = animationsEnabled !== false && !reducedMotion;
   const motionOnly = effect === "bubbles" || effect === "snow" || effect === "particles";
   if (!anim && motionOnly) return null;
 

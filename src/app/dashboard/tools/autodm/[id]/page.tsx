@@ -45,9 +45,9 @@ export default function AutoDmCampaignDetailsPage({ params }: { params: Promise<
   }, [id]);
 
   useEffect(() => {
-    load();
+    const initial = setTimeout(() => { void load(); }, 0);
     const interval = setInterval(load, 15000);
-    return () => clearInterval(interval);
+    return () => { clearTimeout(initial); clearInterval(interval); };
   }, [load]);
 
   const toggleStatus = async () => {
@@ -65,6 +65,10 @@ export default function AutoDmCampaignDetailsPage({ params }: { params: Promise<
       setUpdating(false);
     }
   };
+
+  if (!loading && !campaign) {
+    return <div role="alert" className="mx-auto max-w-3xl p-6"><p>{error || "Campaign not found."}</p><button onClick={() => void load()} className="mt-4 rounded-full bg-orange-500 px-5 py-2 text-white">Try again</button></div>;
+  }
 
   if (loading || !campaign) {
     return (

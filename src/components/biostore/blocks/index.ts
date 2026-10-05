@@ -1,4 +1,5 @@
 import React from 'react';
+import type { PublicBlockProps } from './types';
 import { TextBlock } from './TextBlock';
 import {
   LinkBlock,
@@ -13,13 +14,13 @@ import {
 } from './blocks';
 
 // Block Registry — add new block types here without touching other files
-const blockRegistry: Record<string, React.FC<any>> = {};
+const blockRegistry: Record<string, React.FC<PublicBlockProps>> = {};
 
-export function registerBlock(type: string, component: React.FC<any>) {
+export function registerBlock(type: string, component: React.FC<PublicBlockProps>) {
   blockRegistry[type] = component;
 }
 
-export function getBlockComponent(type: string): React.FC<any> | null {
+export function getBlockComponent(type: string): React.FC<PublicBlockProps> | null {
   return blockRegistry[type] || null;
 }
 

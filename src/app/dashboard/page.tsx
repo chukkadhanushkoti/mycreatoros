@@ -17,7 +17,6 @@ export default function DashboardOverviewPage() {
 
   useEffect(() => {
     if (isLoading || !hasAnyConnected) {
-      setStatsLoading(false);
       return;
     }
     const token = getAccessToken();
@@ -58,7 +57,7 @@ export default function DashboardOverviewPage() {
             <div>
               <p className="text-sm font-medium text-neutral-900 dark:text-white">Connect your accounts</p>
               <p className="mt-0.5 text-sm text-neutral-500 dark:text-neutral-400">
-                Link YouTube, Instagram, Facebook or LinkedIn to see analytics and publish from CreatorOS.
+                Link YouTube or Instagram to see analytics and publish from CreatorOS.
               </p>
             </div>
           </div>
@@ -75,7 +74,7 @@ export default function DashboardOverviewPage() {
       {/* Quick stats — real cross-platform analytics */}
       {hasAnyConnected && (
         <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {statsLoading
+          {(statsLoading && hasAnyConnected)
             ? Array.from({ length: 4 }).map((_, i) => (
                 <div key={i} className="skeleton h-24 rounded-3xl" />
               ))

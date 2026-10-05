@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -13,22 +13,16 @@ const labelClass = "mb-1.5 block text-xs font-medium text-neutral-600 dark:text-
 
 const SOCIAL_PLATFORMS = ["instagram", "youtube", "twitter", "linkedin", "github", "facebook", "spotify", "tiktok"];
 
-export function BlockEditSheet({
+function BlockEditor({
   block,
   onSaveAction,
   onCloseAction,
 }: {
-  block: BioStoreBlock | null;
+  block: BioStoreBlock;
   onSaveAction: (content: Record<string, unknown>) => void;
   onCloseAction: () => void;
 }) {
-  const [content, setContent] = useState<Record<string, unknown>>({});
-
-  useEffect(() => {
-    if (block) setContent(block.content || {});
-  }, [block]);
-
-  if (!block) return null;
+  const [content, setContent] = useState<Record<string, unknown>>(() => ({ ...block.content }));
   const meta = BLOCK_TYPE_MAP[block.type];
   const set = (key: string, value: string) => setContent((c) => ({ ...c, [key]: value }));
 
@@ -165,4 +159,9 @@ export function BlockEditSheet({
       </motion.div>
     </AnimatePresence>
   );
+}
+
+export function BlockEditSheet(props: {block: BioStoreBlock | null; onSaveAction: (content: Record<string, unknown>) => void; onCloseAction: () => void}) {
+  if (!props.block) return null;
+  return <BlockEditor key={props.block._id ?? props.block.order} {...props} block={props.block} />;
 }
